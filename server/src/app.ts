@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { CORS_ORIGIN } from "./config/config";
 import { globalErrorHandler } from "./middleware/global.error";
-
+import vulnarabilityRoutes from "./routes/vulnarabilityRoutes";
 
 const app = express();
 
@@ -12,6 +12,11 @@ app.use(
         origin: CORS_ORIGIN,
     })
 );
+
+app.use("/api/v1/vulnarabilities", vulnarabilityRoutes);
+app.get("/", (req, res) => {
+    return res.send("Hello World!");
+});
 
 app.use(globalErrorHandler);
 
