@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import GithubService from "../service/GithubService";
 import { NextFunction } from "connect";
-import { error401, success200 } from "../error/app.error";
+import { error400, error401, success200 } from "../error/app.error";
 
 const githubService = new GithubService();
 
-export const getAllerts = async (
+export const getDependabotAlerts = async (
     req: Request<{}, {}, {}, { ownerName: string; repoName: string }>,
     res: Response,
     next: NextFunction
@@ -16,13 +16,41 @@ export const getAllerts = async (
 
     if (!token) return next(error401("Unauthorized"));
 
-    const alerts = await githubService.getVelnerabilities(
-        token,
-        ownerName,
-        repoName
-    );
+    try {
+        const alerts = await githubService.getDependabotAlerts(
+            token,
+            ownerName,
+            repoName
+        );
 
-    next(success200(alerts));
+        next(success200(alerts));
+    } catch (err) {
+        next(error400("Could'nt fetch dependabot alerts"));
+    }
+};
+
+export const getCodeScannerAlerts = async (
+    req: Request<{}, {}, {}, { ownerName: string; repoName: string }>,
+    res: Response,
+    next: NextFunction
+) => {
+    const { ownerName, repoName } = req.query;
+    const headers = req.headers.authorization;
+    const token = headers?.split(" ")[1];
+
+    if (!token) return next(error401("Unauthorized"));
+
+    try {
+        const alerts = await githubService.getCodeScannerAlerts(
+            token,
+            ownerName,
+            repoName
+        );
+
+        next(success200(alerts));
+    } catch (err) {
+        next(error400("Could'nt fetch code scanner alerts"));
+    }
 };
 
 export const getFiles = async (

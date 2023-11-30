@@ -112,3 +112,26 @@ export type CodeScannerAlert = {
     };
     instances_url: string;
 };
+
+export type File = {
+    name: string;
+    path: string;
+    sha: string;
+    size: number;
+    url: string;
+    html_url: string;
+    git_url: string;
+    download_url: string;
+    type: string;
+    content: string;
+    encoding: string;
+    _links: {
+        self: string;
+        git: string;
+        html: string;
+    };
+};
+
+export type FilesResult = {
+    [path: string]: string;
+};

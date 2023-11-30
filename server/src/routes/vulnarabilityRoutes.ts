@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
     getCodeScannerAlerts,
     getDependabotAlerts,
-} from "../controller/vulnarabilityController";
+} from "../controller/githubController";
 
 const vulnarabilityRoutes = Router();
 

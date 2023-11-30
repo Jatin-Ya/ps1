@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 
-class OpenAiService {
+export class OpenAiService {
   private _client: OpenAI;
 
   constructor() {
