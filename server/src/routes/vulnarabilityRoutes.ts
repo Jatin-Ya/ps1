@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllerts } from "../controller/vulnarabilityController";
+import { getAllerts } from "../controller/githubController";
 
 const vulnarabilityRoutes = Router();
 
