@@ -13,6 +13,8 @@ router.get("/github", async (req, res) => {
 
     const url = `${githubOauthUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
 
+    console.log(url);
+
     res.redirect(url);
 });
 
