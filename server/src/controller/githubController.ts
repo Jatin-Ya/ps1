@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import GithubService from "../service/GithubService";
 import { NextFunction } from "connect";
 import { error400, error401, success200 } from "../error/app.error";
+import { getFilesAndPaths } from "../utils/GithubUtils";
 
 const githubService = new GithubService();
 
@@ -61,22 +62,27 @@ export const getFiles = async (
     const { ownerName, repoName } = req.query;
     const headers = req.headers.authorization;
     const token = headers?.split(" ")[1];
+    
+    try {
+        const files = await getFilesAndPaths(token, ownerName, repoName);
+        next(success200(files));
+      } catch (err) {
+        next(error401("Unauthorized"));
+      }
+    // if (!token) return next(error401("Unauthorized"));
 
-    if (!token) return next(error401("Unauthorized"));
+    // const paths = await githubService.getPathsOfFilesFromBranch(
+    //     token,
+    //     ownerName,
+    //     repoName,
+    //     "master"
+    // );
 
-    const paths = await githubService.getPathsOfFilesFromBranch(
-        token,
-        ownerName,
-        repoName,
-        "master"
-    );
-
-    const files = await githubService.getFiles(
-        token,
-        ownerName,
-        repoName,
-        paths
-    );
-
-    next(success200(files));
+    // const files = await githubService.getFiles(
+    //     token,
+    //     ownerName,
+    //     repoName,
+    //     paths
+    // );
+    // next(success200(files));
 }

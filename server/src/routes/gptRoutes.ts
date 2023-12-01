@@ -1,9 +1,9 @@
 import { Router } from "express";
 
-import {generateReiew} from "../controller/gptController";
+import {generateReview} from "../controller/gptController";
 
 const router = Router();
 
-router.post("/generateReiew", generateReiew);
+router.post("/generateReiew", generateReview);
 
 export default router;
