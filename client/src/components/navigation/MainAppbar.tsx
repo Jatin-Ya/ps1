@@ -1,5 +1,6 @@
 import {
     AppBar,
+    Box,
     Button,
     Divider,
     IconButton,
@@ -10,6 +11,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import logo from "../../assets/logo.jpeg";
 import React from "react";
 
 interface MainAppbarProps {
@@ -61,14 +63,17 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
             }}
         >
             <Toolbar>
-                <Typography
-                    variant="h4"
-                    color="black"
-                    flexGrow={1}
-                    onClick={handleLogoClick}
-                >
-                    Header
-                </Typography>
+                <Box flexGrow={1} display={"flex"} alignItems={"center"}>
+                    <Box
+                        component="img"
+                        src={logo}
+                        sx={{
+                            height: 50,
+                            cursor: "pointer",
+                            aspectRatio: "inherit",
+                        }}
+                    />
+                </Box>
                 <Stack direction="row" spacing={2} alignItems="center">
                     <Button color="inherit" onClick={handleAllProjectsClick}>
                         <Typography variant="inherit" color="black">
