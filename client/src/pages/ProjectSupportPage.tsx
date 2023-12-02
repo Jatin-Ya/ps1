@@ -1,34 +1,37 @@
-import { Divider, Paper, Stack, Tab, Tabs, ThemeProvider } from "@mui/material";
+import { Paper, Stack, Tab, Tabs, ThemeProvider } from "@mui/material";
 import React, { useState } from "react";
 import ProjectSupportTabs, {
     ProjectSupportTabsEnum,
 } from "../components/navigation/ProjectSupportTabs";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { tabsTheme } from "../theme/theme";
 
 enum AISupportEnum {
-    Roadmap = 0,
-    QualityCheck = 1,
-    RaiseQuery = 2,
-    None = -1,
+    Roadmap = "roadmap",
+    QualityCheck = "quality-check",
+    RaiseQuery = "raise-query",
+    None = "",
 }
 
 const ProjectSupportPage = () => {
+    const navigate = useNavigate();
+
     const [aiSupportTabsValue, setAiSupportTabsValue] = useState(
-        AISupportEnum.Roadmap
+        AISupportEnum.None
     );
 
     const handleAiSupportTabsChange = (
         _: React.SyntheticEvent,
-        newValue: number
+        newValue: AISupportEnum
     ) => {
         setAiSupportTabsValue(newValue);
+        navigate(`/project-support/${newValue}`);
     };
 
     return (
         <>
             <ProjectSupportTabs value={ProjectSupportTabsEnum.AiSupport} />
-            <Paper sx={{ margin: 2, padding: 4, borderRadius: 8 }}>
+            <Paper sx={{ margin: 2, padding: 4, borderRadius: 8, flexGrow: 1 }}>
                 <Stack direction="row">
                     <ThemeProvider theme={tabsTheme}>
                         <Tabs
@@ -39,14 +42,17 @@ const ProjectSupportPage = () => {
                             <Tab
                                 value={AISupportEnum.Roadmap}
                                 label="Roadmap"
+                                sx={{ marginY: 1 }}
                             />
                             <Tab
                                 value={AISupportEnum.QualityCheck}
                                 label="Quality check"
+                                sx={{ marginY: 1 }}
                             />
                             <Tab
                                 value={AISupportEnum.RaiseQuery}
                                 label="Raise Query"
+                                sx={{ marginY: 1 }}
                             />
                         </Tabs>
                     </ThemeProvider>

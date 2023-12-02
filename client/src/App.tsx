@@ -9,13 +9,23 @@ function App() {
             <Navbar>
                 <Routes>
                     <Route
-                        path="*"
+                        path="/"
                         element={<Navigate to="/project-support" />}
                     />
                     <Route
-                        path="/project-support"
+                        path="project-support"
                         element={<ProjectSupportPage />}
-                    />
+                    >
+                        <Route path="roadmap" element={<div>Roadmap</div>} />
+                        <Route
+                            path="quality-check"
+                            element={<div>Quality check</div>}
+                        />
+                        <Route
+                            path="raise-query"
+                            element={<div>Raise query</div>}
+                        />
+                    </Route>
                 </Routes>
             </Navbar>
         </>
