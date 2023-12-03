@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import MainAppbar from "./MainAppbar";
-import logo from "../../assets/logo.png";
+
 
 interface NavbarProps {
     children?: React.ReactNode;

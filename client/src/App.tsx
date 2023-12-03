@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/navigation/Navbar";
 
 import ProjectSupportPage from "./pages/ProjectSupportPage";
+import RoadmapSection from "./components/roadmap/RoadmapSection";
 
 function App() {
     return (
@@ -10,13 +11,14 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<Navigate to="/project-support" />}
+                        element={<Navigate to="project-support" />}
                     />
                     <Route
                         path="project-support"
                         element={<ProjectSupportPage />}
                     >
-                        <Route path="roadmap" element={<div>Roadmap</div>} />
+                        <Route path="" element={<Navigate to="roadmap" />} />
+                        <Route path="roadmap" element={<RoadmapSection />} />
                         <Route
                             path="quality-check"
                             element={<div>Quality check</div>}
