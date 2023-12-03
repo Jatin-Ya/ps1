@@ -32,7 +32,7 @@ router.get("/github/callback", async (req, res) => {
     const url = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_uri=${redirectUri}`
     const response = await axios.post(url, {
         headers: {
-            accept: "application/json",
+            Accept: "application/json",
         },
     });
 
