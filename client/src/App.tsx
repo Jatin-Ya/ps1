@@ -3,6 +3,7 @@ import Navbar from "./components/navigation/Navbar";
 
 import ProjectSupportPage from "./pages/ProjectSupportPage";
 import Dashboard from "./pages/Dashboard";
+import RoadmapSection from "./components/roadmap/RoadmapSection";
 
 function App() {
     return (
@@ -11,13 +12,14 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<Navigate to="/dashboard" />}
+                        element={<Navigate to="project-support" />}
                     />
                     <Route
                         path="project-support"
                         element={<ProjectSupportPage />}
                     >
-                        <Route path="roadmap" element={<div>Roadmap</div>} />
+                        <Route path="" element={<Navigate to="roadmap" />} />
+                        <Route path="roadmap" element={<RoadmapSection />} />
                         <Route
                             path="quality-check"
                             element={<div>Quality check</div>}

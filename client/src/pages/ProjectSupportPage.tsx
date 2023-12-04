@@ -17,7 +17,7 @@ const ProjectSupportPage = () => {
     const navigate = useNavigate();
 
     const [aiSupportTabsValue, setAiSupportTabsValue] = useState(
-        AISupportEnum.None
+        AISupportEnum.Roadmap
     );
 
     const handleAiSupportTabsChange = (
@@ -32,12 +32,13 @@ const ProjectSupportPage = () => {
         <>
             <ProjectSupportTabs value={ProjectSupportTabsEnum.AiSupport} />
             <Paper sx={{ margin: 2, padding: 4, borderRadius: 8, flexGrow: 1 }}>
-                <Stack direction="row">
+                <Stack direction="row" height={"100%"}>
                     <ThemeProvider theme={tabsTheme}>
                         <Tabs
                             orientation="vertical"
                             value={aiSupportTabsValue}
                             onChange={handleAiSupportTabsChange}
+                            sx={{ minWidth: 150 }}
                         >
                             <Tab
                                 value={AISupportEnum.Roadmap}
