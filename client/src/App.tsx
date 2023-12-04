@@ -1,9 +1,10 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, RouteProps, Routes } from "react-router-dom";
 import Navbar from "./components/navigation/Navbar";
 
 import ProjectSupportPage from "./pages/ProjectSupportPage";
 import Dashboard from "./pages/Dashboard";
 import RoadmapSection from "./components/roadmap/RoadmapSection";
+import LoginPage from "./pages/LoginPage";
 
 function App() {
     return (
@@ -14,6 +15,7 @@ function App() {
                         path="/"
                         element={<Navigate to="project-support" />}
                     />
+                    <Route path="login" element={<LoginPage />} />
                     <Route
                         path="project-support"
                         element={<ProjectSupportPage />}
@@ -29,10 +31,7 @@ function App() {
                             element={<div>Raise query</div>}
                         />
                     </Route>
-                    <Route
-                        path="dashboard"
-                        element={ <Dashboard/> }
-                    />
+                    <Route path="dashboard" element={<Dashboard />} />
                 </Routes>
             </Navbar>
         </>

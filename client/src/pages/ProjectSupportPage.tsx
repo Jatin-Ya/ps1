@@ -5,6 +5,9 @@ import ProjectSupportTabs, {
 } from "../components/navigation/ProjectSupportTabs";
 import { Outlet, useNavigate } from "react-router-dom";
 import { tabsTheme } from "../theme/theme";
+import { useSelector } from "react-redux";
+import { UserState } from "../store/user/types";
+import { StoreData } from "../store/store";
 
 enum AISupportEnum {
     Roadmap = "roadmap",
@@ -14,7 +17,13 @@ enum AISupportEnum {
 }
 
 const ProjectSupportPage = () => {
+    const isAuth = useSelector<StoreData, UserState>((state) => state.user);
+
     const navigate = useNavigate();
+
+    if (!isAuth.isAuth) {
+        navigate("/login");
+    }
 
     const [aiSupportTabsValue, setAiSupportTabsValue] = useState(
         AISupportEnum.Roadmap
