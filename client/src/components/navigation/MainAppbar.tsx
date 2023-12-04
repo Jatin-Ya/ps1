@@ -1,6 +1,5 @@
 import {
     AppBar,
-    Badge,
     Box,
     Button,
     Divider,
@@ -14,9 +13,6 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import logo from "../../assets/logo.jpeg";
 import React from "react";
-import GitHubIcon from "@mui/icons-material/GitHub";
-import { getBackendBaseUrl } from "../../utils/backendFunctions";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import GithubButton from "../github/GithubButton";
 
 interface MainAppbarProps {

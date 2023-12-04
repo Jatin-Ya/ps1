@@ -24,6 +24,6 @@ export const initialUserState: UserState = {
     name: "",
     email: "",
     token: "",
-    isAuth: false,
+    isAuth: true,
     role: "None",
 };

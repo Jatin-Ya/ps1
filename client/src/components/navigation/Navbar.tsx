@@ -17,6 +17,8 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
     const navigate = useNavigate();
 
     const handleLoginClick = () => navigate("/login");
+    const handleAllProjectsClick = () =>
+        navigate("/all-projects");
 
     return (
         <Stack>
@@ -24,6 +26,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
                 isAuth={isAuth}
                 role={role}
                 onLoginClick={handleLoginClick}
+                onAllProjectsClick={handleAllProjectsClick}
             />
             <Box
                 sx={{
