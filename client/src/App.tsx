@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/navigation/Navbar";
 
 import ProjectSupportPage from "./pages/ProjectSupportPage";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
     return (
@@ -10,7 +11,7 @@ function App() {
                 <Routes>
                     <Route
                         path="/"
-                        element={<Navigate to="/project-support" />}
+                        element={<Navigate to="/dashboard" />}
                     />
                     <Route
                         path="project-support"
@@ -26,6 +27,10 @@ function App() {
                             element={<div>Raise query</div>}
                         />
                     </Route>
+                    <Route
+                        path="dashboard"
+                        element={ <Dashboard/> }
+                    />
                 </Routes>
             </Navbar>
         </>

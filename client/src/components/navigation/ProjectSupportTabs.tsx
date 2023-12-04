@@ -27,7 +27,6 @@ const ProjectSupportTabs: React.FC<ProjectSupportTabsProps> = ({
                     <Tab
                         value={ProjectSupportTabsEnum.ProjectDashboard}
                         label="Project Dashboard"
-                        disabled
                     />
                     <Tab
                         value={ProjectSupportTabsEnum.AiSupport}

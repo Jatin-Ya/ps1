@@ -1,5 +1,6 @@
 import {
     AppBar,
+    Badge,
     Box,
     Button,
     Divider,
@@ -13,6 +14,9 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import logo from "../../assets/logo.jpeg";
 import React from "react";
+import GitHubIcon from '@mui/icons-material/GitHub';
+import { getBackendBaseUrl } from "../../utils/backendFunctions";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 interface MainAppbarProps {
     onLogoClick?: () => void;
@@ -24,13 +28,15 @@ interface MainAppbarProps {
 }
 
 const MainAppbar: React.FC<MainAppbarProps> = ({
-    onLogoClick = () => {},
-    onSearchClick = () => {},
-    onNotificationsClick = () => {},
-    onProfileClick = () => {},
-    onAllProjectsClick = () => {},
-    onAllTeamsClick = () => {},
+    onLogoClick = () => { },
+    onSearchClick = () => { },
+    onNotificationsClick = () => { },
+    onProfileClick = () => { },
+    onAllProjectsClick = () => { },
+    onAllTeamsClick = () => { },
 }) => {
+    const [isGithubConnected, setIsGithubConnected] = React.useState(false);
+
     const handleLogoClick = () => {
         onLogoClick();
     };
@@ -55,6 +61,14 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
         onAllTeamsClick();
     };
 
+    const handleGithubLogin = async () => {
+        const BEURL = getBackendBaseUrl();
+        // await axios(`${BEURL}/auth/github`,{
+
+        // });
+        setIsGithubConnected(true);
+    }
+
     return (
         <AppBar
             position="static"
@@ -75,6 +89,25 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
                     />
                 </Box>
                 <Stack direction="row" spacing={2} alignItems="center">
+                    {isGithubConnected ?
+                        (<Badge
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right',
+                            }}
+                            badgeContent={<CheckCircleIcon fontSize="small" color="success" />}
+                            variant="standard"
+                        >
+                            <GitHubIcon sx={{color:"black"}} fontSize="large" />
+                        </Badge>)
+                        :
+                        (<Button color="success" variant="contained" sx={{ borderRadius: "20px" }} onClick={handleGithubLogin}>
+                            <GitHubIcon sx={{ marginRight: "5px" }} />
+                            <Typography variant="inherit">
+                                Connect Github
+                            </Typography>
+                        </Button>)
+                    }
                     <Button color="inherit" onClick={handleAllProjectsClick}>
                         <Typography variant="inherit" color="black">
                             All Projects
