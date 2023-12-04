@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Navbar from "./components/navigation/Navbar";
 
 import ProjectSupportPage from "./pages/ProjectSupportPage";
+import Dashboard from "./pages/Dashboard";
 import RoadmapSection from "./components/roadmap/RoadmapSection";
 
 function App() {
@@ -28,6 +29,10 @@ function App() {
                             element={<div>Raise query</div>}
                         />
                     </Route>
+                    <Route
+                        path="dashboard"
+                        element={ <Dashboard/> }
+                    />
                 </Routes>
             </Navbar>
         </>
