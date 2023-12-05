@@ -19,5 +19,5 @@ const connect = () =>
 
 server.listen(PORT, () => {
     console.log(`server running at ${PORT}`);
-    // connect();
+    connect();
 });
