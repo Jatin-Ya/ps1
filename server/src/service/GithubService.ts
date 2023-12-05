@@ -85,6 +85,30 @@ class GithubService {
 
         return paths;
     }
+
+    async getRepos(accessToken: string): Promise<string[]> {
+        const url = `https://api.github.com/user/repos`;
+
+        const headers = {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: "application/vnd.github.v3+json",
+            "X-Github-Api-Version": "2022-11-28",
+        };
+
+        const result = await axios.get(url, { headers });
+
+        const repos = result.data.map((repo: any) =>{
+            return {
+                repoName: repo.name,
+                repoOwner: repo.owner.login,
+                repoUrl: repo.html_url,
+                repoId: repo.id,
+                // repoName, repoOwner, repoUrl, repoId
+            }
+        });
+
+        return repos;
+    }
 }
 
 export default GithubService;

@@ -16,16 +16,32 @@ const projectSchema = new mongoose.Schema({
             ref: "User",
         },
     ],
-    task:
-    {
-        type: {
-            title: String,
-            description: String,
-            status: String,
-            progress: Number,
-            guidlines: String,
-        },
+    description : {
+        type: String,
         required: true,
+    },
+    status : {
+        type: String,
+        required: true,
+        default: "open"
+    },
+    progress : {
+        type: Number,
+        required: false,
+        default: 0
+    },
+    guidlines : {
+        type: String,
+        required: true,
+    },
+    repoDetails : {
+        type: {
+            repoName: String,
+            repoOwner: String,
+            repoUrl: String,
+            repoId: String,
+        },
+        required: false,
     },
 });
 

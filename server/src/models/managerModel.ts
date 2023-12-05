@@ -14,6 +14,12 @@ const managerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    projects: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Project",
+        },
+    ],
 });
 
 const Manager = mongoose.model("Manager", managerSchema);

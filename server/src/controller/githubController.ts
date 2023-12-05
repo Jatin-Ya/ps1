@@ -3,6 +3,7 @@ import GithubService from "../service/GithubService";
 import { NextFunction } from "connect";
 import { error400, error401, success200 } from "../error/app.error";
 import { getFilesAndPaths } from "../utils/GithubUtils";
+import User from "../models/userModel";
 
 const githubService = new GithubService();
 
@@ -55,13 +56,15 @@ export const getCodeScannerAlerts = async (
 };
 
 export const getFiles = async (
-    req: Request<{}, {}, {}, { ownerName: string; repoName: string }>,
+    req: Request<{}, {}, {}, { ownerName: string; repoName: string, email: string }>,
     res: Response,
     next: NextFunction
 ) => {
-    const { ownerName, repoName } = req.query;
+    const { ownerName, repoName, email } = req.query;
     const headers = req.headers.authorization;
-    const token = headers?.split(" ")[1];
+    const user = await User.findOne({ email: email });
+    const token = user?.githubId?.accessToken;
+    if (!token) return next(error401("Unauthorized"));
     
     try {
         const files = await getFilesAndPaths(token, ownerName, repoName);
@@ -86,3 +89,23 @@ export const getFiles = async (
     // );
     // next(success200(files));
 }
+
+export const getRepos = async (
+    req: Request<{}, {}, {}, { email: string }>,
+    res: Response,
+    next: NextFunction
+) => {
+    const { email } = req.query;
+    const headers = req.headers.authorization;
+    const user = await User.findOne({ email: email });
+    const token = user?.githubId?.accessToken;
+    if (!token) return next(error401("Unauthorized"));
+    
+    try {
+        const repos = await githubService.getRepos(token);
+        next(success200(repos));
+      } catch (err) {
+        next(error401("Unauthorized"));
+      }
+}
+
