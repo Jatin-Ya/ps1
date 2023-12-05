@@ -7,6 +7,7 @@ import RoadmapSection from "./components/roadmap/RoadmapSection";
 import LoginPage from "./pages/LoginPage";
 import AllProjects from "./pages/AllProjects";
 import AllProjectsSection from "./components/all-projects/AllProjectsSection";
+import NewProjectSection from "./components/all-projects/NewProjectSection";
 
 function App() {
     return (
@@ -20,10 +21,13 @@ function App() {
                     <Route path="login" element={<LoginPage />} />
                     <Route path="all-projects" element={<AllProjects />}>
                         <Route path="" element={<AllProjectsSection />} />
-                        <Route path="new-project" element={<p>New proj</p>} />
+                        <Route
+                            path="new-project"
+                            element={<NewProjectSection />}
+                        />
                     </Route>
                     <Route
-                        path="project-support"
+                        path="project-support/:id"
                         element={<ProjectSupportPage />}
                     >
                         <Route path="" element={<Navigate to="roadmap" />} />

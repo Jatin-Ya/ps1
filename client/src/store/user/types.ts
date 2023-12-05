@@ -22,7 +22,7 @@ export type UserData = {
 export const initialUserState: UserState = {
     id: 0,
     name: "",
-    email: "",
+    email: "aseg",
     token: "",
     isAuth: true,
     role: "None",

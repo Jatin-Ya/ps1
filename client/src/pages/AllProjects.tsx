@@ -20,8 +20,15 @@ const AllProjects = () => {
     return (
         <>
             <AllProjectsTabs value={currentTab} onChange={handleTabChange} />
-            <Paper sx={{ margin: 2, padding: 4, borderRadius: 8, flexGrow: 1 }}>
-                <Stack direction="row" height={"100%"}>
+            <Paper
+                sx={{
+                    margin: 2,
+                    padding: 4,
+                    borderRadius: 8,
+                    flexGrow: 1,
+                }}
+            >
+                <Stack direction="row" height={"100%"} overflow={"scroll"}>
                     <Outlet />
                 </Stack>
             </Paper>

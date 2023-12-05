@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ProjectSupportTabs, {
     ProjectSupportTabsEnum,
 } from "../components/navigation/ProjectSupportTabs";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import { tabsTheme } from "../theme/theme";
 import { useSelector } from "react-redux";
 import { UserState } from "../store/user/types";
@@ -18,6 +18,7 @@ enum AISupportEnum {
 
 const ProjectSupportPage = () => {
     const isAuth = useSelector<StoreData, UserState>((state) => state.user);
+    const projectId = useParams().id;
 
     const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ const ProjectSupportPage = () => {
         newValue: AISupportEnum
     ) => {
         setAiSupportTabsValue(newValue);
-        navigate(`/project-support/${newValue}`);
+        navigate(`/project-support/${projectId}/${newValue}`);
     };
 
     return (
