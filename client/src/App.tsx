@@ -3,13 +3,16 @@ import Navbar from "./components/navigation/Navbar";
 
 import ProjectSupportPage from "./pages/ProjectSupportPage";
 import Dashboard from "./pages/Dashboard";
-import RoadmapSection from "./components/project-support-section/roadmap/RoadmapSection";
+import RoadmapSection from "./components/project-support/roadmap/RoadmapSection";
 import LoginPage from "./pages/LoginPage";
 import AllProjects from "./pages/AllProjects";
 import AllProjectsSection from "./components/all-projects/AllProjectsSection";
 import NewProjectSection from "./components/all-projects/NewProjectSection";
-import AISupportSection from "./components/project-support-section/AISupportSection";
-import ProjectDashboardSection from "./components/project-support-section/ProjectDashboardSection";
+import AISupportSection from "./components/project-support/AISupportSection";
+import ProjectDashboardSection from "./components/project-support/ProjectDashboardSection";
+import QualityChackSection from "./components/project-support/quality-check/QualityChackSection";
+import FileSupport from "./components/project-support/quality-check/file-support/FileSupport";
+import VulnerabilitySupport from "./components/project-support/quality-check/vulnerability-support/VulnerabilitySupport";
 
 function App() {
     return (
@@ -44,7 +47,16 @@ function App() {
                             />
                             <Route
                                 path="quality-check"
-                                element={<div>Quality check</div>}
+                                element={<QualityChackSection />}
+                            />
+
+                            <Route
+                                path="quality-check/file-support"
+                                element={<FileSupport />}
+                            />
+                            <Route
+                                path="quality-check/vulnerability-support"
+                                element={<VulnerabilitySupport />}
                             />
                             <Route
                                 path="raise-query"

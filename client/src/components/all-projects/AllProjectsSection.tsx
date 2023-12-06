@@ -28,6 +28,7 @@ const DUMMY_PROJECTS = [
     },
 ];
 
+
 const AllProjectsSection = () => {
     const [projects, setProjects] = useState(DUMMY_PROJECTS);
 
