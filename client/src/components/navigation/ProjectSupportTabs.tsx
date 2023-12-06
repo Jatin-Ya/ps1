@@ -3,27 +3,35 @@ import React from "react";
 import { tabsTheme } from "../../theme/theme";
 
 export enum ProjectSupportTabsEnum {
-    ProjectDashboard = 0,
-    AiSupport = 1,
-    TeamChat = 2,
-    None = -1,
+    ProjectDashboard = "project-dashboard",
+    AiSupport = "ai-support",
+    TeamChat = "team-chat",
 }
 
 interface ProjectSupportTabsProps {
     value: ProjectSupportTabsEnum;
+    onChange: (value: ProjectSupportTabsEnum) => void;
 }
 
 const ProjectSupportTabs: React.FC<ProjectSupportTabsProps> = ({
-    value = ProjectSupportTabsEnum.None,
+    value,
+    onChange,
 }) => {
-    const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-        console.log(newValue);
+    const handleChange = (
+        _: React.SyntheticEvent,
+        newValue: ProjectSupportTabsEnum
+    ) => {
+        onChange(newValue);
     };
 
     return (
         <Toolbar>
             <ThemeProvider theme={tabsTheme}>
-                <Tabs value={value} onChange={handleChange} indicatorColor="primary">
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                >
                     <Tab
                         value={ProjectSupportTabsEnum.ProjectDashboard}
                         label="Project Dashboard"
