@@ -3,23 +3,23 @@ import Manager from "../models/managerModel";
 
 const router = Router();
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async(req, res) => {
     const id = req.params.id;
 
-    const manager = Manager.findById(id).populate("projects");
+    const manager = await Manager.findById(id).populate("projects");
     return res.send(manager);
 });
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     const filters = req.query;
-    const managers = Manager.find(filters).populate("projects");
+    const managers = await Manager.find(filters).populate("projects");
     return res.send(managers);
 });
 
-router.post("/", (req, res) => {
+router.post("/", async(req, res) => {
     const { name, email, password } = req.body;
 
-    const manager = Manager.create({ name, email, password });
+    const manager = await Manager.create({ name, email, password });
     return res.send(manager);   
 });
 

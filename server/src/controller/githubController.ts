@@ -4,17 +4,24 @@ import { NextFunction } from "connect";
 import { error400, error401, success200 } from "../error/app.error";
 import { getFilesAndPaths } from "../utils/GithubUtils";
 import User from "../models/userModel";
+import Project from "../models/projectModel";
 
 const githubService = new GithubService();
 
 export const getDependabotAlerts = async (
-    req: Request<{}, {}, {}, { ownerName: string; repoName: string }>,
+    req: Request<{}, {}, {}, { projectId: string }>,
     res: Response,
     next: NextFunction
 ) => {
-    const { ownerName, repoName } = req.query;
-    const headers = req.headers.authorization;
-    const token = headers?.split(" ")[1];
+    const { projectId } = req.query;
+    // const headers = req.headers.authorization;
+    // const token = headers?.split(" ")[1];
+    const project : any = await Project.findById(projectId).populate("users");
+    const user: any = project?.users[0];
+    if (!user) return next(error401("Unauthorized"));
+    const ownerName = user?.githubId?.userName;
+    const repoName = project?.repoName;
+    const token = user?.githubId?.accessToken;
 
     if (!token) return next(error401("Unauthorized"));
 
@@ -32,13 +39,19 @@ export const getDependabotAlerts = async (
 };
 
 export const getCodeScannerAlerts = async (
-    req: Request<{}, {}, {}, { ownerName: string; repoName: string }>,
+    req: Request<{}, {}, {}, { projectId: string }>,
     res: Response,
     next: NextFunction
 ) => {
-    const { ownerName, repoName } = req.query;
-    const headers = req.headers.authorization;
-    const token = headers?.split(" ")[1];
+    const { projectId } = req.query;
+    // const headers = req.headers.authorization;
+    // const token = headers?.split(" ")[1];
+    const project : any = await Project.findById(projectId).populate("users");
+    const user: any = project?.users[0];
+    if (!user) return next(error401("Unauthorized"));
+    const ownerName = user?.githubId?.userName;
+    const repoName = project?.repoName;
+    const token = user?.githubId?.accessToken;
 
     if (!token) return next(error401("Unauthorized"));
 
@@ -56,13 +69,16 @@ export const getCodeScannerAlerts = async (
 };
 
 export const getFiles = async (
-    req: Request<{}, {}, {}, { ownerName: string; repoName: string, email: string }>,
+    req: Request<{}, {}, {}, { projectId: string }>,
     res: Response,
     next: NextFunction
 ) => {
-    const { ownerName, repoName, email } = req.query;
-    const headers = req.headers.authorization;
-    const user = await User.findOne({ email: email });
+    const { projectId } = req.query;
+    const project : any = await Project.findById(projectId).populate("users");
+    const user: any = project?.users[0];
+    if (!user) return next(error401("Unauthorized"));
+    const ownerName = user?.githubId?.userName;
+    const repoName = project?.repoName;
     const token = user?.githubId?.accessToken;
     if (!token) return next(error401("Unauthorized"));
     
@@ -96,7 +112,6 @@ export const getRepos = async (
     next: NextFunction
 ) => {
     const { email } = req.query;
-    const headers = req.headers.authorization;
     const user = await User.findOne({ email: email });
     const token = user?.githubId?.accessToken;
     if (!token) return next(error401("Unauthorized"));

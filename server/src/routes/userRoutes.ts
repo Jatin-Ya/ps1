@@ -3,30 +3,30 @@ import User from "../models/userModel";
 
 const router = Router();
 
-router.get("/:id", (req, res) => {
+router.get("/:id", async(req, res) => {
     const id = req.params.id;
 
-    const user = User.findById(id).populate("projects");
+    const user = await User.findById(id).populate("projects");
     return res.send(user);
 });
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
     const filters = req.query;
-    const users = User.find(filters).populate("projects");
+    const users = await User.find(filters).populate("projects");
     return res.send(users);
 });
 
-router.post("/", (req, res) => {
-    const { email, password } = req.body;
+router.post("/", async (req, res) => {
+    const { name, email, password } = req.body;
 
-    const user = User.create({ email, password });
+    const user = await User.create({ email, password, name });
     return res.send(user);
 });
 
-router.delete("/", (req, res) => {
+router.delete("/", async(req, res) => {
     const email = req.query.email;
 
-    const user = User.findOneAndDelete({ email });
+    const user = await User.findOneAndDelete({ email });
     return res.send(user);
 });
 
