@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { getBackendBaseUrl } from "../utils/backendFunctions";
+import axios from "axios";
 
 export type Vulnerability = {
     id: string;
@@ -61,6 +63,8 @@ export const useVelnerabilities = (projectId: string) => {
 
     const getVulnerabilities = async (): Promise<Vulnerability[]> => {
         // Get vulnerabilities from backend
+        // const baseUrl = getBackendBaseUrl();
+        // const response = await axios.get(
         return DUMMY_VULNERABILITIES;
     };
 

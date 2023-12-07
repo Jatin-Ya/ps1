@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
     if (users) {
         for (let i = 0; i < users.length; i++) {
             const user = users[i];
-            const userdoc = await User.findByIdAndUpdate(user, { $push: { projects: project } });
+            await User.findByIdAndUpdate(user, { $push: { projects: project } });
             project.users.push(user);
             await project.save();
         }
