@@ -19,6 +19,8 @@ import { useState } from "react";
 import { ProjectState } from "../../store/project/types";
 import LinkIcon from "@mui/icons-material/Link";
 import { useRepos } from "../../hooks/use-repos";
+import { getBackendBaseUrl } from "../../utils/backendFunctions";
+import axios from "axios";
 
 function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
@@ -52,19 +54,55 @@ const ProjectDashboardSection = () => {
         setAssignUserInputText(text);
     };
 
-    const assignUserHandler = (user: string) => {
+    const assignUserHandler = async(user: string) => {
         console.log({ assignUser: user });
+        // assign user here
+        const baseUrl = getBackendBaseUrl();
+        try {
+            const response = await axios.patch(`${baseUrl}/project/assignUser`, {
+                id: projectData.id,
+                user: user
+            })
+            console.log(response.data)
+        }catch (e){
+            console.log(e);
+        }
     };
 
-    const removeUserHandler = (user: string) => {
+    const removeUserHandler = async (user: string) => {
         console.log({ removeUser: user });
+        const projectId = projectData.id;
+        const baseUrl = getBackendBaseUrl();
+        try {
+            const response = await axios.patch(`${baseUrl}/project/removeUser`, {
+                id: projectId,
+                user: user
+            })
+            console.log(response.data);
+        }
     };
 
-    const connectRepoHandler = () => {
+    const connectRepoHandler = async() => {
         const repoToConnect = repos.find((repo) => repo.id === selectedRepoId);
         if (!repoToConnect) return;
 
-        // Connect repo to project
+        const projectId = projectData.id;
+
+        const baseUrl = getBackendBaseUrl();
+
+        try{
+            const response = await axios.patch(`${baseUrl}/project/connectRepo`,{
+                id: projectId,
+                repoName : repoToConnect.name,
+                repoOwner: repoToConnect.owner, 
+                repoUrl: repoToConnect.url, 
+                repoId: repoToConnect.id
+            })
+            console.log(response.data);
+        }catch (e){
+            console.log(e);
+        }
+        
         console.log({ connectRepo: repoToConnect });
     };
 
@@ -92,7 +130,7 @@ const ProjectDashboardSection = () => {
                             startAdornment={
                                 <IconButton
                                     size="small"
-                                    onClick={connectRepoHandler}
+                                    onClick={connectRepoHandler} //connect repo here
                                 >
                                     <LinkIcon />
                                 </IconButton>

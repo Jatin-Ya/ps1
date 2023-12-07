@@ -40,6 +40,26 @@ router.post("/", async (req, res) => {
     return res.send(project);
 });
 
+router.patch("/addUsers", async(req,res) => {
+    const {id, user} = req.query;
+
+    const project = await Project.findByIdAndUpdate(id,{$push: {users: user}});
+
+    await User.findOneAndUpdate({email: user}, {$push: {projects: project?._id}})
+
+    return res.send(project);
+})
+
+router.patch("/removeUser", async(req, res)=>{
+    const {id,user} = req.query;
+
+    const project = await Project.findByIdAndUpdate(id,{ $pull : {users: user} })
+
+    await User.findOneAndUpdate({email: user},{$pull : {projects: project?._id}})
+
+    return res.send(project);
+})
+
 router.delete("/", async (req, res) => {
     const id = req.query.id;
 

@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { StoreData } from "../../store/store";
 
 import AssignUserComponent from "../assign-user/AssignUserComponent";
+import { getBackendBaseUrl } from "../../utils/backendFunctions";
+import axios from "axios";
 
 const NewProjectSection = () => {
     const email = useSelector<StoreData, string>((state) => state.user.email);
@@ -28,7 +30,7 @@ const NewProjectSection = () => {
         setAssignedUsers((prevState) => prevState.filter((u) => u !== user));
     };
 
-    const submitHandler = () => {
+    const submitHandler = async() => {
         const projectName = projectNameInputRef.current.value;
         const projectDescription = projectDescriptionInputRef.current.value;
         const projectGuidlines = projectGuidlinesInputRef.current.value;
@@ -43,6 +45,19 @@ const NewProjectSection = () => {
         };
 
         console.log(projectData);
+        const baseUrl = getBackendBaseUrl();
+        try{
+            const body = {
+                title: projectName, description: projectDescription, guidlines: projectGuidlines, manager_email: manager, users: assignedUsers
+            }
+            const response = await axios.post(
+                `${baseUrl}/api/v1/projects`, body
+            )
+            console.log(response);
+        }
+        catch (e){
+            console.log(e);
+        }
     };
 
     return (
