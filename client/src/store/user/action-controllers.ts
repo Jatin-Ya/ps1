@@ -7,7 +7,7 @@ export const setUserController = (
 ) => {
     const newState = { ...action.payload, isAuth: true };
 
-    const isRoleValid = newState.role in validRoles;
+    const isRoleValid = validRoles.includes(newState.role);
     if (!isRoleValid) {
         return state;
     }
@@ -18,4 +18,3 @@ export const setUserController = (
 export const clearUserController = () => {
     return initialUserState;
 };
-

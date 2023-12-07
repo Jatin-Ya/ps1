@@ -3,7 +3,7 @@ export type UserRoles = "None" | "Employee" | "Manager" | "Admin";
 export const validRoles = ["None", "Employee", "Manager", "Admin"];
 
 export type UserState = {
-    id: number;
+    id: string;
     name: string;
     email: string;
     token: string;
@@ -12,7 +12,7 @@ export type UserState = {
 };
 
 export type UserData = {
-    id: number;
+    id: string;
     name: string;
     email: string;
     token: string;
@@ -20,10 +20,10 @@ export type UserData = {
 };
 
 export const initialUserState: UserState = {
-    id: 0,
+    id: "",
     name: "",
-    email: "aseg",
+    email: "",
     token: "",
-    isAuth: true,
+    isAuth: false,
     role: "None",
 };
