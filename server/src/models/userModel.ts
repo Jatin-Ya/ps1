@@ -6,11 +6,11 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    passwordHash: {
+    password: {
         type: String,
         required: true,
     },
-    userName: {
+    name: {
         type: String,
         required: true,
     },
@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     ],
     githubId: {
         type: {
-            userName: String,
+            name: String,
             accessToken: String,
         },
         required: false,

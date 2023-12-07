@@ -4,14 +4,16 @@ import User from "../models/userModel";
 
 const router = Router();
 
+// TODO : Test and fix github auth
+
 router.get("/github", async (req, res) => {
-    const email = req.query.email;
+    const password = req.query.password;
     const githubOauthUrl = "https://github.com/login/oauth/authorize";
     const clientId = process.env.GITHUB_CLIENT_ID;
     const redirectUri = process.env.GITHUB_CALLBACK_URI;
     // const redirectUri = "http://localhost:3001/api/v1/auth/github/callback";
     const scope = "repo%20user%20write:org%20repo_deployment";
-    const state = email;
+    const state = password;
 
     const url = `${githubOauthUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
 

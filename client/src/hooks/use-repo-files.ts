@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { getBackendBaseUrl } from "../utils/backendFunctions";
+import axios from "axios";
 
 export type RepoFile = {
     path: string;
@@ -15,13 +17,10 @@ export const useRepoFiles = (projectId: string) => {
 
     const getRepos = async (): Promise<RepoResponse> => {
         // Get repo files from backend
-        return {
-            "file1.txt": "content1",
-            "file2.txt": "content2",
-            "file3.txt": "content3",
-            "file4.txt": "content4",
-            "file5.txt": "content5",
-        };
+        const baseUrl = getBackendBaseUrl();
+        const response = await axios.get(`${baseUrl}/github/files?projectId=${projectId}`);
+        const repoFiles = response.data;
+        return repoFiles;
     };
 
     useEffect(() => {

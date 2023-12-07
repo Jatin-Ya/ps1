@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { StoreData } from "../store/store";
 import { useEffect } from "react";
-import { ProjectData, initialProjectState } from "../store/project/types";
+import { ProjectData } from "../store/project/types";
 import { setProject } from "../store/project/project-slice";
+import { getBackendBaseUrl } from "../utils/backendFunctions";
+import axios from "axios";
 
 export const useProject = (projectId: string) => {
     const dispatch = useDispatch();
@@ -12,6 +14,9 @@ export const useProject = (projectId: string) => {
 
     const getProjectDetails = async (): Promise<ProjectData> => {
         // Get project details from backend
+        const baseUrl = getBackendBaseUrl();
+        const response = await axios.get(`${baseUrl}/project/${projectId}`);
+        const initialProjectState = response.data;
         return initialProjectState;
     };
 

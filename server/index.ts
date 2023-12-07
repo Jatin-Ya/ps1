@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 import { createServer } from "http";
-import app from "./src/app";
 config();
+import app from "./src/app";
 
 import mongoose from "mongoose";
 import {
