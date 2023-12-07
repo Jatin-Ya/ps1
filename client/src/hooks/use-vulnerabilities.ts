@@ -63,9 +63,10 @@ export const useVelnerabilities = (projectId: string) => {
 
     const getVulnerabilities = async (): Promise<Vulnerability[]> => {
         // Get vulnerabilities from backend
-        // const baseUrl = getBackendBaseUrl();
-        // const response = await axios.get(
-        return DUMMY_VULNERABILITIES;
+        const baseUrl = getBackendBaseUrl();
+        const response = await axios.get(`${baseUrl}/code-scanner/alerts?projectId=${projectId}`)
+
+        return response.data;
     };
 
     useEffect(() => {
