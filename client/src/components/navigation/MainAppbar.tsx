@@ -31,6 +31,7 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
     isAuth,
     role,
     onLogoClick = () => {},
+    onLoginClick = () => {},
     onSearchClick = () => {},
     onNotificationsClick = () => {},
     onProfileClick = () => {},
@@ -62,7 +63,7 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
     };
 
     const handleLoginCkick = () => {
-        onLogoClick();
+        onLoginClick();
     };
 
     const projectOptionMenu = (

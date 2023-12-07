@@ -7,16 +7,22 @@ import {
     Typography,
 } from "@mui/material";
 import { useRef } from "react";
+import { useAuth } from "../hooks/use-auth";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+
     const emailInputRef = useRef<HTMLInputElement>(null!);
     const passwordInputRef = useRef<HTMLInputElement>(null!);
+
+    const { login } = useAuth();
 
     const handleLogin = () => {
         const email = emailInputRef.current.value;
         const password = passwordInputRef.current.value;
 
-        alert(`Email: ${email} Password: ${password}`);
+        login(email, password).then(() => navigate("/all-projects"));
     };
 
     return (
