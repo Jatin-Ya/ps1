@@ -1,75 +1,51 @@
-import { Paper, Stack, Tab, Tabs, ThemeProvider } from "@mui/material";
-import React, { useState } from "react";
+import { Paper } from "@mui/material";
 import ProjectSupportTabs, {
     ProjectSupportTabsEnum,
 } from "../components/navigation/ProjectSupportTabs";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
-import { tabsTheme } from "../theme/theme";
 import { useSelector } from "react-redux";
-import { UserState } from "../store/user/types";
-import { StoreData } from "../store/store";
 
-enum AISupportEnum {
-    Roadmap = "roadmap",
-    QualityCheck = "quality-check",
-    RaiseQuery = "raise-query",
-    None = "",
-}
+import { StoreData } from "../store/store";
+import { useState } from "react";
+import { useProject } from "../hooks/use-project";
 
 const ProjectSupportPage = () => {
-    const isAuth = useSelector<StoreData, UserState>((state) => state.user);
+    const navigate = useNavigate();
+    const isAuth = useSelector<StoreData, boolean>(
+        (state) => state.user.isAuth
+    );
     const projectId = useParams().id;
 
-    const navigate = useNavigate();
-
-    if (!isAuth.isAuth) {
+    if (!isAuth) {
         navigate("/login");
     }
 
-    const [aiSupportTabsValue, setAiSupportTabsValue] = useState(
-        AISupportEnum.Roadmap
+    if (projectId === undefined) {
+        navigate("/all-projects");
+    }
+
+    const { isLoaded: isProjectLoaded } = useProject(projectId as string);
+
+    const [projectSupportTobValue, setProjectSupportTobValue] = useState(
+        ProjectSupportTabsEnum.AiSupport
     );
 
-    const handleAiSupportTabsChange = (
-        _: React.SyntheticEvent,
-        newValue: AISupportEnum
+    const handleProjectSupportTabsChange = (
+        newValue: ProjectSupportTabsEnum
     ) => {
-        setAiSupportTabsValue(newValue);
+        console.log(newValue);
+        setProjectSupportTobValue(newValue);
         navigate(`/project-support/${projectId}/${newValue}`);
     };
 
     return (
         <>
-            <ProjectSupportTabs value={ProjectSupportTabsEnum.AiSupport} />
+            <ProjectSupportTabs
+                value={projectSupportTobValue}
+                onChange={handleProjectSupportTabsChange}
+            />
             <Paper sx={{ margin: 2, padding: 4, borderRadius: 8, flexGrow: 1 }}>
-                <Stack direction="row" height={"100%"}>
-                    <ThemeProvider theme={tabsTheme}>
-                        <Tabs
-                            orientation="vertical"
-                            value={aiSupportTabsValue}
-                            onChange={handleAiSupportTabsChange}
-                            sx={{ minWidth: 150 }}
-                        >
-                            <Tab
-                                value={AISupportEnum.Roadmap}
-                                label="Roadmap"
-                                sx={{ marginY: 1 }}
-                            />
-                            <Tab
-                                value={AISupportEnum.QualityCheck}
-                                label="Quality check"
-                                sx={{ marginY: 1 }}
-                            />
-                            <Tab
-                                value={AISupportEnum.RaiseQuery}
-                                label="Raise Query"
-                                sx={{ marginY: 1 }}
-                            />
-                        </Tabs>
-                    </ThemeProvider>
-
-                    <Outlet />
-                </Stack>
+                {isProjectLoaded ? <Outlet /> : <div>Loading...</div>}
             </Paper>
         </>
     );
