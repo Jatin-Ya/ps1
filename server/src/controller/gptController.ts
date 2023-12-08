@@ -24,15 +24,56 @@ export const generateReview = async (
     if (!ownerName) return next(error401("Unauthorized"));
     if (!repoName) return next(error401("Unauthorized"));
 
-    const fileContent = await githubService.getFiles(token, ownerName, repoName, [path]);
-
-    const prompt = project?.guidlines;
-    const review = await gptService.analyzeFile(fileContent[path], prompt);
+    try{
+        const fileContent = await githubService.getFiles(token, ownerName, repoName, [path]);
+        const prompt = project?.guidlines;
+        const review = await gptService.analyzeFile(fileContent[path], prompt);
+        res.json({ review });
+    }catch(err){
+        next(err);
+    }
     // const files = await getFilesAndPaths();
 
 
     // const review = await gpt3.generateReview(prompt);
-    res.json({ review });
 };
+
+export const getRoadmap = async (
+    req: Request<{}, {}, {}, { projectId: string }>,
+    res: Response,
+    next: NextFunction
+) => {
+    const { projectId } = req.query;
+
+    const project = await Project.findById(projectId);
+
+    if (!project) return next(error400("Project not found"));
+
+    const guidlines = project?.guidlines || "";
+    const description = project?.description || "";
+    const title = project?.title || "";
+
+    try{
+        const roadmap = await gptService.generateRoadmap(guidlines, description, title);
+        res.json({ roadmap });
+    } catch(err) {
+        next(err);
+    }
+}
+
+export const query = async (
+    req: Request<{}, {}, {query : string, path: string}, {}>,
+    res: Response,
+    next: NextFunction
+) => {
+    const { query } = req.body;
+
+    try{
+        const response = await gptService.query(query);
+        res.json({ response });
+    } catch(err) {
+        next(err);
+    }
+}
 
 
