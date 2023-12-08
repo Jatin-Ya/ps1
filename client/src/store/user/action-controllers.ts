@@ -7,7 +7,7 @@ export const setUserController = (
 ) => {
     const newState = { ...action.payload, isAuth: true };
 
-    const isRoleValid = validRoles.includes(newState.role);
+const isRoleValid = validRoles.includes(newState.role);
     if (!isRoleValid) {
         return state;
     }

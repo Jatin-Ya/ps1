@@ -11,6 +11,7 @@ router.post("/login",async(req,res) => {
 
     const user = await User.findOne({email: email});
 
+
     if (user?.password !== password){
         return res.status(401).send("Incorrect Password");
     }
