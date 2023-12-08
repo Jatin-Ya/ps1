@@ -7,7 +7,11 @@ import axios from "axios";
 export const useAuth = () => {
     const dispatch = useDispatch();
 
-    const login = async (email: string, password: string): Promise<void> => {
+    const login = async (
+        email: string,
+        password: string,
+        role: "Manager" | "User"
+    ): Promise<void> => {
         // Login user and store data in user data variable
 
         const baseUrl = getBackendBaseUrl();
@@ -16,6 +20,7 @@ export const useAuth = () => {
             password,
         });
         const userData = response.data;
+        userData.role = role;
         console.log(userData);
 
         // const userData: UserData = {
@@ -32,7 +37,8 @@ export const useAuth = () => {
     const signup = async (
         name: string,
         email: string,
-        password: string
+        password: string,
+        role: "Manager" | "User"
     ): Promise<void> => {
         //Signup user and store data in user data variable, Add parameters if additional data is needed
         const baseUrl = getBackendBaseUrl();
@@ -44,6 +50,7 @@ export const useAuth = () => {
         const response = await axios.post(`${baseUrl}/users`, body);
 
         const userData = response.data;
+        userData.role = role;
         console.log(userData);
     };
 
