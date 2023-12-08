@@ -54,17 +54,20 @@ const ProjectDashboardSection = () => {
         setAssignUserInputText(text);
     };
 
-    const assignUserHandler = async(user: string) => {
+    const assignUserHandler = async (user: string) => {
         console.log({ assignUser: user });
         // assign user here
         const baseUrl = getBackendBaseUrl();
         try {
-            const response = await axios.patch(`${baseUrl}/project/assignUser`, {
-                id: projectData.id,
-                user: user
-            })
-            console.log(response.data)
-        }catch (e){
+            const response = await axios.patch(
+                `${baseUrl}/project/assignUser`,
+                {
+                    id: projectData.id,
+                    user: user,
+                }
+            );
+            console.log(response.data);
+        } catch (e) {
             console.log(e);
         }
     };
@@ -74,15 +77,20 @@ const ProjectDashboardSection = () => {
         const projectId = projectData.id;
         const baseUrl = getBackendBaseUrl();
         try {
-            const response = await axios.patch(`${baseUrl}/project/removeUser`, {
-                id: projectId,
-                user: user
-            })
+            const response = await axios.patch(
+                `${baseUrl}/project/removeUser`,
+                {
+                    id: projectId,
+                    user: user,
+                }
+            );
             console.log(response.data);
+        } catch (error) {
+            console.log(error);
         }
     };
 
-    const connectRepoHandler = async() => {
+    const connectRepoHandler = async () => {
         const repoToConnect = repos.find((repo) => repo.id === selectedRepoId);
         if (!repoToConnect) return;
 
@@ -90,19 +98,22 @@ const ProjectDashboardSection = () => {
 
         const baseUrl = getBackendBaseUrl();
 
-        try{
-            const response = await axios.patch(`${baseUrl}/project/connectRepo`,{
-                id: projectId,
-                repoName : repoToConnect.name,
-                repoOwner: repoToConnect.owner, 
-                repoUrl: repoToConnect.url, 
-                repoId: repoToConnect.id
-            })
+        try {
+            const response = await axios.patch(
+                `${baseUrl}/project/connectRepo`,
+                {
+                    id: projectId,
+                    repoName: repoToConnect.name,
+                    repoOwner: repoToConnect.owner,
+                    repoUrl: repoToConnect.url,
+                    repoId: repoToConnect.id,
+                }
+            );
             console.log(response.data);
-        }catch (e){
+        } catch (e) {
             console.log(e);
         }
-        
+
         console.log({ connectRepo: repoToConnect });
     };
 

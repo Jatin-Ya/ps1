@@ -13,6 +13,7 @@ import ProjectDashboardSection from "./components/project-support/ProjectDashboa
 import QualityChackSection from "./components/project-support/quality-check/QualityChackSection";
 import FileSupport from "./components/project-support/quality-check/file-support/FileSupport";
 import VulnerabilitySupport from "./components/project-support/quality-check/vulnerability-support/VulnerabilitySupport";
+import SignupPage from "./pages/SignupPage";
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                         element={<Navigate to="project-support" />}
                     />
                     <Route path="login" element={<LoginPage />} />
+                    <Route path="signup" element={<SignupPage />} />
                     <Route path="all-projects" element={<AllProjects />}>
                         <Route path="" element={<AllProjectsSection />} />
                         <Route
