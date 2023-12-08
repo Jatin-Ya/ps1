@@ -25,6 +25,7 @@ interface MainAppbarProps {
     onProfileClick?: () => void;
     onAllProjectsClick?: () => void;
     onAllTeamsClick?: () => void;
+    onSignupClick?: () => void;
 }
 
 const MainAppbar: React.FC<MainAppbarProps> = ({
@@ -37,6 +38,7 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
     onProfileClick = () => {},
     onAllProjectsClick = () => {},
     onAllTeamsClick = () => {},
+    onSignupClick = () => {},
 }) => {
     const handleLogoClick = () => {
         onLogoClick();
@@ -64,6 +66,10 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
 
     const handleLoginCkick = () => {
         onLoginClick();
+    };
+
+    const handleSignupClick = () => {
+        onSignupClick();
     };
 
     const projectOptionMenu = (
@@ -107,7 +113,7 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
             >
                 Login
             </Button>
-            <Button variant="outlined" sx={{ borderRadius: "20px" }}>
+            <Button variant="outlined" sx={{ borderRadius: "20px" }} onClick={handleSignupClick}>
                 Signup
             </Button>
         </>

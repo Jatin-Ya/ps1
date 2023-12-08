@@ -1,3 +1,6 @@
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/use-auth";
 import {
     Box,
     Button,
@@ -6,23 +9,34 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { useRef } from "react";
-import { useAuth } from "../hooks/use-auth";
-import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const SignupPage = () => {
     const navigate = useNavigate();
 
+    const usernameInputRef = useRef<HTMLInputElement>(null!);
     const emailInputRef = useRef<HTMLInputElement>(null!);
     const passwordInputRef = useRef<HTMLInputElement>(null!);
+    const confirmPasswordInputRef = useRef<HTMLInputElement>(null!);
 
-    const { login } = useAuth();
+    const { signup } = useAuth();
 
-    const handleLogin = () => {
+    const handleSignup = () => {
         const email = emailInputRef.current.value;
+        const username = usernameInputRef.current.value;
         const password = passwordInputRef.current.value;
+        const confirmPassword = confirmPasswordInputRef.current.value;
+        console.log("signup");
 
-        login(email, password).then(() => navigate("/all-projects"));
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            emailInputRef.current.value = "";
+            usernameInputRef.current.value = "";
+            passwordInputRef.current.value = "";
+            confirmPasswordInputRef.current.value = "";
+            return;
+        }
+
+        signup(username, email, password).then(() => navigate("/login"));
     };
 
     return (
@@ -38,9 +52,17 @@ const LoginPage = () => {
             <Paper>
                 <Stack marginY={2} marginX={4} minWidth={400}>
                     <Typography variant="h4" marginX="auto" marginY={2}>
-                        Login
+                        Signup
                     </Typography>
 
+                    <TextField
+                        placeholder="Username"
+                        variant="outlined"
+                        size="small"
+                        sx={{ marginY: 2 }}
+                        type="email"
+                        inputRef={usernameInputRef}
+                    />
                     <TextField
                         placeholder="Email"
                         variant="outlined"
@@ -57,6 +79,14 @@ const LoginPage = () => {
                         type="password"
                         inputRef={passwordInputRef}
                     />
+                    <TextField
+                        placeholder="Confirm Password"
+                        variant="outlined"
+                        size="small"
+                        sx={{ marginY: 2 }}
+                        type="password"
+                        inputRef={confirmPasswordInputRef}
+                    />
                     <Stack
                         direction="row"
                         justifyContent="flex-end"
@@ -65,12 +95,17 @@ const LoginPage = () => {
                     >
                         <Button
                             variant="contained"
-                            onClick={handleLogin}
+                            onClick={handleSignup}
                             disableElevation
+                        >
+                            Signup
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            onClick={() => navigate("/login")}
                         >
                             Login
                         </Button>
-                        <Button variant="outlined" onClick={() => navigate("/signup")}>Signup</Button>
                     </Stack>
                 </Stack>
             </Paper>
@@ -78,4 +113,4 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default SignupPage;
