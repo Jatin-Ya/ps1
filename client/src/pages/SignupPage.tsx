@@ -36,7 +36,11 @@ const SignupPage = () => {
             return;
         }
 
-        signup(username, email, password).then(() => navigate("/login"));
+        signup(username, email, password)
+            .then(() => navigate("/login"))
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (

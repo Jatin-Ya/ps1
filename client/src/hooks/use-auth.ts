@@ -7,19 +7,16 @@ import axios from "axios";
 export const useAuth = () => {
     const dispatch = useDispatch();
 
-    const login = async (
-        email: string,
-        password: string
-    ): Promise<void> => {
+    const login = async (email: string, password: string): Promise<void> => {
         // Login user and store data in user data variable
 
         const baseUrl = getBackendBaseUrl();
-        const response = await axios.post(`${baseUrl}/api/v1/auth/login`, {
+        const response = await axios.post(`${baseUrl}/auth/login`, {
             email,
             password,
         });
         const userData = response.data;
-
+        console.log(userData);
 
         // const userData: UserData = {
         //     id: "1",
@@ -40,13 +37,15 @@ export const useAuth = () => {
         //Signup user and store data in user data variable, Add parameters if additional data is needed
         const baseUrl = getBackendBaseUrl();
         const body = {
-            name, email, password
-        }
+            name,
+            email,
+            password,
+        };
         const response = await axios.post(`${baseUrl}/users`, body);
 
         const userData = response.data;
-
-    }
+        console.log(userData);
+    };
 
     return { login, signup };
 };

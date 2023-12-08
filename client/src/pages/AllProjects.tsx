@@ -4,6 +4,7 @@ import AllProjectsTabs, {
 } from "../components/navigation/AllProjectsTabs";
 import { useState } from "react";
 import { Paper, Stack } from "@mui/material";
+import { useProject } from "../hooks/use-project";
 
 const AllProjects = () => {
     const [currentTab, setCurrentTab] = useState(
@@ -16,6 +17,8 @@ const AllProjects = () => {
         setCurrentTab(newValue);
         navigate(`/all-projects/${newValue}`);
     };
+
+    
 
     return (
         <>
