@@ -10,6 +10,13 @@ router.get("/:id", async(req, res) => {
     return res.send(user);
 });
 
+router.get("/projects/:id", async(req, res) => {
+    const id = req.params.id;
+
+    const user = await User.findById(id).populate("projects");
+    return res.send(user?.projects);
+});
+
 router.get("/", async (req, res) => {
     const filters = req.query;
     const users = await User.find(filters).populate("projects");
