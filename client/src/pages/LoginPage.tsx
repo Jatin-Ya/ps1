@@ -22,7 +22,11 @@ const LoginPage = () => {
         const email = emailInputRef.current.value;
         const password = passwordInputRef.current.value;
 
-        login(email, password).then(() => navigate("/all-projects"));
+        login(email, password)
+            .then(() => navigate("/all-projects"))
+            .catch((err) => {
+                alert(err?.msg || "Authentication Failed")
+            });
     };
 
     return (

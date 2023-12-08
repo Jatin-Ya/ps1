@@ -6,6 +6,17 @@ const router = Router();
 
 // TODO : Test and fix github auth
 
+router.post("/login",async(req,res) => {
+    const {email,password} = req.body;
+
+    const user = await User.findOne({email: email});
+
+    if (user?.password !== password){
+        return res.status(401).send("Incorrect Password");
+    }
+    res.send(user);
+})
+
 router.get("/github", async (req, res) => {
     const password = req.query.password;
     const githubOauthUrl = "https://github.com/login/oauth/authorize";
