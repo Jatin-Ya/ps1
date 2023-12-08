@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { UserData } from "../store/user/types";
 import { setUser } from "../store/user/user-slice";
 import { getBackendBaseUrl } from "../utils/backendFunctions";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export const useAuth = () => {
     const dispatch = useDispatch();
@@ -47,7 +47,14 @@ export const useAuth = () => {
             email,
             password,
         };
-        const response = await axios.post(`${baseUrl}/users`, body);
+        let response = undefined;
+        if (role == "User") {
+            response = await axios.post<UserData>(`${baseUrl}/users`, body);
+        } else if (role == "Manager") {
+            response = await axios.post<UserData>(`${baseUrl}/manager`, body);
+        }
+
+        if (!response) throw new Error("Invalid Role");
 
         const userData = response.data;
         userData.role = role;
