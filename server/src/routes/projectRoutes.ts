@@ -78,30 +78,30 @@ router.post("/", async (req, res) => {
 
 router.patch("/addUsers", async (req, res) => {
     try {
-        const { id, user } = req.body;
+        const { id, user: useremail } = req.body;
 
-        console.log(id, user);
+        const userDoc = await User.findOne({ email: useremail });
+        const projectDoc = await Project.findOne({ _id: id });
 
-        const userDoc = await User.findOne({ email: user });
         if (!userDoc) return res.status(401).send("User not found");
+        if (!projectDoc) return res.status(401).send("Project not found");
 
-        const project = await Project.findByIdAndUpdate(id, {
-            $push: { users: userDoc._id },
-        });
+        if (projectDoc.users.includes(userDoc._id))
+            return res.status(401).send("User already exists in project");
 
-        if (!project) return res.status(401).send("Project not found");
+        projectDoc.users.push(userDoc._id);
+        userDoc.projects.push(projectDoc._id);
 
-        console.log({ project });
+        const [project, user] = await Promise.all([
+            projectDoc.save(),
+            userDoc.save(),
+        ]);
 
-        userDoc.projects.push(project?._id);
-        await userDoc.save();
+        const p = await project.populate("users");
 
-        // await User.findOneAndUpdate(
-        //     { email: user },
-        //     { $push: { projects: project?._id } }
-        // );
+        console.log({ project, user });
 
-        return res.send(project);
+        return res.send(p);
     } catch (err) {
         console.log(err);
     }
@@ -109,30 +109,33 @@ router.patch("/addUsers", async (req, res) => {
 
 router.patch("/removeUser", async (req, res) => {
     try {
-        const { id, user } = req.body;
+        const { id, user: useremail } = req.body;
 
-        console.log(id, user);
+        const userDoc = await User.findOne({ email: useremail });
+        const projectDoc = await Project.findOne({ _id: id });
 
-        const userDoc = await User.findOne({ email: user });
         if (!userDoc) return res.status(401).send("User not found");
+        if (!projectDoc) return res.status(401).send("Project not found");
 
-        const project = await Project.findByIdAndUpdate(id, {
-            $pull: { users: userDoc._id },
-        });
+        if (!projectDoc.users.includes(userDoc._id))
+            return res.status(401).send("User doesn't exists in project");
 
-        if (!project) return res.status(401).send("Project not found");
+        projectDoc.users = projectDoc.users.filter(
+            (u) => u.toString() !== userDoc._id.toString()
+        );
+        userDoc.projects = userDoc.projects.filter(
+            (p) => p.toString() !== projectDoc._id.toString()
+        );
 
-        console.log({ project });
+        const [project, user] = await Promise.all([
+            projectDoc.save(),
+            userDoc.save(),
+        ]);
 
-        userDoc.projects.filter((project) => project !== id);
-        await userDoc.save();
+        console.log({ project, user });
+        const p = await project.populate("users");
 
-        // await User.findOneAndUpdate(
-        //     { email: user },
-        //     { $push: { projects: project?._id } }
-        // );
-
-        return res.send(project);
+        res.send(p);
     } catch (err) {
         console.log(err);
     }

@@ -43,8 +43,12 @@ export const useUpdateProject = (projectId: string) => {
 
             const initialProjectState = response.data;
 
+            console.log({ initialProjectState });
+
             const projectState: ProjectData =
                 transformProject(initialProjectState);
+
+            console.log({ transformed: initialProjectState });
 
             dispatch(setProject(projectState));
         } catch (e) {
@@ -67,8 +71,12 @@ export const useUpdateProject = (projectId: string) => {
 
             const initialProjectState = response.data;
 
+            console.log({ initialProjectState });
+
             const projectState: ProjectData =
                 transformProject(initialProjectState);
+
+            console.log({ transformed: initialProjectState });
 
             dispatch(setProject(projectState));
         } catch (e) {
