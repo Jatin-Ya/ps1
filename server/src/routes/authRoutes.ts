@@ -35,13 +35,13 @@ router.post("/login", async (req, res) => {
 
 router.get("/github", async (req, res) => {
     try {
-        const password = req.query.password;
+        const id = req.query.id;
         const githubOauthUrl = "https://github.com/login/oauth/authorize";
         const clientId = process.env.GITHUB_CLIENT_ID;
         const redirectUri = process.env.GITHUB_CALLBACK_URI;
         // const redirectUri = "http://localhost:3001/api/v1/auth/github/callback";
         const scope = "repo%20user%20write:org%20repo_deployment";
-        const state = password;
+        const state = id;
 
         const url = `${githubOauthUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
 
@@ -61,27 +61,30 @@ router.get("/github/callback", async (req, res) => {
         const redirectUri = process.env.GITHUB_CALLBACK_URI;
         // const redirectUri = "http://localhost:3001/api/v1/auth/github/callback";
 
+        
+        
         const url = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_uri=${redirectUri}`;
         const response = await axios.post(url, {
             headers: {
                 Accept: "application/json",
             },
         });
-
-        const accessToken = response.data.access_token;
-        console.log(accessToken);
+        
+        // access_token=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&scope=repo%2Cuser%2Cwrite%3Aorg&token_type=bearer
+        const access_token = (response.data.split('&')).split('=')[1];
+        console.log(access_token);
         console.log(response.data);
         const resp = await axios.get("https://api.github.com/user", {
             headers: {
-                Authorization: `Bearer ${accessToken}`,
+                Authorization: `Bearer ${access_token}`,
             },
         });
 
         const githubUserName = resp.data.name;
 
-        const user = await User.findOneAndUpdate(
-            { email: state },
-            { githubId: { accessToken, userName: githubUserName } }
+        const user = await User.findByIdAndUpdate(
+            state,
+            { githubId: { accessToken: access_token, userName: githubUserName } }
         );
         res.send("Success");
         // res.redirect(`http://localhost:3000/homepage`);

@@ -1,16 +1,28 @@
 import { Badge, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { getBackendBaseUrl } from "../../utils/backendFunctions";
+import axios from "axios";
 
 const GithubButton = () => {
     const [isGithubConnected, setIsGithubConnected] = useState(false);
+
+    useEffect(() => {
+        const fetchGithubStatus = async () => {
+            const BEURL = getBackendBaseUrl();
+            const { data } = await axios.get(`${BEURL}/users/github/${userId}`);
+            setIsGithubConnected(data.linked);
+            // setIsGithubConnected(data.isGithubConnected);
+        };
+        fetchGithubStatus();
+    }, []);
+
     const handleGithubLogin = async () => {
         const BEURL = getBackendBaseUrl();
-        // await axios(`${BEURL}/auth/github`,{
+        await axios(`${BEURL}/auth/github`,{
 
-        // });
+        });
         setIsGithubConnected(true);
     };
     return (
