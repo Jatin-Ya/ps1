@@ -40,7 +40,7 @@ const SignupPage = () => {
         }
 
         signup(username, email, password, role)
-            .then(() => navigate("/login"))
+            .then(() => navigate("/all-projects"))
             .catch((err) => {
                 console.log(err);
             });

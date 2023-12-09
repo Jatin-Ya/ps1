@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { UserData } from "../store/user/types";
+import { UserData, UserState } from "../store/user/types";
 import { setUser } from "../store/user/user-slice";
 import { getBackendBaseUrl } from "../utils/backendFunctions";
 import axios, { AxiosResponse } from "axios";
@@ -18,9 +18,17 @@ export const useAuth = () => {
         const response = await axios.post(`${baseUrl}/auth/login`, {
             email,
             password,
+            role,
         });
-        const userData = response.data;
-        userData.role = role;
+
+        const userData: UserData = {
+            id: response.data._id,
+            email: response.data.email,
+            name: response.data.name,
+            token: response.data.token,
+            role: role,
+        };
+
         console.log(userData);
 
         // const userData: UserData = {
@@ -49,16 +57,22 @@ export const useAuth = () => {
         };
         let response = undefined;
         if (role == "User") {
-            response = await axios.post<UserData>(`${baseUrl}/users`, body);
+            response = await axios.post(`${baseUrl}/users`, body);
         } else if (role == "Manager") {
-            response = await axios.post<UserData>(`${baseUrl}/manager`, body);
+            response = await axios.post(`${baseUrl}/managers`, body);
         }
 
         if (!response) throw new Error("Invalid Role");
 
-        const userData = response.data;
-        userData.role = role;
-        console.log(userData);
+        const userData: UserData = {
+            id: response.data._id,
+            email: response.data.email,
+            name: response.data.name,
+            token: response.data.token,
+            role: role,
+        };
+
+        dispatch(setUser(userData));
     };
 
     return { login, signup };

@@ -9,6 +9,10 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAllProjects } from "../../hooks/use-all-projects";
+import { useSelector } from "react-redux";
+import { StoreData } from "../../store/store";
+import { UserData } from "../../store/user/types";
 
 const DUMMY_PROJECTS = [
     {
@@ -30,7 +34,9 @@ const DUMMY_PROJECTS = [
 
 
 const AllProjectsSection = () => {
-    const [projects, setProjects] = useState(DUMMY_PROJECTS);
+    // const [projects, setProjects] = useState(DUMMY_PROJECTS);
+    const {id, role} = useSelector<StoreData, UserData>((state) => state.user);
+    const {allProjects: projects} = useAllProjects(id, role);
 
     const navigate = useNavigate();
 

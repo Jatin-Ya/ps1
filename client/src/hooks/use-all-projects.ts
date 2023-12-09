@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { getBackendBaseUrl } from "../utils/backendFunctions";
+import axios from "axios";
 
 type Project = {
     projectName: string;
@@ -6,28 +8,26 @@ type Project = {
     projectId: string;
 };
 
-export const useAllProjects = () => {
+export const useAllProjects = (userid: string, role: string) => {
     const [allProjects, setAllProjects] = useState<Project[]>([]);
 
     const getAllProjects = async (): Promise<Project[]> => {
         // Get all projects from backend
-        return [
-            {
-                projectName: "Project 1",
-                projectDescription: "This is project 1",
-                projectId: "1",
-            },
-            {
-                projectName: "Project 2",
-                projectDescription: "This is project 2",
-                projectId: "2",
-            },
-            {
-                projectName: "Project 3",
-                projectDescription: "This is project 3",
-                projectId: "3",
-            },
-        ];
+        const url = `${getBackendBaseUrl()}/projects/belongsTo`;
+        const queryParams = new URLSearchParams({ userid, role });
+
+        const response = await axios.get(`${url}?${queryParams}`);
+
+        const data: Project[] = response.data.map(
+            (project: Record<string, string>) => ({
+                projectName: project.title,
+                projectDescription: project.description,
+                projectId: project._id,
+            })
+        );
+
+        console.log(data);
+        return data;
     };
 
     useEffect(() => {

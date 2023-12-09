@@ -14,7 +14,7 @@ export type ProjectData = {
     title: string;
     manager: string;
     users: {
-        id: number;
+        id: string;
         name: string;
         email: string;
     }[];

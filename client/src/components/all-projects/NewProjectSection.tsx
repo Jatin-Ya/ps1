@@ -51,7 +51,7 @@ const NewProjectSection = () => {
                 title: projectName, description: projectDescription, guidlines: projectGuidlines, manager_email: manager, users: assignedUsers
             }
             const response = await axios.post(
-                `${baseUrl}/api/v1/projects`, body
+                `${baseUrl}/projects`, body
             )
             console.log(response);
         }

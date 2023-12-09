@@ -15,9 +15,30 @@ export const useProject = (projectId: string) => {
     const getProjectDetails = async (): Promise<ProjectData> => {
         // Get project details from backend
         const baseUrl = getBackendBaseUrl();
-        const response = await axios.get(`${baseUrl}/project/${projectId}`);
+        const response = await axios.get(
+            `${baseUrl}/projects/getById/${projectId}`
+        );
         const initialProjectState = response.data;
-        return initialProjectState;
+
+        const projectState: ProjectData = {
+            id: initialProjectState._id,
+            title: initialProjectState.title,
+            description: initialProjectState.description,
+            guidlines: initialProjectState.guidlines,
+            manager: initialProjectState.manager,
+            users: initialProjectState.users.map(
+                (user: Record<string, string>) => ({
+                    id: user._id,
+                    name: user.name,
+                    email: user.email,
+                })
+            ),
+            status: initialProjectState.status,
+            progress: initialProjectState.progress,
+            repoDetails: initialProjectState.repoDetails,
+        };
+
+        return projectState;
     };
 
     useEffect(() => {

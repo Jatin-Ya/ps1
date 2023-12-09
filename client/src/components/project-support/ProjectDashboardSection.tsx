@@ -21,6 +21,7 @@ import LinkIcon from "@mui/icons-material/Link";
 import { useRepos } from "../../hooks/use-repos";
 import { getBackendBaseUrl } from "../../utils/backendFunctions";
 import axios from "axios";
+import { useUpdateProject } from "../../hooks/use-update-project";
 
 function LinearProgressWithLabel(
     props: LinearProgressProps & { value: number }
@@ -48,46 +49,21 @@ const ProjectDashboardSection = () => {
     const [assignUserInputText, setAssignUserInputText] = useState("");
     const [selectedRepoId, setSelectedRepoId] = useState("");
     const { repos } = useRepos(projectData.manager, true);
+    console.log(projectData);
     const assignedUserEmails = projectData.users.map((user) => user.email);
+
+    const { addUser, removeUser } = useUpdateProject(projectData.id);
 
     const assignUserInputChangeHandler = (text: string) => {
         setAssignUserInputText(text);
     };
 
     const assignUserHandler = async (user: string) => {
-        console.log({ assignUser: user });
-        // assign user here
-        const baseUrl = getBackendBaseUrl();
-        try {
-            const response = await axios.patch(
-                `${baseUrl}/project/assignUser`,
-                {
-                    id: projectData.id,
-                    user: user,
-                }
-            );
-            console.log(response.data);
-        } catch (e) {
-            console.log(e);
-        }
+        addUser(user);
     };
 
     const removeUserHandler = async (user: string) => {
-        console.log({ removeUser: user });
-        const projectId = projectData.id;
-        const baseUrl = getBackendBaseUrl();
-        try {
-            const response = await axios.patch(
-                `${baseUrl}/project/removeUser`,
-                {
-                    id: projectId,
-                    user: user,
-                }
-            );
-            console.log(response.data);
-        } catch (error) {
-            console.log(error);
-        }
+        removeUser(user);
     };
 
     const connectRepoHandler = async () => {
