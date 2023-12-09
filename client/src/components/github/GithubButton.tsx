@@ -4,11 +4,19 @@ import GitHubIcon from "@mui/icons-material/GitHub";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { getBackendBaseUrl } from "../../utils/backendFunctions";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { StoreData } from "../../store/store";
 
 const GithubButton = () => {
     const [isGithubConnected, setIsGithubConnected] = useState(false);
+    const userId = useSelector<StoreData, string>((state) => state.user.id);
 
     useEffect(() => {
+        if (userId === "") {
+            console.log("User not logged in");
+            return;
+        }
+
         const fetchGithubStatus = async () => {
             const BEURL = getBackendBaseUrl();
             const { data } = await axios.get(`${BEURL}/users/github/${userId}`);
@@ -16,13 +24,11 @@ const GithubButton = () => {
             // setIsGithubConnected(data.isGithubConnected);
         };
         fetchGithubStatus();
-    }, []);
+    }, [userId]);
 
     const handleGithubLogin = async () => {
         const BEURL = getBackendBaseUrl();
-        await axios(`${BEURL}/auth/github`,{
-
-        });
+        await axios(`${BEURL}/auth/github`, {});
         setIsGithubConnected(true);
     };
     return (
