@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
-import { UserData, UserState } from "../store/user/types";
+import { UserData } from "../store/user/types";
 import { setUser } from "../store/user/user-slice";
 import { getBackendBaseUrl } from "../utils/backendFunctions";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 export const useAuth = () => {
     const dispatch = useDispatch();

@@ -1,8 +1,8 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { UserData, UserState, initialUserState } from "./types";
+import { UserData, initialUserState } from "./types";
 
 export const setUserController = (
-    state: UserState,
+    // state: UserState,
     action: PayloadAction<UserData>
 ) => {
     const newState = { ...action.payload, isAuth: true };

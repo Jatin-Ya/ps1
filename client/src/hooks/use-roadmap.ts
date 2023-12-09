@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { getBackendBaseUrl } from "../utils/backendFunctions";
 import axios from "axios";
 
-const DUMMY_DATA = [
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
-];
+// const DUMMY_DATA = [
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+//     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum.",
+// ];
 
 export const useRoadmap = (projectId: string) => {
     const [roadmapData, setRoadmapData] = useState<string[]>([]);

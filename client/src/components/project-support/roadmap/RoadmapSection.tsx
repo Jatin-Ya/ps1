@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useRoadmap } from "../../../hooks/use-roadmap";
 
 const RoadmapSection = () => {
-    const projectId = useParams().id;
+    const projectId = useParams().id || "";
     const { roadmapData } = useRoadmap(projectId);
     return (
         <Stack

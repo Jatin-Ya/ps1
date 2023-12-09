@@ -7,30 +7,30 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import { useState } from "react";
+// import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAllProjects } from "../../hooks/use-all-projects";
 import { useSelector } from "react-redux";
 import { StoreData } from "../../store/store";
 import { UserData } from "../../store/user/types";
 
-const DUMMY_PROJECTS = [
-    {
-        projectName: "Project 1",
-        projectDescription: "Project 1 description",
-        projectId: "1",
-    },
-    {
-        projectName: "Project 2",
-        projectDescription: "Project 3 description",
-        projectId: "2",
-    },
-    {
-        projectName: "Project 3",
-        projectDescription: "Project 3 description",
-        projectId: "3",
-    },
-];
+// const DUMMY_PROJECTS = [
+//     {
+//         projectName: "Project 1",
+//         projectDescription: "Project 1 description",
+//         projectId: "1",
+//     },
+//     {
+//         projectName: "Project 2",
+//         projectDescription: "Project 3 description",
+//         projectId: "2",
+//     },
+//     {
+//         projectName: "Project 3",
+//         projectDescription: "Project 3 description",
+//         projectId: "3",
+//     },
+// ];
 
 
 const AllProjectsSection = () => {

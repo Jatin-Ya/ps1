@@ -30,8 +30,8 @@ interface MainAppbarProps {
 
 const MainAppbar: React.FC<MainAppbarProps> = ({
     isAuth,
-    role,
-    onLogoClick = () => {},
+    // role,
+    // onLogoClick = () => {},
     onLoginClick = () => {},
     onSearchClick = () => {},
     onNotificationsClick = () => {},
@@ -40,9 +40,9 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
     onAllTeamsClick = () => {},
     onSignupClick = () => {},
 }) => {
-    const handleLogoClick = () => {
-        onLogoClick();
-    };
+    // const handleLogoClick = () => {
+    //     onLogoClick();
+    // };
 
     const handleSearchClick = () => {
         onSearchClick();
