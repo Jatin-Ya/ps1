@@ -28,8 +28,13 @@ const GithubButton = () => {
 
     const handleGithubLogin = async () => {
         const BEURL = getBackendBaseUrl();
-        await axios(`${BEURL}/auth/github`, {});
-        setIsGithubConnected(true);
+        try {
+            const query = new URLSearchParams({ id: userId });
+            await axios(`${BEURL}/auth/github?${query}`, {});
+            setIsGithubConnected(true);
+        } catch (err) {
+            console.log(err);
+        }
     };
     return (
         <>

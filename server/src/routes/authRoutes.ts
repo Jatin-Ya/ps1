@@ -36,10 +36,11 @@ router.post("/login", async (req, res) => {
 router.get("/github", async (req, res) => {
     try {
         const id = req.query.id;
+        console.log(id);
         const githubOauthUrl = "https://github.com/login/oauth/authorize";
         const clientId = process.env.GITHUB_CLIENT_ID;
-        const redirectUri = process.env.GITHUB_CALLBACK_URI;
-        // const redirectUri = "http://localhost:3001/api/v1/auth/github/callback";
+        // const redirectUri = process.env.GITHUB_CALLBACK_URI;
+        const redirectUri = "http://localhost:8080/api/v1/auth/github/callback";
         const scope = "repo%20user%20write:org%20repo_deployment";
         const state = id;
 
@@ -61,17 +62,15 @@ router.get("/github/callback", async (req, res) => {
         const redirectUri = process.env.GITHUB_CALLBACK_URI;
         // const redirectUri = "http://localhost:3001/api/v1/auth/github/callback";
 
-        
-        
         const url = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_uri=${redirectUri}`;
         const response = await axios.post(url, {
             headers: {
                 Accept: "application/json",
             },
         });
-        
+
         // access_token=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&scope=repo%2Cuser%2Cwrite%3Aorg&token_type=bearer
-        const access_token = (response.data.split('&')).split('=')[1];
+        const access_token = response.data.split("&").split("=")[1];
         console.log(access_token);
         console.log(response.data);
         const resp = await axios.get("https://api.github.com/user", {
@@ -82,12 +81,11 @@ router.get("/github/callback", async (req, res) => {
 
         const githubUserName = resp.data.name;
 
-        const user = await User.findByIdAndUpdate(
-            state,
-            { githubId: { accessToken: access_token, userName: githubUserName } }
-        );
+        const user = await User.findByIdAndUpdate(state, {
+            githubId: { accessToken: access_token, userName: githubUserName },
+        });
         res.send("Success");
-        // res.redirect(`http://localhost:3000/homepage`);
+        res.redirect(`http://localhost:5173/`);
     } catch (err) {
         res.status(401).send("Invalid response");
     }

@@ -17,8 +17,16 @@ export const useRepoFiles = (projectId: string) => {
 
     const getRepos = async (): Promise<RepoResponse> => {
         // Get repo files from backend
+        const DummyResponse: RepoResponse = {
+            "src/index.js": "console.log('Hello World')",
+            "src/index.html": "<h1>Hello World</h1>",
+        };
+        return DummyResponse;
+
         const baseUrl = getBackendBaseUrl();
-        const response = await axios.get(`${baseUrl}/github/files?projectId=${projectId}`);
+        const response = await axios.get(
+            `${baseUrl}/github/files?projectId=${projectId}`
+        );
         const repoFiles = response.data;
         return repoFiles;
     };
