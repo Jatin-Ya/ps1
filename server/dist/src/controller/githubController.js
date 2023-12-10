@@ -186,7 +186,7 @@ const getRepos = (req, res, next) =>
                 null || _g === void 0
                 ? void 0
                 : _g.accessToken;
-        console.log({ token, email, user });
+        console.log({ token, id, user });
         if (!token) return next((0, app_error_1.error401)("Unauthorized"));
         try {
             const repos = yield githubService.getRepos(token);
