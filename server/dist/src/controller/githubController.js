@@ -179,14 +179,15 @@ exports.getFiles = getFiles;
 const getRepos = (req, res, next) =>
     __awaiter(void 0, void 0, void 0, function* () {
         var _g;
-        const { id } = req.query;
+        console.log(req.query);
+        const { email } = req.query;
         const user = yield userModel_1.default.findById(id);
         const token =
             (_g = user === null || user === void 0 ? void 0 : user.githubId) ===
                 null || _g === void 0
                 ? void 0
                 : _g.accessToken;
-        console.log({ token, id, user });
+        console.log({ token, email, user });
         if (!token) return next((0, app_error_1.error401)("Unauthorized"));
         try {
             const repos = yield githubService.getRepos(token);
