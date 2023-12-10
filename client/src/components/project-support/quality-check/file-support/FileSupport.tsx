@@ -33,7 +33,7 @@ const FileSupport = () => {
         // setReview("All looks great");
         // return;
         const response = await axios.get(
-            `${baseUrl}/gpt/generateReview?path=${file.path}&projectId=${projectId}`
+            `${baseUrl}/gpt/generateReiew?path=${file.path}&projectId=${projectId}`
         );
         const review = response.data.review;
         setReview(review);
