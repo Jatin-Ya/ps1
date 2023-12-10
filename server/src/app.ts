@@ -8,6 +8,7 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import managerRoutes from "./routes/managerRoutes";
 import projectRoutes from "./routes/projectRoutes";
+import path from "path";
 
 const app = express();
 
@@ -17,6 +18,12 @@ app.use(
         origin: CORS_ORIGIN,
     })
 );
+
+app.use(express.static(path.join(__dirname, "dist")));
+
+app.get("/application", (req, res) => {
+    res.sendFile(path.join(__dirname, "dist", "index.html"));
+})
 
 app.use("/api/v1/github", githubRoutes);
 app.use("/api/v1/gpt", gptRoutes);
