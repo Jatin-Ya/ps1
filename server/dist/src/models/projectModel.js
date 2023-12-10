@@ -11,7 +11,7 @@ const projectSchema = new mongoose_1.default.Schema({
     },
     manager: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "Manager",
+        ref: "User",
         required: true,
     },
     users: [
