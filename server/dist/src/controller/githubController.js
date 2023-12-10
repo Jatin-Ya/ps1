@@ -181,7 +181,8 @@ const getRepos = (req, res, next) =>
         var _g;
         console.log(req.query);
         const { email } = req.query;
-        const user = yield userModel_1.default.findById(id);
+        // const user = yield userModel_1.default.findById(id);
+        const user = yield userModel_1.default.findOne({ email });
         const token =
             (_g = user === null || user === void 0 ? void 0 : user.githubId) ===
                 null || _g === void 0
