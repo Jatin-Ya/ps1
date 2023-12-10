@@ -93,7 +93,7 @@ router.post("/", (req, res) =>
         try {
             const { title, description, guidlines, manager_email, users } =
                 req.body;
-            const manager = yield managerModel_1.default.findOne({
+            const manager = yield userModel_1.default.findOne({
                 email: manager_email,
             });
             const project = yield projectModel_1.default.create({
