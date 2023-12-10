@@ -114,6 +114,7 @@ export const getRepos = async (
     const { email } = req.query;
     const user = await User.findOne({ email: email });
     const token = user?.githubId?.accessToken;
+    console.log({email, token});
     if (!token) return next(error401("Unauthorized"));
     
     try {

@@ -179,8 +179,8 @@ exports.getFiles = getFiles;
 const getRepos = (req, res, next) =>
     __awaiter(void 0, void 0, void 0, function* () {
         var _g;
-        const { email } = req.query;
-        const user = yield userModel_1.default.findOne({ email: email });
+        const { id } = req.query;
+        const user = yield userModel_1.default.findOneById(id);
         const token =
             (_g = user === null || user === void 0 ? void 0 : user.githubId) ===
                 null || _g === void 0
