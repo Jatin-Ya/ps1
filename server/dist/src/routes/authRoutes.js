@@ -49,8 +49,8 @@ router.get("/github", (req, res) => __awaiter(void 0, void 0, void 0, function* 
         console.log(id);
         const githubOauthUrl = "https://github.com/login/oauth/authorize";
         const clientId = process.env.GITHUB_CLIENT_ID;
-        // const redirectUri = process.env.GITHUB_CALLBACK_URI;
-        const redirectUri = "http://localhost:8080/api/v1/auth/github/callback";
+        const redirectUri = process.env.GITHUB_CALLBACK_URI;
+        // const redirectUri = "http://localhost:8080/api/v1/auth/github/callback";
         const scope = "repo%20user%20write:org%20repo_deployment";
         const state = id;
         const url = `${githubOauthUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
