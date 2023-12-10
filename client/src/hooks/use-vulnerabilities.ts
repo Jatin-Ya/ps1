@@ -65,7 +65,7 @@ export const useVelnerabilities = (projectId: string) => {
         // Get vulnerabilities from backend
         const baseUrl = getBackendBaseUrl();
         const response = await axios.get(
-            `${baseUrl}/code-scanner/alerts?projectId=${projectId}`
+            `${baseUrl}/github/code-scanner/alerts?projectId=${projectId}`
             );
         
         console.log({data: response.data});
