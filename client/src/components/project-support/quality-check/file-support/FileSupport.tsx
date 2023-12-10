@@ -13,21 +13,25 @@ import {
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { getBackendBaseUrl } from "../../../../utils/backendFunctions";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { StoreData } from "../../../../store/store";
 
 const FileSupport = () => {
     const navigate = useNavigate();
+    const projectId = useSelector<StoreData, string>(
+        (state) => state.project.id
+    );
     const { file } = useLocation().state as { file: RepoFile };
 
     // TUSHAR yaha p project id dalna hai
-    const projectId = "614b0b4b9b0b8e0016f2b0e1";
 
     const [review, setReview] = useState("No reviews generated yet");
 
     const handleGenerateReview = async () => {
         console.log("Generate review");
         const baseUrl = getBackendBaseUrl();
-        setReview("All looks great");
-        return;
+        // setReview("All looks great");
+        // return;
         const response = await axios.get(
             `${baseUrl}/gpt/generateReview?path=${file.path}&projectId=${projectId}`
         );
