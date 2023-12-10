@@ -1,12 +1,10 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
 import {
     Box,
     Button,
-    MenuItem,
     Paper,
-    Select,
     Stack,
     TextField,
     Typography,
@@ -19,7 +17,7 @@ const SignupPage = () => {
     const emailInputRef = useRef<HTMLInputElement>(null!);
     const passwordInputRef = useRef<HTMLInputElement>(null!);
     const confirmPasswordInputRef = useRef<HTMLInputElement>(null!);
-    const [role, setRole] = useState<"Manager" | "User">("Manager");
+    const role = "User";
 
     const { signup } = useAuth();
 
@@ -94,18 +92,6 @@ const SignupPage = () => {
                         type="password"
                         inputRef={confirmPasswordInputRef}
                     />
-                    <Select
-                        placeholder="Role"
-                        size="small"
-                        value={role}
-                        sx={{ marginY: 2 }}
-                        onChange={(e) =>
-                            setRole(e.target.value as "Manager" | "User")
-                        }
-                    >
-                        <MenuItem value="Manager">Manager</MenuItem>
-                        <MenuItem value="User">User</MenuItem>
-                    </Select>
                     <Stack
                         direction="row"
                         justifyContent="flex-end"

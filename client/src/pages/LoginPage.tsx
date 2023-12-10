@@ -1,14 +1,12 @@
 import {
     Box,
     Button,
-    MenuItem,
     Paper,
-    Select,
     Stack,
     TextField,
     Typography,
 } from "@mui/material";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useAuth } from "../hooks/use-auth";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +15,7 @@ const LoginPage = () => {
 
     const emailInputRef = useRef<HTMLInputElement>(null!);
     const passwordInputRef = useRef<HTMLInputElement>(null!);
-    const [role, setRole] = useState<"Manager" | "User">("Manager");
+    const role = "User";
 
     const { login } = useAuth();
 
@@ -64,18 +62,6 @@ const LoginPage = () => {
                         type="password"
                         inputRef={passwordInputRef}
                     />
-                    <Select
-                        placeholder="Role"
-                        size="small"
-                        value={role}
-                        sx={{ marginY: 2 }}
-                        onChange={(e) =>
-                            setRole(e.target.value as "Manager" | "User")
-                        }
-                    >
-                        <MenuItem value="Manager">Manager</MenuItem>
-                        <MenuItem value="User">User</MenuItem>
-                    </Select>
                     <Stack
                         direction="row"
                         justifyContent="flex-end"
