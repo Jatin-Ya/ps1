@@ -58,20 +58,51 @@ const DUMMY_VULNERABILITIES: Vulnerability[] = [
     },
 ];
 
+type Resp = {
+    most_recent_instance: {
+        location: {
+            path: string;
+        };
+        message: { text: string };
+    };
+    rule: {
+        description: string,
+        id: string,
+        security_severity_level: string,
+    };
+    state: string;
+    updated_at: string;
+};
+
 export const useVelnerabilities = (projectId: string) => {
     const [vulnerabilities, setVulnerabilities] = useState<Vulnerability[]>([]);
 
     const getVulnerabilities = async (): Promise<Vulnerability[]> => {
         // Get vulnerabilities from backend
         const baseUrl = getBackendBaseUrl();
-        const response = await axios.get(
+        const response = await axios.get<{data: Resp[]}>(
             `${baseUrl}/github/code-scanner/alerts?projectId=${projectId}`
-            );
-        
-        console.log({data: response.data});
+        );
 
+        const data = response.data.data;
+        console.log(data);
+
+        const vulnerabilities = data.map((alert) => ({
+            id: alert.rule.id,
+            title: alert.rule.description,
+            description: alert.most_recent_instance.message.text,
+            severity: alert.rule.security_severity_level,
+            status: alert.state,
+            remediation: "remediation1",
+            repo: "repo1",
+            file: alert.most_recent_instance.location.path,
+            line: 1,
+            commit: "commit1",
+            date: alert.updated_at,
+        }));
+
+        return vulnerabilities;
         return DUMMY_VULNERABILITIES;
-        return response.data;
     };
 
     useEffect(() => {
