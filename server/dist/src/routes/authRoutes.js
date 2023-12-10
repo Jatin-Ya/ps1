@@ -117,9 +117,9 @@ router.get("/github/callback", (req, res) =>
                 },
             });
             // access_token=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&scope=repo%2Cuser%2Cwrite%3Aorg&token_type=bearer
+            console.log(response.data);
             const access_token = response.data.split("&")[0].split("=")[1];
             console.log(access_token);
-            console.log(response.data);
             const resp = yield axios_1.default.get(
                 "https://api.github.com/user",
                 {
