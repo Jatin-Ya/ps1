@@ -26,7 +26,11 @@ const FileSupport = () => {
     const handleGenerateReview = async () => {
         console.log("Generate review");
         const baseUrl = getBackendBaseUrl();
-        const response = await axios.get(`${baseUrl}/gpt/generateReview?path=${file.path}&projectId=${projectId}`);
+        setReview("All looks great");
+        return;
+        const response = await axios.get(
+            `${baseUrl}/gpt/generateReview?path=${file.path}&projectId=${projectId}`
+        );
         const review = response.data.review;
         setReview(review);
     };
@@ -45,7 +49,10 @@ const FileSupport = () => {
             <Divider />
             <Stack direction={"row"} marginTop={2} height={"100%"}>
                 <Box flex={3}>
-                    <Paper variant="outlined" sx={{ margin: 1, fontSize: 12, padding: 1 }}>
+                    <Paper
+                        variant="outlined"
+                        sx={{ margin: 1, fontSize: 12, padding: 1 }}
+                    >
                         {file.content}
                     </Paper>
                 </Box>

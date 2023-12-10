@@ -10,6 +10,7 @@ import { StoreData } from "../../store/store";
 const GithubButton = () => {
     const [isGithubConnected, setIsGithubConnected] = useState(false);
     const userId = useSelector<StoreData, string>((state) => state.user.id);
+    const email = useSelector<StoreData, string>((state) => state.user.email);
 
     useEffect(() => {
         if (userId === "") {
@@ -19,7 +20,8 @@ const GithubButton = () => {
 
         const fetchGithubStatus = async () => {
             const BEURL = getBackendBaseUrl();
-            const { data } = await axios.get(`${BEURL}/users/github/${userId}`);
+            const query = new URLSearchParams({ id: userId });
+            const { data } = await axios.get(`${BEURL}/users/github?${query}`);
             setIsGithubConnected(data.linked);
             // setIsGithubConnected(data.isGithubConnected);
         };
@@ -29,7 +31,7 @@ const GithubButton = () => {
     const handleGithubLogin = async () => {
         const BEURL = getBackendBaseUrl();
         try {
-            const query = new URLSearchParams({ id: userId });
+            const query = new URLSearchParams({ email: email });
             const response = await axios(`${BEURL}/auth/github?${query}`, {});
 
             const url = response.data.url;

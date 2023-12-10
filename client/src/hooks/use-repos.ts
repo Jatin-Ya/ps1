@@ -16,10 +16,28 @@ export const useRepos = (email: string, isConnected: boolean) => {
         if (!isConnected) return [];
 
         const baseUrl = getBackendBaseUrl();
-        const response = await axios.get(`${baseUrl}/github/repos?email=${email}`);
-        const repos = response.data;
+        const query = new URLSearchParams({ email });
+        console.log(query);
+        const response = Object.values(
+            (
+                await axios.get<
+                    {
+                        repoName: string;
+                        repoOwner: string;
+                        repoUrl: string;
+                        repoId: string;
+                    }[]
+                >(`${baseUrl}/github/repos?${query}`)
+            ).data
+        );
+        const rep: Repo[] = response.map((repo) => ({
+            name: repo.repoName,
+            owner: repo.repoOwner,
+            url: repo.repoUrl,
+            id: repo.repoId,
+        }));
 
-        return repos;
+        return rep;
 
         // return [
         //     {

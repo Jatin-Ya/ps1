@@ -45,10 +45,12 @@ const ProjectDashboardSection = () => {
     const projectData = useSelector<StoreData, ProjectState>(
         (state) => state.project
     );
+    const email = useSelector<StoreData, string>((state) => state.user.email);
 
     const [assignUserInputText, setAssignUserInputText] = useState("");
     const [selectedRepoId, setSelectedRepoId] = useState("");
-    const { repos } = useRepos(projectData.manager, true);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const { repos } = useRepos(email, true);
     console.log(projectData);
     const assignedUserEmails = projectData.users.map((user) => user.email);
 
@@ -67,6 +69,7 @@ const ProjectDashboardSection = () => {
     };
 
     const connectRepoHandler = async () => {
+        setIsDisabled(true);
         const repoToConnect = repos.find((repo) => repo.id === selectedRepoId);
         if (!repoToConnect) return;
 
@@ -76,7 +79,7 @@ const ProjectDashboardSection = () => {
 
         try {
             const response = await axios.patch(
-                `${baseUrl}/project/connectRepo`,
+                `${baseUrl}/projects/connectRepo`,
                 {
                     id: projectId,
                     repoName: repoToConnect.name,
@@ -109,6 +112,7 @@ const ProjectDashboardSection = () => {
                             Repo
                         </InputLabel>
                         <Select
+                            disabled={isDisabled}
                             labelId="demo-simple-select-label"
                             id="demo-simple-select"
                             value={selectedRepoId}
