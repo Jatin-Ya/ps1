@@ -136,6 +136,8 @@ const getFiles = (req, res, next) =>
             .populate("users");
         const user =
             project === null || project === void 0 ? void 0 : project.users[0];
+        console.log({ user });
+        console.log({ project });
         if (!user) return next((0, app_error_1.error401)("Unauthorized"));
         const ownerName =
             (_e = user === null || user === void 0 ? void 0 : user.githubId) ===
