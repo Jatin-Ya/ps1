@@ -108,7 +108,7 @@ router.get("/github/callback", (req, res) =>
             const clientId = process.env.GITHUB_CLIENT_ID;
             const clientSecret = process.env.GITHUB_CLIENT_SECRET;
             const redirectUri = process.env.GITHUB_CALLBACK_URI;
-            console.log({ code, state });
+            console.log({ code, state, redirectUri });
             // const redirectUri = "http://localhost:3001/api/v1/auth/github/callback";
             const url = `https://github.com/login/oauth/access_token?client_id=${clientId}&client_secret=${clientSecret}&code=${code}&redirect_uri=${redirectUri}`;
             const response = yield axios_1.default.post(url, {
