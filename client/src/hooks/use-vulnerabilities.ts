@@ -80,14 +80,14 @@ export const useVelnerabilities = (projectId: string) => {
     const getVulnerabilities = async (): Promise<Vulnerability[]> => {
         // Get vulnerabilities from backend
         const baseUrl = getBackendBaseUrl();
-        const response = await axios.get< Resp[]>(
+        const response = await axios.get< Record<string, Resp>>(
             `${baseUrl}/github/code-scanner/alerts?projectId=${projectId}`
         );
 
         const data = response.data;
         console.log(data);
 
-        const vulnerabilities = data.map((alert) => ({
+        const vulnerabilities = Object.values(data).map((alert) => ({
             id: alert.rule.id,
             title: alert.rule.description,
             description: alert.most_recent_instance.message.text,
