@@ -180,7 +180,7 @@ const getRepos = (req, res, next) =>
     __awaiter(void 0, void 0, void 0, function* () {
         var _g;
         const { id } = req.query;
-        const user = yield userModel_1.default.findOneById(id);
+        const user = yield userModel_1.default.findById(id);
         const token =
             (_g = user === null || user === void 0 ? void 0 : user.githubId) ===
                 null || _g === void 0
