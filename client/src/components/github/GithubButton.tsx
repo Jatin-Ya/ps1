@@ -30,7 +30,12 @@ const GithubButton = () => {
         const BEURL = getBackendBaseUrl();
         try {
             const query = new URLSearchParams({ id: userId });
-            await axios(`${BEURL}/auth/github?${query}`, {});
+            const response = await axios(`${BEURL}/auth/github?${query}`, {});
+
+            const url = response.data.url;
+
+            window.location.href = url;
+
             setIsGithubConnected(true);
         } catch (err) {
             console.log(err);
