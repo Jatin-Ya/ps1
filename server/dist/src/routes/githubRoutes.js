@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const githubController_1 = require("../controller/githubController");
+const githubRoutes = (0, express_1.Router)();
+githubRoutes.get("/dependabot/alerts", githubController_1.getDependabotAlerts);
+githubRoutes.get("/code-scanner/alerts", githubController_1.getCodeScannerAlerts);
+githubRoutes.get("/files", githubController_1.getFiles);
+githubRoutes.get("/repos", githubController_1.getRepos);
+exports.default = githubRoutes;
