@@ -14,6 +14,9 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import logo from "../../assets/logo.jpeg";
 import React from "react";
 import GithubButton from "../github/GithubButton";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../../store/user/user-slice";
+import { useNavigate } from "react-router-dom";
 
 interface MainAppbarProps {
     isAuth: boolean;
@@ -72,6 +75,9 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
         onSignupClick();
     };
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const projectOptionMenu = (
         <>
             <Button color="inherit" onClick={handleAllProjectsClick}>
@@ -101,6 +107,16 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
             <IconButton sx={{ color: "black" }} onClick={handleProfileClick}>
                 <AccountCircleIcon fontSize="large" />
             </IconButton>
+            <Button
+                variant="contained"
+                size="small"
+                onClick={() => {
+                    dispatch(clearUser());
+                    navigate("/");
+                }}
+            >
+                Logout
+            </Button>
         </>
     );
 
@@ -113,7 +129,11 @@ const MainAppbar: React.FC<MainAppbarProps> = ({
             >
                 Login
             </Button>
-            <Button variant="outlined" sx={{ borderRadius: "20px" }} onClick={handleSignupClick}>
+            <Button
+                variant="outlined"
+                sx={{ borderRadius: "20px" }}
+                onClick={handleSignupClick}
+            >
                 Signup
             </Button>
         </>
