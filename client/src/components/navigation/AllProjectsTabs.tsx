@@ -35,10 +35,10 @@ const AllProjectsTabs: React.FC<AllProjectsTabsProps> = ({
                         value={AllProjectsTabsEnum.AllProjects}
                         label="All Projects"
                     />
-                    <Tab
+                    {/* <Tab
                         value={AllProjectsTabsEnum.NewProject}
                         label="New Project"
-                    />
+                    /> */}
                 </Tabs>
             </ThemeProvider>
         </Toolbar>
