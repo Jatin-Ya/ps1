@@ -151,6 +151,7 @@ const getFiles = (req, res, next) =>
                 null || _f === void 0
                 ? void 0
                 : _f.accessToken;
+        console.log({ ownerName, repoName, token });
         if (!token) return next((0, app_error_1.error401)("Unauthorized"));
         try {
             const files = yield (0, GithubUtils_1.getFilesAndPaths)(
