@@ -23,9 +23,9 @@ const Queries: React.FC = () => {
       </Box>
       <Typography sx={{ fontSize: '15px', marginTop: '10px', paddingLeft: '20px' }}>
         <strong>AI Generated Response :</strong> <br/>
-        <List sx={{ listStyleType: 'disc', lineHeight: '1' }}>
-          <ListItem>Variables not defined as guided</ListItem>
-          <ListItem>Model efficiency lower than guided</ListItem>
+        <List sx={{ listStyleType: 'disc', paddingLeft: '20px', lineHeight: '0.5' }}>
+          <ListItem sx={{ display: 'list-item' }}>Variables not defined as guided</ListItem>
+          <ListItem sx={{ display: 'list-item' }}>Model efficiency lower than guided</ListItem>
         </List>
       </Typography>
       <CardContent>
