@@ -42,6 +42,7 @@ function LinearProgressWithLabel(
 }
 
 const ProjectDashboardSection = () => {
+    console.log("TEST");
     const projectData = useSelector<StoreData, ProjectState>(
         (state) => state.project
     );

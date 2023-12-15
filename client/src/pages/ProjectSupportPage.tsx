@@ -45,7 +45,8 @@ const ProjectSupportPage = () => {
                 onChange={handleProjectSupportTabsChange}
             />
             <Paper sx={{ margin: 2, padding: 4, borderRadius: 8, flexGrow: 1 }}>
-                {isProjectLoaded ? <Outlet /> : <div>Loading...</div>}
+                {/* {isProjectLoaded ? <Outlet /> : <div>Loading...</div>} */}
+                <Outlet />
             </Paper>
         </>
     );

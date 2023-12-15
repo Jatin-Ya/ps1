@@ -1,31 +1,78 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardActions, Button, Grid, TextField, InputAdornment, Typography } from "@mui/material";
-import SendIcon from '@mui/icons-material/Send';
+import React, { useEffect, useState } from "react";
+import {
+    Card,
+    CardContent,
+    CardActions,
+    Button,
+    Grid,
+    TextField,
+    InputAdornment,
+    Typography,
+} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import useQuery from "../../hooks/use-query";
+import { useSelector } from "react-redux";
+import { StoreData } from "../../store/store";
 
-const Queries: React.FC = () => {
+type Props = {
+    query: string;
+    id: string;
+    response: string;
+};
+
+const Queries: React.FC<Props> = ({ id, query, response }) => {
     const [active, setActive] = useState(false);
+    const [clientResponse, setClientResponse] = useState(response);
+    const [answeredManualy, setAnsweredManualy] = useState(false);
+    const [inputText, setInputText] = useState("");
+    const projectId = useSelector<StoreData, string>(
+        (state) => state.project.id
+    );
+
+    const { resolveQuery } = useQuery(projectId);
 
     const activeHandler = () => {
         setActive(!active);
     };
 
+    useEffect(() => setClientResponse(response), [response]);
+
     return (
-        <Card sx={{ border: '1px solid black' }}>
+        <Card sx={{ border: "1px solid black" }}>
             <CardContent>
-                <Typography sx={{ fontSize: '15px' }}>
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.<br />
-                    <strong>AI Generated Response :</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente hic nemo exercitationem laboriosam?
+                <Typography sx={{ fontSize: "15px" }}>
+                    {query}
+                    <br />
+                    <strong>AI Generated Response :</strong> {clientResponse}
                 </Typography>
             </CardContent>
             <CardActions>
-                <Grid container justifyContent="space-between">
+                <Grid container justifyContent="space-between" spacing={1}>
                     <Grid item>
-                        <Button variant="outlined" color="primary" sx={{ borderRadius: 28, color: 'black', borderColor: 'black' }}>
-                            Validate AI Response
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            sx={{
+                                borderRadius: 28,
+                                color: "black",
+                                borderColor: "black",
+                            }}
+                            onClick={() => resolveQuery(id, clientResponse)}
+                        >
+                            Validate Response
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Button variant="outlined" color="secondary" sx={{ borderRadius: 28, color: 'black', borderColor: 'black' }} onClick={activeHandler}>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            sx={{
+                                borderRadius: 28,
+                                color: "black",
+                                borderColor: "black",
+                            }}
+                            onClick={activeHandler}
+                        >
                             Answer Manually
                         </Button>
                     </Grid>
@@ -37,6 +84,8 @@ const Queries: React.FC = () => {
                         fullWidth
                         id="outlined-basic"
                         variant="outlined"
+                        onChange={(e) => setInputText(e.target.value)}
+                        value={inputText}
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -44,8 +93,14 @@ const Queries: React.FC = () => {
                                         variant="outlined"
                                         color="primary"
                                         size="small"
-                                        onClick={() => console.log('Submit')}
-                                        sx={{ border: 'none', '&:hover': { border: 'none' } }}
+                                        onClick={() => {
+                                            setClientResponse(inputText);
+                                            setAnsweredManualy(true);
+                                        }}
+                                        sx={{
+                                            border: "none",
+                                            "&:hover": { border: "none" },
+                                        }}
                                     >
                                         <SendIcon />
                                     </Button>

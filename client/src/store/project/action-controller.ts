@@ -5,6 +5,7 @@ export const setProjectController = (
     _: ProjectState,
     action: PayloadAction<ProjectData>
 ) => {
+    console.log({ payload: action.payload });
     const newState: ProjectState = { ...action.payload, isLoaded: true };
 
     return newState;

@@ -1,4 +1,11 @@
-import { Button, Divider, Stack, TextField, Typography } from "@mui/material";
+import {
+    Button,
+    Divider,
+    Stack,
+    Switch,
+    TextField,
+    Typography,
+} from "@mui/material";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { StoreData } from "../../store/store";
@@ -16,6 +23,7 @@ const NewProjectSection = () => {
     const projectGuidlinesInputRef = useRef<HTMLInputElement>(null!);
 
     const [assignedUsers, setAssignedUsers] = useState<string[]>([]);
+    const [aISupport, setAISupport] = useState(false);
     const [assignUserInputText, setAssignUserInputText] = useState("");
 
     const assignUserInputChangeHandler = (text: string) => {
@@ -30,7 +38,7 @@ const NewProjectSection = () => {
         setAssignedUsers((prevState) => prevState.filter((u) => u !== user));
     };
 
-    const submitHandler = async() => {
+    const submitHandler = async () => {
         const projectName = projectNameInputRef.current.value;
         const projectDescription = projectDescriptionInputRef.current.value;
         const projectGuidlines = projectGuidlinesInputRef.current.value;
@@ -46,16 +54,18 @@ const NewProjectSection = () => {
 
         console.log(projectData);
         const baseUrl = getBackendBaseUrl();
-        try{
+        try {
             const body = {
-                title: projectName, description: projectDescription, guidlines: projectGuidlines, manager_email: manager, users: assignedUsers
-            }
-            const response = await axios.post(
-                `${baseUrl}/projects`, body
-            )
+                title: projectName,
+                description: projectDescription,
+                guidlines: projectGuidlines,
+                manager_email: manager,
+                users_email: assignedUsers,
+                aiSupport: aISupport,
+            };
+            const response = await axios.post(`${baseUrl}/projects`, body);
             console.log(response);
-        }
-        catch (e){
+        } catch (e) {
             console.log(e);
         }
     };
@@ -105,6 +115,16 @@ const NewProjectSection = () => {
                         onInputChange={assignUserInputChangeHandler}
                         onRemoveUser={removeUserHandler}
                     />
+                    <Stack direction="row" spacing={2}>
+                        <Typography variant="body1" flex={1}>
+                            AI Support
+                        </Typography>
+                        <Switch
+                            checked={aISupport}
+                            onChange={(e) => setAISupport(e.target.checked)}
+                            inputProps={{ 'aria-label': 'controlled' }}
+                        />
+                    </Stack>
                 </Stack>
             </Stack>
             <Stack direction="row-reverse" spacing={2}>

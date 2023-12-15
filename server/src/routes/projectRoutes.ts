@@ -2,13 +2,17 @@ import { Router } from "express";
 import Project from "../models/projectModel";
 import Manager from "../models/managerModel";
 import User from "../models/userModel";
+import Query from "../models/queriesModel";
 
 const router = Router();
 
 router.get("/getById/:id", async (req, res) => {
     const id = req.params.id;
 
-    const project = await Project.findById(id).populate("users");
+    const project = await Project.findById(id)
+        .populate("users")
+        .populate("queries");
+
     return res.send(project);
 });
 
@@ -21,22 +25,21 @@ router.get("/", async (req, res) => {
 router.get("/belongsTo", async (req, res) => {
     try {
         const userid = req.query.userid;
-        const role = req.query.role;
         // return res.send([]);
+        const user = await User.findById(userid);
+        if (!user) return res.send([]);
 
-        console.log(userid, role);
+        console.log({ user });
 
-        if (role === "Manager") {
-            const projects = await Project.find({ manager: userid }).populate(
-                "users"
-            );
-            return res.send(projects);
-        } else if (role === "User") {
-            const projects = await Project.find({
-                users: { $all: userid },
-            }).populate("users");
-            return res.send(projects);
-        }
+        const projectQueries = user.projects.map((project) => {
+            return Project.findById(project).exec();
+        });
+
+        console.log({ projectQueries });
+
+        const projects = await Promise.all(projectQueries);
+        console.log({ projects });
+        return res.send(projects);
     } catch (err) {
         res.status(401).send("Invalid response");
     }
@@ -44,32 +47,46 @@ router.get("/belongsTo", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        const { title, description, guidlines, manager_email, users } =
-            req.body;
+        const {
+            title,
+            description,
+            guidlines,
+            manager_email,
+            users_email,
+            aiSupport,
+        } = req.body;
 
-        const manager: any = await Manager.findOne({ email: manager_email });
+        users_email.push(manager_email);
+
+        console.log({ body: req.body });
+
+        const manager = await User.findOne({ email: manager_email });
+        if (!manager) return res.status(401).send("Manager not found");
 
         const project = await Project.create({
             title,
             description,
             guidlines,
-            manager,
+            manager: manager._id,
+            users: [],
+            aiSupport,
         });
 
-        manager.projects.push(project);
-        await manager.save();
+        console.log({ project });
 
-        if (users) {
-            for (let i = 0; i < users.length; i++) {
-                const user = users[i];
-                await User.findByIdAndUpdate(user, {
-                    $push: { projects: project },
-                });
-                project.users.push(user);
-                await project.save();
-            }
-        }
+        const usersQuery = users_email
+            .map((email: string) => User.findOne({ email }))
+            .filter((u: any) => u !== null && u !== undefined);
 
+        const users = await Promise.all(usersQuery);
+        console.log({ users });
+        project.users = users.map((user: any) => user._id);
+        project.save();
+
+        users.forEach((user: any) => {
+            user.projects.push(project._id);
+            user.save();
+        });
         return res.send(project);
     } catch (err) {
         console.log(err);
@@ -138,6 +155,53 @@ router.patch("/removeUser", async (req, res) => {
         res.send(p);
     } catch (err) {
         console.log(err);
+    }
+});
+
+router.post("/query/escalate", async (req, res) => {
+    try {
+        console.log(req.body);
+        const { projectId, query, solution } = req.body;
+
+        const createdQuery = await Query.create({
+            status: "escalated",
+            query,
+            solution,
+        });
+
+        const project = await Project.findByIdAndUpdate(
+            projectId,
+            {
+                $push: { queries: createdQuery._id },
+            },
+            { new: true }
+        )
+            .populate("queries")
+            .populate("users");
+
+        return res.send(project);
+    } catch (err) {
+        console.log(err);
+        return res.status(401).send("Invalid response");
+    }
+});
+
+router.post("/query/resolve", async (req, res) => {
+    try {
+        const { projectId, queryId, solution } = req.body;
+
+        await Query.findByIdAndUpdate(queryId, {
+            status: "resolved",
+            solution,
+        });
+
+        const project = await Project.findById(projectId)
+            .populate("queries")
+            .populate("users");
+
+        return res.send(project);
+    } catch (err) {
+        return res.status(401).send("Invalid response");
     }
 });
 

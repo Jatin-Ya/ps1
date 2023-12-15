@@ -1,6 +1,8 @@
 import { Tab, Tabs, ThemeProvider, Toolbar } from "@mui/material";
 import React from "react";
 import { tabsTheme } from "../../theme/theme";
+import { useSelector } from "react-redux";
+import { StoreData } from "../../store/store";
 
 export enum ProjectSupportTabsEnum {
     ProjectDashboard = "project-dashboard",
@@ -17,6 +19,8 @@ const ProjectSupportTabs: React.FC<ProjectSupportTabsProps> = ({
     value,
     onChange,
 }) => {
+    const role = useSelector<StoreData, string>((state) => state.user.role);
+
     const handleChange = (
         _: React.SyntheticEvent,
         newValue: ProjectSupportTabsEnum
@@ -36,10 +40,12 @@ const ProjectSupportTabs: React.FC<ProjectSupportTabsProps> = ({
                         value={ProjectSupportTabsEnum.ProjectDashboard}
                         label="Project Dashboard"
                     />
-                    <Tab
-                        value={ProjectSupportTabsEnum.AiSupport}
-                        label="Ai Support"
-                    />
+                    {role === "User" && (
+                        <Tab
+                            value={ProjectSupportTabsEnum.AiSupport}
+                            label="Ai Support"
+                        />
+                    )}
                     <Tab
                         value={ProjectSupportTabsEnum.TeamChat}
                         label="Team Chat"

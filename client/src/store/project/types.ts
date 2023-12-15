@@ -23,6 +23,13 @@ export type ProjectData = {
     status: string;
     progress: number;
     repoDetails: RepoDetails;
+    queries: {
+        id: string;
+        query: string;
+        solution: string;
+        status: string;
+    }[];
+    aiSupport: boolean;
 };
 
 export type ProjectState = ProjectData & {
@@ -45,4 +52,6 @@ export const initialProjectState: ProjectState = {
         repoId: "",
     },
     isLoaded: false,
+    queries: [],
+    aiSupport: false,
 };

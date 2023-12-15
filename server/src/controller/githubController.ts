@@ -112,7 +112,7 @@ export const getRepos = async (
     next: NextFunction
 ) => {
     
-    const {  } = req.query;
+    const { email } = req.query;
     const user = await User.findOne({ email: email });
     const token = user?.githubId?.accessToken;
     console.log({email, token});

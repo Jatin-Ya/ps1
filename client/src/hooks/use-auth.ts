@@ -26,7 +26,7 @@ export const useAuth = () => {
             email: response.data.email,
             name: response.data.name,
             token: response.data.token,
-            role: role,
+            role: response.data.role,
         };
 
         console.log(userData);

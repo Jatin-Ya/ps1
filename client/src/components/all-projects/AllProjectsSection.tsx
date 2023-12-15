@@ -32,11 +32,10 @@ import { UserData } from "../../store/user/types";
 //     },
 // ];
 
-
 const AllProjectsSection = () => {
     // const [projects, setProjects] = useState(DUMMY_PROJECTS);
-    const {id, role} = useSelector<StoreData, UserData>((state) => state.user);
-    const {allProjects: projects} = useAllProjects(id, role);
+    const { id } = useSelector<StoreData, UserData>((state) => state.user);
+    const { allProjects: projects } = useAllProjects(id);
 
     const navigate = useNavigate();
 

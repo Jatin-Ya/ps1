@@ -8,15 +8,17 @@ type Project = {
     projectId: string;
 };
 
-export const useAllProjects = (userid: string, role: string) => {
+export const useAllProjects = (userid: string) => {
     const [allProjects, setAllProjects] = useState<Project[]>([]);
 
     const getAllProjects = async (): Promise<Project[]> => {
         // Get all projects from backend
         const url = `${getBackendBaseUrl()}/projects/belongsTo`;
-        const queryParams = new URLSearchParams({ userid, role });
+        const queryParams = new URLSearchParams({ userid });
 
         const response = await axios.get(`${url}?${queryParams}`);
+
+        console.log(response.data);
 
         const data: Project[] = response.data.map(
             (project: Record<string, string>) => ({

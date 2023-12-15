@@ -1,72 +1,83 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Grid,
-     Box,Button,TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Divider, Stack } from "@mui/material";
+import {
+    Typography,
+    Grid,
+    Box,
+    Button,
+    TableContainer,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
+    Divider,
+    Stack,
+} from "@mui/material";
 import axios from "axios";
 import Queries from "../components/project-support/EscalatedQueries";
 import QueriesRes from "../components/project-support/QueryResponse";
 import RepoVelner2 from "../components/project-support/quality-check/RepoVelner2";
-import {useNavigate } from "react-router-dom";
-import {
-    Vulnerability
-} from "../hooks/use-vulnerabilities";
-import MandatoryQualityCheck from "../components/project-support/quality-check/MandatoryQualityCheck"; 
+import { useNavigate } from "react-router-dom";
+import { Vulnerability } from "../hooks/use-vulnerabilities";
+import MandatoryQualityCheck from "../components/project-support/quality-check/MandatoryQualityCheck";
 import QualityCheckCard from "../components/project-support/quality-check/QualityCheckCard";
+import { useSelector } from "react-redux";
+import { ProjectData } from "../store/project/types";
+import { StoreData } from "../store/store";
+import AssignUserComponent from "../components/assign-user/AssignUserComponent";
+import { useRoadmap } from "../hooks/use-roadmap";
 const tableData = [
     {
-        "id": 1,
-        "member": "Mirabel",
-        "role": "McGlone",
-        "progress": 10
+        id: 1,
+        member: "Mirabel",
+        role: "McGlone",
+        progress: 10,
     },
     {
-        "id": 2,
-        "member": "Elbert",
-        "role": "Standon",
-        "progress": 30
+        id: 2,
+        member: "Elbert",
+        role: "Standon",
+        progress: 30,
     },
     {
-        "id": 3,
-        "member": "Shandy",
-        "role": "Towersey",
-        "progress": 24
+        id: 3,
+        member: "Shandy",
+        role: "Towersey",
+        progress: 24,
     },
     {
-        "id": 4,
-        "member": "Bryce",
-        "role": "Brehat",
-        "progress": 22
-    }
+        id: 4,
+        member: "Bryce",
+        role: "Brehat",
+        progress: 22,
+    },
 ];
 const miltableData = [
     {
-        "id": 1,
-        "milestone": "Milestone 1",
-        "status": "COMPLETED - 1st November 2023",
+        id: 1,
+        milestone: "Milestone 1",
+        status: "COMPLETED - 1st November 2023",
     },
     {
-        "id": 2,
-        "milestone": "Milestone 2",
-        "status": "COMPLETED - 15th November 2023",
-       
+        id: 2,
+        milestone: "Milestone 2",
+        status: "COMPLETED - 15th November 2023",
     },
     {
-        "id": 3,
-        "milestone": "Milestone 3",
-        "status": "ONGOING",
-       
+        id: 3,
+        milestone: "Milestone 3",
+        status: "ONGOING",
     },
     {
-        "id": 4,
-        "milestone": "Milestone 4",
-        "status": "PENDING",
-       
+        id: 4,
+        milestone: "Milestone 4",
+        status: "PENDING",
     },
     {
-        "id": 5,
-        "milestone": "Completed",
-        "status": "Completed",
-        
-    }
+        id: 5,
+        milestone: "Completed",
+        status: "Completed",
+    },
 ];
 
 const DUMMY_VULNERABILITIES: Vulnerability[] = [
@@ -111,10 +122,10 @@ const DUMMY_VULNERABILITIES: Vulnerability[] = [
     },
 ];
 
-
 const Dashboard = () => {
-    const [isProjectConnected, setIsProjectConnected] = useState(false);
-    const projectId = "614b0b4b9b0b8e0016f2b0e1";
+    const project = useSelector<StoreData, ProjectData>(
+        (state) => state.project
+    );
     const navigate = useNavigate();
 
     const repoVulnerabilitiesSelectHandler = (vulnerability: Vulnerability) => {
@@ -123,165 +134,215 @@ const Dashboard = () => {
         });
     };
 
-    useEffect(() => {
-        const fetchProjectStatus = async () => {
-            const response = await axios.get(`YOUR_API_URL/projects/${projectId}`);
-            const project = response.data.project;
-            const repoDetails = project?.repoDetails;
+    const membersData = project.users.map((user) => ({
+        id: user.id,
+        member: user.name,
+        role: "User",
+        progress: Math.floor(Math.random() * 100),
+    }));
 
-            if (!repoDetails) {
-                setIsProjectConnected(false);
-            } else {
-                setIsProjectConnected(true);
-            }
-        }
-        fetchProjectStatus();
-    }, []);
+    const escalatedQueries = project.queries.filter(
+        (query) => query.status === "escalated"
+    );
+    const resolvedQueries = project.queries.filter(
+        (query) => query.status === "resolved"
+    );
+
+    const { roadmapData } = useRoadmap(project.id);
+    const milestones = roadmapData.map((_, index) => ({
+        id: index,
+        milestone: `Milestone ${index + 1}`,
+        status: "PENDING",
+    }));
 
     return (
         <>
-        {/* Poject overview section ..........................................................*/}
+            {/* Poject overview section ..........................................................*/}
 
             <Typography variant="h5" marginX={2} marginY={2}>
-                PROJECT NAME
+                {project.title.toUpperCase()}
             </Typography>
 
             <Grid container spacing={0}>
                 <Grid item xs mx={2}>
                     <Box>
-                        <Typography component="h5">
-                            PROJECT OVERVIEW
-                        </Typography>
-                        <Typography sx={{
-                            fontSize: '15px',
-                            lineHeight: '18px',
-                            letterSpacing: '0em',
-                            textAlign: 'left',
-                        }}>
-                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Veniam dignissimos fugiat, quisquam architecto voluptatibus id dicta consectetur eius dolores voluptas accusantium quas similique ipsum praesentium quo quod laudantium reiciendis porro!
+                        <Typography component="h5">PROJECT OVERVIEW</Typography>
+                        <Typography
+                            sx={{
+                                fontSize: "15px",
+                                lineHeight: "18px",
+                                letterSpacing: "0em",
+                                textAlign: "left",
+                            }}
+                        >
+                            {project.description}
                         </Typography>
                     </Box>
 
                     <Box my={2}>
-                        <Typography component="h5">
-                            TEAM
-                        </Typography>
-                        <TableContainer sx={{ maxHeight: '200px', marginBottom: '30px' }}>
-                            <Table aria-label='simple table' stickyHeader>
+                        <Typography component="h5">TEAM</Typography>
+                        <TableContainer
+                            sx={{ maxHeight: "200px", marginBottom: "30px" }}
+                        >
+                            <Table aria-label="simple table" stickyHeader>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Member</TableCell>
-                                        <TableCell>Role</TableCell>
-                                        <TableCell>Progress</TableCell>
+                                        <TableCell sx={{ bgcolor: "white" }}>
+                                            Member
+                                        </TableCell>
+                                        <TableCell sx={{ bgcolor: "white" }}>
+                                            Role
+                                        </TableCell>
+                                        <TableCell sx={{ bgcolor: "white" }}>
+                                            Progress
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {
-                                        tableData.map((row) => (
-                                            <TableRow key={row.id}>
-                                                <TableCell>{row.member}</TableCell>
-                                                <TableCell>{row.role}</TableCell>
-                                                <TableCell>{row.progress}%</TableCell>
-                                            </TableRow>
-                                        ))
-                                    }
+                                    {membersData.map((row) => (
+                                        <TableRow key={row.id}>
+                                            <TableCell>{row.member}</TableCell>
+                                            <TableCell>{row.role}</TableCell>
+                                            <TableCell>
+                                                {row.progress}%
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
                                 </TableBody>
                             </Table>
                         </TableContainer>
 
-                        <Typography component="h5">
-                            MILESTONES
+                        <Typography component="h5">MILESTONES</Typography>
+                        <Typography sx={{ fontSize: "12px" }}>
+                            {" "}
+                            ESTIMATED DEADLINE: 20th January 2024{" "}
                         </Typography>
-                        <Typography sx={{fontSize: '12px'}}> ESTIMATED DEADLINE: 20th January 2024 </Typography>
-                        <TableContainer sx={{ maxHeight: '400px', marginTop: '30px' }}>
-                            <Table aria-label='simple table' stickyHeader>
+                        <TableContainer
+                            sx={{ maxHeight: "400px", marginTop: "30px" }}
+                        >
+                            <Table aria-label="simple table" stickyHeader>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell></TableCell>
-                                        <TableCell>STATUS</TableCell>
+                                        <TableCell
+                                            sx={{ bgcolor: "white" }}
+                                        ></TableCell>
+                                        <TableCell sx={{ bgcolor: "white" }}>
+                                            STATUS
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
-                                <TableBody>
-                                    {
-                                        miltableData.map((row) => (
+                                {project.aiSupport ? (
+                                    <TableBody>
+                                        {milestones.map((row) => (
                                             <TableRow key={row.id}>
-                                                <TableCell>{row.milestone}</TableCell>
-                                               {(row.status =='Completed')?<div></div>:(<TableCell>{row.status}</TableCell>)}
+                                                <TableCell>
+                                                    {row.milestone}
+                                                </TableCell>
+                                                {row.status == "Completed" ? (
+                                                    <div></div>
+                                                ) : (
+                                                    <TableCell>
+                                                        {row.status}
+                                                    </TableCell>
+                                                )}
                                             </TableRow>
-                                        ))
-                                    }
-                                </TableBody>
+                                        ))}
+                                    </TableBody>
+                                ) : (
+                                    <Typography variant="body1">
+                                        AI Support not enabled
+                                    </Typography>
+                                )}
                             </Table>
                         </TableContainer>
                     </Box>
                 </Grid>
 
-                <Divider orientation="vertical" flexItem sx={{ mx: 2, borderLeft: '1px solid black' }} />
+                <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ mx: 2, borderLeft: "1px solid black" }}
+                />
 
-                 {/* Escalated queries section ..........................................................*/}
+                {/* Escalated queries section ..........................................................*/}
 
                 <Grid item xs>
-                    <Typography component="h5">
-                        ESCALATED QUERIES
-                    </Typography>
-                    <Box sx={{ margin: '4px', height: '450px', overflowY: 'auto' }}>
+                    <Typography component="h5">ESCALATED QUERIES</Typography>
+                    <Box
+                        sx={{
+                            margin: "4px",
+                            height: "450px",
+                            overflowY: "auto",
+                        }}
+                    >
                         <Stack spacing={1}>
-                          <Queries />
-                            <Queries />
-                         <Queries />
-                </Stack>
-                </Box>
-                <Box marginTop="25px">
-                <Typography>MANDATORY QUALITY CHECK</Typography>
-                <MandatoryQualityCheck/>
-                </Box>
-               
+                            {escalatedQueries.map((query) => (
+                                <Queries
+                                    key={query.id}
+                                    id={query.id}
+                                    query={query.query}
+                                    response={query.solution}
+                                />
+                            ))}
+                        </Stack>
+                    </Box>
+                    <Box marginTop="25px">
+                        <Typography>MANDATORY QUALITY CHECK</Typography>
+                        <MandatoryQualityCheck />
+                    </Box>
                 </Grid>
 
-                <Divider orientation="vertical" flexItem sx={{ mx: 2, borderLeft: '1px solid black' }} />
+                <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ mx: 2, borderLeft: "1px solid black" }}
+                />
 
                 {/* AI support section ..........................................................*/}
 
                 <Grid item xs mx={1}>
-                <Button variant="contained"  sx={{ borderRadius: 28, width: '100%', backgroundColor: '#619FD8', color: 'white', marginBottom:'18px'}}>AI SUPPORT CHECKS</Button>
-                <Stack spacing={4}>
-                    <Box>
-                    <Typography>QUERY RESPONSED</Typography>
-                    <QueriesRes />
-                    </Box>
-                    <Box>
-                    <Typography>VULNERABILITY DETECTED</Typography>
-                     <Box sx={{ maxHeight: '200px', overflow: 'auto' }}>
-                    <RepoVelner2 onSelect={repoVulnerabilitiesSelectHandler} vulnerabilities={DUMMY_VULNERABILITIES}/>
-                    </Box>
-                    </Box>
-                    <Box>
-                    <Typography>QUALITY CHECK</Typography>
-                    <QualityCheckCard/>
-                    </Box>
-                </Stack>    
+                    <Button
+                        variant="contained"
+                        sx={{
+                            borderRadius: 28,
+                            width: "100%",
+                            backgroundColor: "#619FD8",
+                            color: "white",
+                            marginBottom: "18px",
+                        }}
+                    >
+                        AI SUPPORT CHECKS
+                    </Button>
+                    <Stack spacing={4}>
+                        <Stack maxHeight={300} overflow="scroll" spacing={2}>
+                            <Typography>QUERIES RESPONSED</Typography>
+                            {resolvedQueries.map((query) => (
+                                <QueriesRes
+                                    query={query.query}
+                                    id={query.id}
+                                    key={query.id}
+                                    response={query.solution}
+                                />
+                            ))}
+                        </Stack>
+                        <Box>
+                            <Typography>VULNERABILITY DETECTED</Typography>
+                            <Box sx={{ maxHeight: "200px", overflow: "auto" }}>
+                                <RepoVelner2
+                                    onSelect={repoVulnerabilitiesSelectHandler}
+                                    vulnerabilities={DUMMY_VULNERABILITIES}
+                                />
+                            </Box>
+                        </Box>
+                        <Box>
+                            <Typography>QUALITY CHECK</Typography>
+                            <QualityCheckCard />
+                        </Box>
+                    </Stack>
                 </Grid>
             </Grid>
-
-             {/* <ProjectSupportTabs value={ProjectSupportTabsEnum.ProjectDashboard} onChange={() => {
-                console.log("Project dashboard tab clicked");
-
-            }} />
-            {
-                isProjectConnected ? (
-                    <div>
-                        <h1>Project connected</h1>
-                    </div>
-                ) : (
-                    <div>
-                        <Typography variant="h5" align="center" sx={{ marginTop: "5%" }}>
-                            Please connect a github repository to the project
-                        </Typography>
-                    </div>
-                )
-            } */}
         </>
     );
-}
+};
 
 export default Dashboard;

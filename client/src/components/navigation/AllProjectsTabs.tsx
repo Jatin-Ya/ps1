@@ -1,6 +1,8 @@
 import { Tab, Tabs, ThemeProvider, Toolbar } from "@mui/material";
 import React from "react";
 import { tabsTheme } from "../../theme/theme";
+import { useSelector } from "react-redux";
+import { StoreData } from "../../store/store";
 
 export enum AllProjectsTabsEnum {
     AllProjects = "",
@@ -16,6 +18,8 @@ const AllProjectsTabs: React.FC<AllProjectsTabsProps> = ({
     value = AllProjectsTabsEnum.AllProjects,
     onChange,
 }) => {
+    const role = useSelector<StoreData, string>((state) => state.user.role);
+
     const handleChange = (
         _: React.SyntheticEvent,
         newValue: AllProjectsTabsEnum
@@ -35,10 +39,12 @@ const AllProjectsTabs: React.FC<AllProjectsTabsProps> = ({
                         value={AllProjectsTabsEnum.AllProjects}
                         label="All Projects"
                     />
-                    {/* <Tab
-                        value={AllProjectsTabsEnum.NewProject}
-                        label="New Project"
-                    /> */}
+                    {role === "Manager" && (
+                        <Tab
+                            value={AllProjectsTabsEnum.NewProject}
+                            label="New Project"
+                        />
+                    )}
                 </Tabs>
             </ThemeProvider>
         </Toolbar>

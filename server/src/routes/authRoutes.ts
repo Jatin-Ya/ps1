@@ -11,23 +11,29 @@ router.post("/login", async (req, res) => {
     try {
         const { email, password, role } = req.body;
 
-        if (role === "User") {
-            const user = await User.findOne({ email: email });
-
-            if (user?.password !== password) {
-                return res.status(401).send("Incorrect Password");
-            }
-            res.send(user);
-        } else if (role == "Manager") {
-            const manager = await Manager.findOne({ email: email });
-
-            if (manager?.password !== password) {
-                return res.status(401).send("Incorrect Password");
-            }
-            res.send(manager);
-        } else {
-            return res.status(401).send("Incorrect Role");
+        const user = await User.findOne({ email: email });
+        if(user?.password !== password) {
+            return res.status(401).send("Incorrect Password");
         }
+        res.send(user);
+
+        // if (role === "User") {
+        //     const user = await User.findOne({ email: email });
+
+        //     if (user?.password !== password) {
+        //         return res.status(401).send("Incorrect Password");
+        //     }
+        //     res.send(user);
+        // } else if (role == "Manager") {
+        //     const manager = await Manager.findOne({ email: email });
+
+        //     if (manager?.password !== password) {
+        //         return res.status(401).send("Incorrect Password");
+        //     }
+        //     res.send(manager);
+        // } else {
+        //     return res.status(401).send("Incorrect Role");
+        // }
     } catch (err) {
         res.status(401).send("Invalid response");
     }
