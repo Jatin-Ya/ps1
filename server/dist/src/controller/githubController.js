@@ -106,12 +106,15 @@ const getCodeScannerAlerts = (req, res, next) =>
                 ? void 0
                 : _c.userName;
         const repoName =
-            project === null || project === void 0 ? void 0 : project.repoDetails.repoName;
+            project === null || project === void 0
+                ? void 0
+                : project.repoDetails.repoName;
         const token =
             (_d = user === null || user === void 0 ? void 0 : user.githubId) ===
                 null || _d === void 0
                 ? void 0
                 : _d.accessToken;
+        console.log({ ownerName, repoName, token });
         if (!token) return next((0, app_error_1.error401)("Unauthorized"));
         try {
             const alerts = yield githubService.getCodeScannerAlerts(
