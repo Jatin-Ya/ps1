@@ -115,7 +115,9 @@ const Dashboard = () => {
     }));
 
     const email = useSelector<StoreData, string>((state) => state.user.email);
-    const [selectedRepoId, setSelectedRepoId] = useState("");
+    const [selectedRepoId, setSelectedRepoId] = useState(
+        project.repoDetails ? project.repoDetails.repoId : ""
+    );
     const { repos } = useRepos(email, true);
 
     const connectRepoHandler = async () => {
@@ -333,8 +335,14 @@ const Dashboard = () => {
                             backgroundColor: "#619FD8",
                             color: "white",
                             marginBottom: "18px",
+                            "&:hover": {
+                                backgroundColor: "#619FD8",
+                                color: "white",
+                                boxShadow: "none",
+                            },
                         }}
-                        disabled
+                        disableElevation
+                        disableRipple
                     >
                         AI SUPPORT CHECKS
                     </Button>

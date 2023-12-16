@@ -54,13 +54,11 @@ export const useAuth = () => {
             name,
             email,
             password,
+            role,
         };
         let response = undefined;
-        if (role == "User") {
-            response = await axios.post(`${baseUrl}/users`, body);
-        } else if (role == "Manager") {
-            response = await axios.post(`${baseUrl}/managers`, body);
-        }
+
+        response = await axios.post(`${baseUrl}/users`, body);
 
         if (!response) throw new Error("Invalid Role");
 

@@ -1,10 +1,12 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/use-auth";
 import {
     Box,
     Button,
+    MenuItem,
     Paper,
+    Select,
     Stack,
     TextField,
     Typography,
@@ -17,7 +19,7 @@ const SignupPage = () => {
     const emailInputRef = useRef<HTMLInputElement>(null!);
     const passwordInputRef = useRef<HTMLInputElement>(null!);
     const confirmPasswordInputRef = useRef<HTMLInputElement>(null!);
-    const role = "User";
+    const [role, setRole] = useState<"User" | "Manager">("User");
 
     const { signup } = useAuth();
 
@@ -27,6 +29,8 @@ const SignupPage = () => {
         const password = passwordInputRef.current.value;
         const confirmPassword = confirmPasswordInputRef.current.value;
         console.log("signup");
+
+        console.log(email, username, password, confirmPassword, role);
 
         if (password !== confirmPassword) {
             alert("Passwords do not match");
@@ -92,6 +96,17 @@ const SignupPage = () => {
                         type="password"
                         inputRef={confirmPasswordInputRef}
                     />
+                    <Select
+                        variant="outlined"
+                        size="small"
+                        value={role}
+                        sx={{ marginY: 2 }}
+                        onChange={(e) => setRole(e.target.value as string)}
+                        fullWidth
+                    >
+                        <MenuItem value="User">User</MenuItem>
+                        <MenuItem value="Manager">Client</MenuItem>
+                    </Select>
                     <Stack
                         direction="row"
                         justifyContent="flex-end"

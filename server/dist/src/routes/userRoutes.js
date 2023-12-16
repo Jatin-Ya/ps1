@@ -31,8 +31,8 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     return res.send(users);
 }));
 router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, password } = req.body;
-    const user = yield userModel_1.default.create({ email, password, name });
+    const { name, email, password, role } = req.body;
+    const user = yield userModel_1.default.create({ email, password, name, role });
     return res.send(user);
 }));
 router.delete("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
