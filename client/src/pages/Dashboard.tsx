@@ -13,6 +13,11 @@ import {
     Stack,
     List,
     ListItem,
+    FormControl,
+    InputLabel,
+    Select,
+    IconButton,
+    MenuItem,
 } from "@mui/material";
 import Queries from "../components/project-support/EscalatedQueries";
 import QueriesRes from "../components/project-support/QueryResponse";
@@ -26,6 +31,12 @@ import { ProjectData } from "../store/project/types";
 import { StoreData } from "../store/store";
 import { useRoadmap } from "../hooks/use-roadmap";
 import { useProject } from "../hooks/use-project";
+import { useRepos } from "../hooks/use-repos";
+import { getBackendBaseUrl } from "../utils/backendFunctions";
+import axios from "axios";
+import { useState } from "react";
+import LinkIcon from "@mui/icons-material/Link";
+import RepoVulnerabilities from "../components/project-support/quality-check/RepoVulnerabilities";
 
 const DUMMY_VULNERABILITIES: Vulnerability[] = [
     {
@@ -103,6 +114,43 @@ const Dashboard = () => {
         status: "PENDING",
     }));
 
+    const email = useSelector<StoreData, string>((state) => state.user.email);
+    const [selectedRepoId, setSelectedRepoId] = useState("");
+    const { repos } = useRepos(email, true);
+
+    const connectRepoHandler = async () => {
+        const repoToConnect = repos.find((repo) => repo.id === selectedRepoId);
+        if (!repoToConnect) return;
+
+        const projectId = project.id;
+
+        const baseUrl = getBackendBaseUrl();
+
+        try {
+            const response = await axios.patch(
+                `${baseUrl}/projects/connectRepo`,
+                {
+                    id: projectId,
+                    repoName: repoToConnect.name,
+                    repoOwner: repoToConnect.owner,
+                    repoUrl: repoToConnect.url,
+                    repoId: repoToConnect.id,
+                }
+            );
+            console.log(response.data);
+        } catch (e) {
+            console.log(e);
+        }
+
+        console.log({ connectRepo: repoToConnect });
+    };
+
+    const menuItems = repos.map((repo) => (
+        <MenuItem key={repo.id} value={repo.id}>
+            {repo.name}
+        </MenuItem>
+    ));
+
     return (
         <>
             {/* Poject overview section ..........................................................*/}
@@ -114,7 +162,35 @@ const Dashboard = () => {
             <Grid container spacing={0}>
                 <Grid item xs mx={2}>
                     <Box>
-                        <Typography component="h5">PROJECT OVERVIEW</Typography>
+                        <Typography component="h5" fontWeight="bold">
+                            PROJECT OVERVIEW
+                        </Typography>
+                        <Divider />
+                        <FormControl fullWidth size="small" sx={{ marginY: 1 }}>
+                            <InputLabel id="demo-simple-select-label">
+                                Repo
+                            </InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={selectedRepoId}
+                                onChange={(e) =>
+                                    setSelectedRepoId(e.target.value)
+                                }
+                                label="Age"
+                                startAdornment={
+                                    <IconButton
+                                        size="small"
+                                        onClick={connectRepoHandler} //connect repo here
+                                    >
+                                        <LinkIcon />
+                                    </IconButton>
+                                }
+                            >
+                                {menuItems}
+                            </Select>
+                        </FormControl>
+                        <Divider />
                         <Typography
                             sx={{
                                 fontSize: "15px",
@@ -258,6 +334,7 @@ const Dashboard = () => {
                             color: "white",
                             marginBottom: "18px",
                         }}
+                        disabled
                     >
                         AI SUPPORT CHECKS
                     </Button>
@@ -283,9 +360,8 @@ const Dashboard = () => {
                         <Box>
                             <Typography>VULNERABILITY DETECTED</Typography>
                             <Box sx={{ maxHeight: "200px", overflow: "auto" }}>
-                                <RepoVelner2
+                                <RepoVulnerabilities
                                     onSelect={repoVulnerabilitiesSelectHandler}
-                                    vulnerabilities={DUMMY_VULNERABILITIES}
                                 />
                             </Box>
                         </Box>
