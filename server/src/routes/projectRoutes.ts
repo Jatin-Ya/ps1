@@ -74,11 +74,13 @@ router.post("/", async (req, res) => {
 
         console.log({ project });
 
-        const usersQuery = users_email
-            .map((email: string) => User.findOne({ email }))
-            .filter((u: any) => u !== null && u !== undefined);
+        const usersQuery = users_email.map((email: string) =>
+            User.findOne({ email })
+        );
 
-        const users = await Promise.all(usersQuery);
+        const queryResults = await Promise.all(usersQuery);
+
+        const users = queryResults.filter((user) => user !== null);
         console.log({ users });
         project.users = users.map((user: any) => user._id);
         project.save();

@@ -111,10 +111,14 @@ router.post("/", (req, res) =>
                 aiSupport,
             });
             console.log({ project });
-            const usersQuery = users_email
-                .map((email) => userModel_1.default.findOne({ email }))
-                .filter((u) => u !== null && u !== undefined);
-            const users = yield Promise.all(usersQuery);
+            const usersQuery = users_email.map((email) =>
+                userModel_1.default.findOne({ email })
+            );
+
+            const queryResults = yield Promise.all(usersQuery);
+
+            const users = queryResults.filter((user) => user !== null);
+
             console.log({ users });
             project.users = users.map((user) => user._id);
             project.save();
