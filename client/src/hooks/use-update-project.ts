@@ -1,32 +1,9 @@
 import { useDispatch } from "react-redux";
 import { getBackendBaseUrl } from "../utils/backendFunctions";
 import axios from "axios";
-import { ProjectData, RepoDetails } from "../store/project/types";
+import { ProjectData } from "../store/project/types";
 import { setProject } from "../store/project/project-slice";
-
-const transformProject = (
-    project: Record<string, string> & {
-        users: Record<string, string>[];
-        progress: number;
-        repoDetails: RepoDetails;
-    }
-): ProjectData => {
-    return {
-        id: project._id,
-        title: project.title,
-        description: project.description,
-        guidlines: project.guidlines,
-        manager: project.manager,
-        users: project.users.map((user: Record<string, string>) => ({
-            id: user._id,
-            name: user.name,
-            email: user.email,
-        })),
-        status: project.status,
-        progress: project.progress,
-        repoDetails: project.repoDetails,
-    };
-};
+import { parseProject } from "./use-project";
 
 export const useUpdateProject = (projectId: string) => {
     const dispatch = useDispatch();
@@ -45,8 +22,7 @@ export const useUpdateProject = (projectId: string) => {
 
             console.log({ initialProjectState });
 
-            const projectState: ProjectData =
-                transformProject(initialProjectState);
+            const projectState: ProjectData = parseProject(initialProjectState);
 
             console.log({ transformed: initialProjectState });
 
@@ -73,8 +49,7 @@ export const useUpdateProject = (projectId: string) => {
 
             console.log({ initialProjectState });
 
-            const projectState: ProjectData =
-                transformProject(initialProjectState);
+            const projectState: ProjectData = parseProject(initialProjectState);
 
             console.log({ transformed: initialProjectState });
 

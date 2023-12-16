@@ -11,7 +11,7 @@ const projectSchema = new mongoose_1.default.Schema({
     },
     manager: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "Manager",
+        ref: "User",
         required: true,
     },
     users: [
@@ -27,12 +27,12 @@ const projectSchema = new mongoose_1.default.Schema({
     status: {
         type: String,
         required: true,
-        default: "open",
+        default: "open"
     },
     progress: {
         type: Number,
         required: false,
-        default: 0,
+        default: 0
     },
     guidlines: {
         type: String,
@@ -46,20 +46,6 @@ const projectSchema = new mongoose_1.default.Schema({
             repoId: String,
         },
         required: false,
-    },
-    aiSupport: {
-        type: Boolean,
-        required: true,
-        default: false,
-    },
-    roadmap: {
-        type: [String],
-        required: false,
-        default: [],
-    },
-    queries: {
-        type: [mongoose_1.default.Schema.Types.ObjectId],
-        ref: "Query",
     },
 });
 const Project = mongoose_1.default.model("Project", projectSchema);

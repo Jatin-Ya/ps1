@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
     Typography,
     Grid,
@@ -15,7 +14,6 @@ import {
     List,
     ListItem,
 } from "@mui/material";
-import axios from "axios";
 import Queries from "../components/project-support/EscalatedQueries";
 import QueriesRes from "../components/project-support/QueryResponse";
 import RepoVelner2 from "../components/project-support/quality-check/RepoVelner2";
@@ -26,61 +24,7 @@ import QualityCheckCard from "../components/project-support/quality-check/Qualit
 import { useSelector } from "react-redux";
 import { ProjectData } from "../store/project/types";
 import { StoreData } from "../store/store";
-import AssignUserComponent from "../components/assign-user/AssignUserComponent";
 import { useRoadmap } from "../hooks/use-roadmap";
-const tableData = [
-    {
-        id: 1,
-        member: "Mirabel",
-        role: "McGlone",
-        progress: 10,
-    },
-    {
-        id: 2,
-        member: "Elbert",
-        role: "Standon",
-        progress: 30,
-    },
-    {
-        id: 3,
-        member: "Shandy",
-        role: "Towersey",
-        progress: 24,
-    },
-    {
-        id: 4,
-        member: "Bryce",
-        role: "Brehat",
-        progress: 22,
-    },
-];
-const miltableData = [
-    {
-        id: 1,
-        milestone: "Milestone 1",
-        status: "COMPLETED - 1st November 2023",
-    },
-    {
-        id: 2,
-        milestone: "Milestone 2",
-        status: "COMPLETED - 15th November 2023",
-    },
-    {
-        id: 3,
-        milestone: "Milestone 3",
-        status: "ONGOING",
-    },
-    {
-        id: 4,
-        milestone: "Milestone 4",
-        status: "PENDING",
-    },
-    {
-        id: 5,
-        milestone: "Completed",
-        status: "Completed",
-    },
-];
 
 const DUMMY_VULNERABILITIES: Vulnerability[] = [
     {
@@ -320,7 +264,10 @@ const Dashboard = () => {
                             <Typography>QUERIES RESPONSED</Typography>
                             <List>
                                 {resolvedQueries.map((query) => (
-                                    <ListItem disablePadding sx={{marginY: 1}}>
+                                    <ListItem
+                                        disablePadding
+                                        sx={{ marginY: 1 }}
+                                    >
                                         <QueriesRes
                                             query={query.query}
                                             id={query.id}

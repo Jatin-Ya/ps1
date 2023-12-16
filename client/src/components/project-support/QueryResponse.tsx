@@ -9,7 +9,7 @@ type Props = {
 
 const Queries: React.FC<Props> = ({id, query, response}) => {
     return (
-        <Card sx={{ border: '1px solid black', paddingY: 1}}>
+        <Card sx={{ border: '1px solid black'}}>
             <CardContent>
                 <Typography sx={{ fontSize: '15px' }}>
                     {query}<br />
