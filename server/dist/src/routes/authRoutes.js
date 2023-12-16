@@ -123,7 +123,7 @@ router.get("/github/callback", (req, res) =>
                     },
                 }
             );
-            const githubUserName = resp.data.name;
+            const githubUserName = resp.data.login;
             const user = yield userModel_1.default.findByIdAndUpdate(state, {
                 githubId: {
                     accessToken: access_token,
