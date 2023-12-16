@@ -124,6 +124,7 @@ const getCodeScannerAlerts = (req, res, next) =>
             );
             next((0, app_error_1.success200)(alerts));
         } catch (err) {
+            console.log(err);
             next(
                 (0, app_error_1.error400)("Could'nt fetch code scanner alerts")
             );
