@@ -40,6 +40,7 @@ export const useProject = (projectId: string) => {
     const getProjectDetails = async (): Promise<ProjectData> => {
         // Get project details from backend
         const baseUrl = getBackendBaseUrl();
+        console.log(projectId);
         const response = await axios.get(
             `${baseUrl}/projects/getById/${projectId}`
         );
