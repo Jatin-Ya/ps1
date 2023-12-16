@@ -84,9 +84,9 @@ router.get("/github", (req, res) =>
             console.log(id);
             const githubOauthUrl = "https://github.com/login/oauth/authorize";
             const clientId = process.env.GITHUB_CLIENT_ID;
-            // const redirectUri = process.env.GITHUB_CALLBACK_URI;
-            const redirectUri =
-                "http://localhost:8080/api/v1/auth/github/callback";
+            const redirectUri = process.env.GITHUB_CALLBACK_URI;
+            // const redirectUri =
+            //     "http://localhost:8080/api/v1/auth/github/callback";
             const scope = "repo%20user%20write:org%20repo_deployment";
             const state = id;
             const url = `${githubOauthUrl}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
@@ -112,7 +112,7 @@ router.get("/github/callback", (req, res) =>
                 },
             });
             // access_token=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&scope=repo%2Cuser%2Cwrite%3Aorg&token_type=bearer
-            const access_token = response.data.split("&").split("=")[1];
+            const access_token = response.data.split("&")[0].split("=")[1];
             console.log(access_token);
             console.log(response.data);
             const resp = yield axios_1.default.get(
@@ -130,8 +130,8 @@ router.get("/github/callback", (req, res) =>
                     userName: githubUserName,
                 },
             });
-            res.send("Success");
-            res.redirect(`http://localhost:5173/`);
+            // res.send("Success");
+            res.redirect(`https://ps1-test.onrender.com/`);
         } catch (err) {
             res.status(401).send("Invalid response");
         }
