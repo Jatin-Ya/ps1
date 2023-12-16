@@ -190,6 +190,8 @@ router.post("/query/resolve", async (req, res) => {
     try {
         const { projectId, queryId, solution } = req.body;
 
+        console.log({ projectId, queryId, solution });
+
         await Query.findByIdAndUpdate(queryId, {
             status: "resolved",
             solution,

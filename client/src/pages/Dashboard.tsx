@@ -12,6 +12,8 @@ import {
     TableCell,
     Divider,
     Stack,
+    List,
+    ListItem,
 } from "@mui/material";
 import axios from "axios";
 import Queries from "../components/project-support/EscalatedQueries";
@@ -316,14 +318,18 @@ const Dashboard = () => {
                     <Stack spacing={4}>
                         <Stack maxHeight={300} overflow="scroll" spacing={2}>
                             <Typography>QUERIES RESPONSED</Typography>
-                            {resolvedQueries.map((query) => (
-                                <QueriesRes
-                                    query={query.query}
-                                    id={query.id}
-                                    key={query.id}
-                                    response={query.solution}
-                                />
-                            ))}
+                            <List>
+                                {resolvedQueries.map((query) => (
+                                    <ListItem disablePadding sx={{marginY: 1}}>
+                                        <QueriesRes
+                                            query={query.query}
+                                            id={query.id}
+                                            key={query.id}
+                                            response={query.solution}
+                                        />
+                                    </ListItem>
+                                ))}
+                            </List>
                         </Stack>
                         <Box>
                             <Typography>VULNERABILITY DETECTED</Typography>
