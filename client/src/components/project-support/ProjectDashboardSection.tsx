@@ -7,6 +7,7 @@ import {
     LinearProgress,
     LinearProgressProps,
     MenuItem,
+    OutlinedInput,
     Select,
     Stack,
     TextField,
@@ -108,16 +109,18 @@ const ProjectDashboardSection = () => {
             <Typography variant="h4">Project Dashboard</Typography>
             <Stack spacing={4} direction={{ xs: "column", sm: "row" }} flex={1}>
                 <Stack flex={1} minWidth={200} spacing={4}>
-                    <FormControl fullWidth>
+                    <FormControl fullWidth disabled>
                         <InputLabel id="demo-simple-select-label">
                             Repo
                         </InputLabel>
-                        <Select
-                            disabled={isDisabled}
-                            labelId="demo-simple-select-label"
+                        <OutlinedInput
+                            disabled
                             id="demo-simple-select"
-                            value={selectedRepoId}
-                            onChange={(e) => setSelectedRepoId(e.target.value)}
+                            value={
+                                projectData.repoDetails
+                                    ? projectData.repoDetails.repoName
+                                    : ""
+                            }
                             label="Age"
                             startAdornment={
                                 <IconButton
@@ -127,9 +130,7 @@ const ProjectDashboardSection = () => {
                                     <LinkIcon />
                                 </IconButton>
                             }
-                        >
-                            {menuItems}
-                        </Select>
+                        ></OutlinedInput>
                     </FormControl>
                     <TextField
                         label="Project Name"

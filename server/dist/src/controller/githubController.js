@@ -162,6 +162,7 @@ const getFiles = (req, res, next) =>
             );
             next((0, app_error_1.success200)(files));
         } catch (err) {
+            console.log(err);
             next((0, app_error_1.error401)("Unauthorized"));
         }
         // if (!token) return next(error401("Unauthorized"));
