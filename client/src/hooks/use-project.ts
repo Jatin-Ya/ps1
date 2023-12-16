@@ -52,6 +52,7 @@ export const useProject = (projectId: string) => {
     };
 
     useEffect(() => {
+        if (projectId === "") return;
         getProjectDetails().then((project) => dispatch(setProject(project)));
     }, [projectId]);
 
