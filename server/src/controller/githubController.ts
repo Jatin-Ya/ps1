@@ -78,7 +78,7 @@ export const getFiles = async (
     const user: any = project?.users[0];
     if (!user) return next(error401("Unauthorized"));
     const ownerName = user?.githubId?.userName;
-    const repoName = project?.repoName;
+    const repoName = project?.repoDetails.repoName;
     const token = user?.githubId?.accessToken;
     if (!token) return next(error401("Unauthorized"));
     

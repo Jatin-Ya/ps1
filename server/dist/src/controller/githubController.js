@@ -147,7 +147,7 @@ const getFiles = (req, res, next) =>
                 ? void 0
                 : _e.userName;
         const repoName =
-            project === null || project === void 0 ? void 0 : project.repoName;
+            project === null || project === void 0 ? void 0 : project.repoDetails.repoName;
         const token =
             (_f = user === null || user === void 0 ? void 0 : user.githubId) ===
                 null || _f === void 0
