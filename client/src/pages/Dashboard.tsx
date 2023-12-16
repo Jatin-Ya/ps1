@@ -118,7 +118,8 @@ const Dashboard = () => {
     const [selectedRepoId, setSelectedRepoId] = useState(
         project.repoDetails ? project.repoDetails.repoId : ""
     );
-    const { repos } = useRepos(email, true);
+
+    const { repos } = useRepos(email);
 
     const connectRepoHandler = async () => {
         const repoToConnect = repos.find((repo) => repo.id === selectedRepoId);

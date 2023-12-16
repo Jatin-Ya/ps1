@@ -52,7 +52,7 @@ const ProjectDashboardSection = () => {
     const [assignUserInputText, setAssignUserInputText] = useState("");
     const [selectedRepoId, setSelectedRepoId] = useState("");
     const [isDisabled, setIsDisabled] = useState(false);
-    const { repos } = useRepos(email, true);
+    const { repos } = useRepos(email);
     console.log(projectData);
     const assignedUserEmails = projectData.users.map((user) => user.email);
 

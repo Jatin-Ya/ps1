@@ -7,7 +7,7 @@ const projectSchema = new mongoose.Schema({
     },
     manager: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Manager",
+        ref: "User",
         required: true,
     },
     users: [

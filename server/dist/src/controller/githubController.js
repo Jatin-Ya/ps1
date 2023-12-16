@@ -96,9 +96,9 @@ const getCodeScannerAlerts = (req, res, next) =>
         // const token = headers?.split(" ")[1];
         const project = yield projectModel_1.default
             .findById(projectId)
-            .populate("users");
+            .populate("manager");
         const user =
-            project === null || project === void 0 ? void 0 : project.users[0];
+            project === null || project === void 0 ? void 0 : project.manager;
         if (!user) return next((0, app_error_1.error401)("Unauthorized"));
         const ownerName =
             (_c = user === null || user === void 0 ? void 0 : user.githubId) ===

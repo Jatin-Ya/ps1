@@ -74,8 +74,9 @@ export const getFiles = async (
     next: NextFunction
 ) => {
     const { projectId } = req.query;
-    const project : any = await Project.findById(projectId).populate("users");
-    const user: any = project?.users[0];
+    const project : any = await Project.findById(projectId).populate("Manager");
+    if(!project) return next(error401("No such project exists"));
+    const user = project?.manager;
     if (!user) return next(error401("Unauthorized"));
     const ownerName = user?.githubId?.userName;
     const repoName = project?.repoDetails.repoName;

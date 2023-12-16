@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getBackendBaseUrl } from "../utils/backendFunctions";
 import axios from "axios";
+import { StoreData } from "../store/store";
+import { useSelector } from "react-redux";
 
 export type Repo = {
     name: string;
@@ -9,12 +11,28 @@ export type Repo = {
     id: string;
 };
 
-export const useRepos = (email: string, isConnected: boolean) => {
+export const useRepos = (email: string) => {
     const [repos, setRepos] = useState<Repo[]>([]);
+    const [isGithubConnected, setIsGithubConnected] = useState(false);
+
+    const userId = useSelector<StoreData, string>((state) => state.user.id);
+
+    useEffect(() => {
+        if (userId === "") {
+            console.log("User not logged in");
+            return;
+        }
+
+        const fetchGithubStatus = async () => {
+            const BEURL = getBackendBaseUrl();
+            const { data } = await axios.get(`${BEURL}/users/github/${userId}`);
+            setIsGithubConnected(data.linked);
+            // setIsGithubConnected(data.isGithubConnected);
+        };
+        fetchGithubStatus();
+    }, [userId]);
 
     const getRepos = async (): Promise<Repo[]> => {
-        if (!isConnected) return [];
-
         const baseUrl = getBackendBaseUrl();
         const query = new URLSearchParams({ email });
         console.log(query);
@@ -74,8 +92,11 @@ export const useRepos = (email: string, isConnected: boolean) => {
     };
 
     useEffect(() => {
-        getRepos().then((repos) => setRepos(repos));
-    }, [email, isConnected]);
+        // if (!isGithubConnected) return;
+        getRepos()
+            .then((repos) => setRepos(repos))
+            .catch(() => setRepos([]));
+    }, [email]);
 
     return { repos };
 };
