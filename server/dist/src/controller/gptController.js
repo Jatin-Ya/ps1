@@ -63,6 +63,9 @@ const getRoadmap = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         if (((_d = project.roadmap) === null || _d === void 0 ? void 0 : _d.length) === 0) {
             const roadmap = yield gptService.generateRoadmap(guidlines, description, title);
             project.roadmap = roadmap;
+            project.milestones = roadmap.map((_) => ({
+                status: "PENDING",
+            }));
             yield project.save();
         }
         res.json({ roadmap: project.roadmap });

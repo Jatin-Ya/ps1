@@ -114,6 +114,18 @@ const Dashboard = () => {
         status: "PENDING",
     }));
 
+    const estimateDeadline = new Date(
+        Date.now() +
+            milestones.filter((milestone) => milestone.status === "PENDING")
+                .length *
+                1000 *
+                60 *
+                60 *
+                24 *
+                7
+    );
+    const estimateDeadlineString = estimateDeadline.toLocaleDateString();
+
     const email = useSelector<StoreData, string>((state) => state.user.email);
     const [selectedRepoId, setSelectedRepoId] = useState(
         project.repoDetails ? project.repoDetails.repoId : ""
@@ -242,7 +254,7 @@ const Dashboard = () => {
                         <Typography component="h5">MILESTONES</Typography>
                         <Typography sx={{ fontSize: "12px" }}>
                             {" "}
-                            ESTIMATED DEADLINE: 20th January 2024{" "}
+                            ESTIMATED DEADLINE: {estimateDeadlineString}{" "}
                         </Typography>
                         <TableContainer
                             sx={{ maxHeight: "400px", marginTop: "30px" }}
@@ -294,40 +306,6 @@ const Dashboard = () => {
                 {/* Escalated queries section ..........................................................*/}
 
                 <Grid item xs>
-                    <Typography component="h5">ESCALATED QUERIES</Typography>
-                    <Box
-                        sx={{
-                            margin: "4px",
-                            height: "450px",
-                            overflowY: "auto",
-                        }}
-                    >
-                        <Stack spacing={1}>
-                            {escalatedQueries.map((query) => (
-                                <Queries
-                                    key={query.id}
-                                    id={query.id}
-                                    query={query.query}
-                                    response={query.solution}
-                                />
-                            ))}
-                        </Stack>
-                    </Box>
-                    <Box marginTop="25px">
-                        <Typography>MANDATORY QUALITY CHECK</Typography>
-                        <MandatoryQualityCheck />
-                    </Box>
-                </Grid>
-
-                <Divider
-                    orientation="vertical"
-                    flexItem
-                    sx={{ mx: 2, borderLeft: "1px solid black" }}
-                />
-
-                {/* AI support section ..........................................................*/}
-
-                <Grid item xs mx={1}>
                     <Button
                         variant="contained"
                         sx={{
@@ -379,6 +357,40 @@ const Dashboard = () => {
                             <QualityCheckCard />
                         </Box>
                     </Stack>
+                </Grid>
+
+                <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ mx: 2, borderLeft: "1px solid black" }}
+                />
+
+                {/* AI support section ..........................................................*/}
+
+                <Grid item xs mx={1}>
+                    <Typography component="h5">ESCALATED QUERIES</Typography>
+                    <Box
+                        sx={{
+                            margin: "4px",
+                            height: "450px",
+                            overflowY: "auto",
+                        }}
+                    >
+                        <Stack spacing={1}>
+                            {escalatedQueries.map((query) => (
+                                <Queries
+                                    key={query.id}
+                                    id={query.id}
+                                    query={query.query}
+                                    response={query.solution}
+                                />
+                            ))}
+                        </Stack>
+                    </Box>
+                    <Box marginTop="25px">
+                        <Typography>MANDATORY QUALITY CHECK</Typography>
+                        <MandatoryQualityCheck />
+                    </Box>
                 </Grid>
             </Grid>
         </>

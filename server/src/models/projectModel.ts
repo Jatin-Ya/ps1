@@ -53,6 +53,11 @@ const projectSchema = new mongoose.Schema({
         required: false,
         default: [],
     },
+    milestones: {
+        type: [{ status: String }],
+        required: false,
+        default: [],
+    },
     queries: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: "Query",
