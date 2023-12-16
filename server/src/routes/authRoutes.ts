@@ -12,7 +12,7 @@ router.post("/login", async (req, res) => {
         const { email, password, role } = req.body;
 
         const user = await User.findOne({ email: email });
-        if(user?.password !== password) {
+        if (user?.password !== password) {
             return res.status(401).send("Incorrect Password");
         }
         res.send(user);
@@ -54,7 +54,7 @@ router.get("/github", async (req, res) => {
 
         console.log(url);
 
-        res.redirect(url);
+        res.json({ url });
     } catch (err) {
         res.status(401).send("Invalid response");
     }
