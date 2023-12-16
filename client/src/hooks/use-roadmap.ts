@@ -17,13 +17,16 @@ export const useRoadmap = (projectId: string) => {
     const getRoadmapData = async (): Promise<string[]> => {
         // Get roadmap data from backend
         const baseUrl = getBackendBaseUrl();
-        const response = await axios.get(`${baseUrl}/gpt/getRoadmap?projectId=${projectId}`);
+        const response = await axios.get(
+            `${baseUrl}/gpt/getRoadmap?projectId=${projectId}`
+        );
         const roadmapData = response.data.roadmap;
         console.log(roadmapData);
         return roadmapData;
     };
 
     useEffect(() => {
+        if (projectId === "") return;
         getRoadmapData().then((roadmapData) => setRoadmapData(roadmapData));
     }, [projectId]);
 
