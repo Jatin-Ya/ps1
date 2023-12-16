@@ -17,7 +17,7 @@ import {
 import Queries from "../components/project-support/EscalatedQueries";
 import QueriesRes from "../components/project-support/QueryResponse";
 import RepoVelner2 from "../components/project-support/quality-check/RepoVelner2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Vulnerability } from "../hooks/use-vulnerabilities";
 import MandatoryQualityCheck from "../components/project-support/quality-check/MandatoryQualityCheck";
 import QualityCheckCard from "../components/project-support/quality-check/QualityCheckCard";
@@ -25,6 +25,7 @@ import { useSelector } from "react-redux";
 import { ProjectData } from "../store/project/types";
 import { StoreData } from "../store/store";
 import { useRoadmap } from "../hooks/use-roadmap";
+import { useProject } from "../hooks/use-project";
 
 const DUMMY_VULNERABILITIES: Vulnerability[] = [
     {
@@ -72,6 +73,7 @@ const Dashboard = () => {
     const project = useSelector<StoreData, ProjectData>(
         (state) => state.project
     );
+
     const navigate = useNavigate();
 
     const repoVulnerabilitiesSelectHandler = (vulnerability: Vulnerability) => {

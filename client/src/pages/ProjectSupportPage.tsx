@@ -24,7 +24,7 @@ const ProjectSupportPage = () => {
         navigate("/all-projects");
     }
 
-    // const { isLoaded: isProjectLoaded } = useProject(projectId as string);
+    useProject(projectId as string);
 
     const [projectSupportTobValue, setProjectSupportTobValue] = useState(
         ProjectSupportTabsEnum.AiSupport
