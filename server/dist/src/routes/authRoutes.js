@@ -132,6 +132,7 @@ router.get("/github/callback", (req, res) =>
                     userName: githubUserName,
                 },
             });
+            console.log({ user });
             // res.send("Success");
             res.redirect(`https://ps1-test.onrender.com/`);
         } catch (err) {

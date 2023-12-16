@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
     },
     githubId: {
         type: {
-            name: String,
+            userName: String,
             accessToken: String,
         },
         required: false,
