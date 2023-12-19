@@ -8,7 +8,9 @@ import {
   InputLabel,
   LinearProgress,
   LinearProgressProps,
+  MenuItem,
   OutlinedInput,
+  Select,
   Stack,
   TextField,
   Typography,
@@ -50,7 +52,7 @@ const ProjectDashboardSection = () => {
 
   const [assignUserInputText, setAssignUserInputText] = useState("");
   const [selectedRepoId, setSelectedRepoId] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
+
   const { repos } = useRepos(email);
   console.log(projectData);
   const assignedUserEmails = projectData.users.map((user) => user.email);
@@ -94,27 +96,31 @@ const ProjectDashboardSection = () => {
     console.log({ connectRepo: repoToConnect });
   };
 
-//   const milestoneCheckboxes = projectData.milestones.map((milestone, index) => (
-//     <FormControlLabel
-//       key={index}
-//       control={<Checkbox checked={milestone.status === "DONE"} />}
-//       label={`Milestone ${index + 1}`}
-//     />
-//   ));
+  //   const milestoneCheckboxes = projectData.milestones.map((milestone, index) => (
+  //     <FormControlLabel
+  //       key={index}
+  //       control={<Checkbox checked={milestone.status === "DONE"} />}
+  //       label={`Milestone ${index + 1}`}
+  //     />
+  //   ));
+  const menuItems = repos.map((repo) => (
+    <MenuItem key={repo.id} value={repo.id}>
+      {repo.name}
+    </MenuItem>
+  ));
 
   return (
     <Stack spacing={4} paddingX={2} width={"100%"}>
       <Typography variant="h4">Project Dashboard</Typography>
       <Stack spacing={4} direction={{ xs: "column", sm: "row" }} flex={1}>
         <Stack flex={1} minWidth={200} spacing={4}>
-          <FormControl fullWidth disabled>
+          <FormControl fullWidth size="small" sx={{ marginY: 1 }}>
             <InputLabel id="demo-simple-select-label">Repo</InputLabel>
-            <OutlinedInput
-              disabled
+            <Select
+              labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={
-                projectData.repoDetails ? projectData.repoDetails.repoName : ""
-              }
+              value={selectedRepoId}
+              onChange={(e) => setSelectedRepoId(e.target.value)}
               label="Age"
               startAdornment={
                 <IconButton
@@ -124,7 +130,9 @@ const ProjectDashboardSection = () => {
                   <LinkIcon />
                 </IconButton>
               }
-            ></OutlinedInput>
+            >
+              {menuItems}
+            </Select>
           </FormControl>
           <TextField
             label="Project Name"
