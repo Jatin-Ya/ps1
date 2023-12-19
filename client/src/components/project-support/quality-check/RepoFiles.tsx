@@ -20,6 +20,7 @@ const RepoFiles: React.FC<RepoFileProps> = ({ onSelect }) => {
 
   const { repoFilePaths } = useRepoFiles(projectId as string);
 
+    
   const handleFileClick = (filePath: string) => {
     onSelect(filePath);
   };

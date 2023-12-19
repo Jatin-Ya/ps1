@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getBackendBaseUrl } from "../utils/backendFunctions";
+import React from "react";
 
 export type RepoFile = {
   path: string;
@@ -19,13 +20,31 @@ export const getFileContents = async (projectId: string, filePath: string) => {
     filePath,
   });
 
-  const response = await axios.get<RepoResponse>(`${baseUrl}/github/fileContents?${query}`);
+  const response = await axios.get<RepoResponse>(
+    `${baseUrl}/github/fileContents?${query}`
+  );
+
+  const path = Object.keys(response.data)[0];
+  const name = getFileName(path);
+  const content = response.data[path];
 
   const repoFile: RepoFile = {
-    path: response.data.keys[0],
-    name: getFileName(response.data.keys[0]),
-    content: response.data[response.data.keys[0]],
+    path,
+    name,
+    content,
   };
 
   return repoFile;
 };
+
+// export const formatContent: React.FC = (content: string) => {
+//   const lines = content.split("\n");
+//   const formattedLines = lines.map((line) => line.trim());
+
+//   const components = formattedLines.map((line, index) => {
+//     const key = `${line}-${index}`;
+//     return <p key={key}>{line}</p>;
+//   });
+
+//   return <>{components}</>;
+// };

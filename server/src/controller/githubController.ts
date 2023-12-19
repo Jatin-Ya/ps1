@@ -74,7 +74,7 @@ export const getFiles = async (
   next: NextFunction
 ) => {
   const { projectId } = req.query;
-  const project: any = await Project.findById(projectId).populate("Manager");
+  const project: any = await Project.findById(projectId).populate("manager");
   if (!project) return next(error401("No such project exists"));
   const user = project?.manager;
   if (!user) return next(error401("Unauthorized"));

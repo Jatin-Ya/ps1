@@ -11,12 +11,13 @@ export const useRepoFiles = (projectId: string) => {
     const response = await axios.get(
       `${baseUrl}/github/filePaths?projectId=${projectId}`
     );
-    return response.data;
+    return Object.values(response.data);
   };
 
   useEffect(() => {
     getFilePaths()
       .then((filePaths: string[]) => {
+        console.log({ filePaths });
         setRepoFilePaths(filePaths);
       })
       .catch((e) => console.log(e));

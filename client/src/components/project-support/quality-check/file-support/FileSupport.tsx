@@ -63,7 +63,8 @@ const FileSupport = () => {
         <Box flex={3}>
           <Paper
             variant="outlined"
-            sx={{ margin: 1, fontSize: 12, padding: 1 }}
+
+            sx={{ margin: 1, fontSize: 12, padding: 1, whiteSpace: "pre-line" }}
           >
             {fileContent}
           </Paper>
