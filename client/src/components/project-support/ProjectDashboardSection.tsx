@@ -18,7 +18,7 @@ import {
 import AssignUserComponent from "../assign-user/AssignUserComponent";
 import { useSelector } from "react-redux";
 import { StoreData } from "../../store/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProjectState } from "../../store/project/types";
 import LinkIcon from "@mui/icons-material/Link";
 import { useRepos } from "../../hooks/use-repos";
@@ -52,6 +52,10 @@ const ProjectDashboardSection = () => {
 
   const [assignUserInputText, setAssignUserInputText] = useState("");
   const [selectedRepoId, setSelectedRepoId] = useState("");
+
+  useEffect(() => {
+    setSelectedRepoId(projectData.repoDetails.repoId);
+  }, [projectData.repoDetails.repoName]);
 
   const { repos } = useRepos(email);
   console.log(projectData);

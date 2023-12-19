@@ -24,6 +24,7 @@ const FileSupport = () => {
   const projectId = useSelector<StoreData, string>((state) => state.project.id);
   const { filePath } = useLocation().state as { filePath: string };
   const [fileContent, setFileContent] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // TUSHAR yaha p project id dalna hai
 
@@ -34,9 +35,11 @@ const FileSupport = () => {
     const baseUrl = getBackendBaseUrl();
     // setReview("All looks great");
     // return;
+    setIsLoading(true);
     const response = await axios.get(
       `${baseUrl}/gpt/generateReiew?path=${filePath}&projectId=${projectId}`
     );
+    setIsLoading(false);
     const review = response.data.review;
     setReview(review);
   };
@@ -63,7 +66,6 @@ const FileSupport = () => {
         <Box flex={3}>
           <Paper
             variant="outlined"
-
             sx={{ margin: 1, fontSize: 12, padding: 1, whiteSpace: "pre-line" }}
           >
             {fileContent}
@@ -87,8 +89,15 @@ const FileSupport = () => {
             >
               AI Support
             </Typography>
-            <Paper sx={{ flex: 1, overflow: "scroll", fontSize: 12 }}>
-              {review}
+            <Paper
+              sx={{
+                flex: 1,
+                overflow: "scroll",
+                fontSize: 12,
+                whiteSpace: "pre-line",
+              }}
+            >
+              {!isLoading ? review : "Generating..."}
             </Paper>
             <Button
               variant="contained"
