@@ -41,6 +41,7 @@ import RepoFiles from "../components/project-support/quality-check/RepoFiles";
 
 const DUMMY_VULNERABILITIES: Vulnerability[] = [
   {
+    
     id: "1",
     title: "title1",
     description: "description1",
