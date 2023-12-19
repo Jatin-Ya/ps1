@@ -46,7 +46,9 @@ router.get("/github/:id", (req, res) => __awaiter(void 0, void 0, void 0, functi
     if (!user)
         return res.status(404).send("User not found");
     if (!user.githubId)
-        return res.status(200).send({ msg: "Github not linked", linked: false });
+        return res
+            .status(200)
+            .send({ msg: "Github not linked", linked: false });
     return res.status(200).send({ msg: "Github linked", linked: true });
 }));
 exports.default = router;

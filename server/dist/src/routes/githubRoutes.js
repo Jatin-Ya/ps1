@@ -6,5 +6,7 @@ const githubRoutes = (0, express_1.Router)();
 githubRoutes.get("/dependabot/alerts", githubController_1.getDependabotAlerts);
 githubRoutes.get("/code-scanner/alerts", githubController_1.getCodeScannerAlerts);
 githubRoutes.get("/files", githubController_1.getFiles);
+githubRoutes.get("/filePaths", githubController_1.filePaths);
+githubRoutes.get("/fileContents", githubController_1.fileContents);
 githubRoutes.get("/repos", githubController_1.getRepos);
 exports.default = githubRoutes;
