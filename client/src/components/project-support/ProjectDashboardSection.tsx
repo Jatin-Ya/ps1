@@ -72,7 +72,6 @@ const ProjectDashboardSection = () => {
   };
 
   const connectRepoHandler = async () => {
-    setIsDisabled(true);
     const repoToConnect = repos.find((repo) => repo.id === selectedRepoId);
     if (!repoToConnect) return;
 
