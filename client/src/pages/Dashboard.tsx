@@ -21,16 +21,15 @@ import {
 } from "@mui/material";
 import Queries from "../components/project-support/EscalatedQueries";
 import QueriesRes from "../components/project-support/QueryResponse";
-import RepoVelner2 from "../components/project-support/quality-check/RepoVelner2";
+
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Vulnerability } from "../hooks/use-vulnerabilities";
-import MandatoryQualityCheck from "../components/project-support/quality-check/MandatoryQualityCheck";
-import QualityCheckCard from "../components/project-support/quality-check/QualityCheckCard";
+
 import { useSelector } from "react-redux";
 import { ProjectData } from "../store/project/types";
 import { StoreData } from "../store/store";
 import { useRoadmap } from "../hooks/use-roadmap";
-import { useProject } from "../hooks/use-project";
+
 import { useRepos } from "../hooks/use-repos";
 import { getBackendBaseUrl } from "../utils/backendFunctions";
 import axios from "axios";
@@ -38,49 +37,6 @@ import { useState } from "react";
 import LinkIcon from "@mui/icons-material/Link";
 import RepoVulnerabilities from "../components/project-support/quality-check/RepoVulnerabilities";
 import RepoFiles from "../components/project-support/quality-check/RepoFiles";
-
-const DUMMY_VULNERABILITIES: Vulnerability[] = [
-  {
-    
-    id: "1",
-    title: "title1",
-    description: "description1",
-    severity: "high",
-    status: "open",
-    remediation: "remediation1",
-    repo: "repo1",
-    file: "file1",
-    line: 1,
-    commit: "commit1",
-    date: "date1",
-  },
-  {
-    id: "2",
-    title: "title2",
-    description: "description2",
-    severity: "low",
-    status: "open",
-    remediation: "remediation2",
-    repo: "repo2",
-    file: "file2",
-    line: 2,
-    commit: "commit2",
-    date: "date2",
-  },
-  {
-    id: "3",
-    title: "title3",
-    description: "description3",
-    severity: "medium",
-    status: "open",
-    remediation: "remediation3",
-    repo: "repo3",
-    file: "file3",
-    line: 3,
-    commit: "commit3",
-    date: "date3",
-  },
-];
 
 const Dashboard = () => {
   const project = useSelector<StoreData, ProjectData>((state) => state.project);
