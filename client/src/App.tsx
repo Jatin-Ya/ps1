@@ -54,6 +54,10 @@ function App() {
                 role == "User" ? <ProjectDashboardSection /> : <Dashboard />
               }
             />
+            <Route
+              path="project-dashboard/vulnerability-support"
+              element={<VulnerabilitySupport />}
+            />
             {/* <Route
                             path="client-dashboard"
                             element={<Dashboard />}

@@ -37,7 +37,7 @@ const RepoFiles: React.FC<RepoFileProps> = ({ onSelect }) => {
   ));
 
   return (
-    <Stack flex={1} paddingX={2}>
+    <Stack flex={1} paddingX={2} overflow={"scroll"} maxHeight={"70vh"}>
       <List>
         <ListItem>
           <Typography variant="h5">Repo Files</Typography>

@@ -22,7 +22,7 @@ import {
 import Queries from "../components/project-support/EscalatedQueries";
 import QueriesRes from "../components/project-support/QueryResponse";
 import RepoVelner2 from "../components/project-support/quality-check/RepoVelner2";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Vulnerability } from "../hooks/use-vulnerabilities";
 import MandatoryQualityCheck from "../components/project-support/quality-check/MandatoryQualityCheck";
 import QualityCheckCard from "../components/project-support/quality-check/QualityCheckCard";
@@ -83,11 +83,12 @@ const DUMMY_VULNERABILITIES: Vulnerability[] = [
 
 const Dashboard = () => {
   const project = useSelector<StoreData, ProjectData>((state) => state.project);
+  const location = useLocation();
 
   const navigate = useNavigate();
 
   const repoVulnerabilitiesSelectHandler = (vulnerability: Vulnerability) => {
-    navigate(`${location}/vulnerability-support`, {
+    navigate(`${location.pathname}/vulnerability-support`, {
       state: { vulnerability },
     });
   };
@@ -297,6 +298,14 @@ const Dashboard = () => {
             AI SUPPORT CHECKS
           </Button>
           <Stack spacing={4}>
+            <Box>
+              <Typography>VULNERABILITY DETECTED</Typography>
+              <Box sx={{ maxHeight: "400px", overflow: "auto" }}>
+                <RepoVulnerabilities
+                  onSelect={repoVulnerabilitiesSelectHandler}
+                />
+              </Box>
+            </Box>
             <Stack maxHeight={300} overflow="scroll" spacing={2}>
               <Typography>QUERIES RESPONSED</Typography>
               <List>
@@ -312,17 +321,24 @@ const Dashboard = () => {
                 ))}
               </List>
             </Stack>
-            <Box>
-              <Typography>VULNERABILITY DETECTED</Typography>
-              <Box sx={{ maxHeight: "200px", overflow: "auto" }}>
-                <RepoVulnerabilities onSelect={() => {}} />
-              </Box>
-            </Box>
-            <Box>
-              <Typography>QUALITY CHECK</Typography>
-              {/* <QualityCheckCard />
-               */}
-              <RepoFiles onSelect={() => {}} />
+            <Typography component="h5">ESCALATED QUERIES</Typography>
+            <Box
+              sx={{
+                margin: "4px",
+                maxHeight: "450px",
+                overflowY: "auto",
+              }}
+            >
+              <Stack spacing={1}>
+                {escalatedQueries.map((query) => (
+                  <Queries
+                    key={query.id}
+                    id={query.id}
+                    query={query.query}
+                    response={query.solution}
+                  />
+                ))}
+              </Stack>
             </Box>
           </Stack>
         </Grid>
@@ -336,28 +352,15 @@ const Dashboard = () => {
         {/* AI support section ..........................................................*/}
 
         <Grid item xs mx={1}>
-          <Typography component="h5">ESCALATED QUERIES</Typography>
-          <Box
-            sx={{
-              margin: "4px",
-              height: "450px",
-              overflowY: "auto",
-            }}
-          >
-            <Stack spacing={1}>
-              {escalatedQueries.map((query) => (
-                <Queries
-                  key={query.id}
-                  id={query.id}
-                  query={query.query}
-                  response={query.solution}
-                />
-              ))}
-            </Stack>
-          </Box>
           <Box marginTop="25px">
-            <Typography>MANDATORY QUALITY CHECK</Typography>
-            <MandatoryQualityCheck />
+            <Box>
+              <Typography>QUALITY CHECK</Typography>
+              {/* <QualityCheckCard />
+               */}
+              <RepoFiles onSelect={() => {}} />
+            </Box>
+            {/* <Typography>MANDATORY QUALITY CHECK</Typography>
+            <MandatoryQualityCheck /> */}
           </Box>
         </Grid>
       </Grid>

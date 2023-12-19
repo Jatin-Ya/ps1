@@ -58,4 +58,5 @@ export const initialProjectState: ProjectState = {
     isLoaded: false,
     queries: [],
     aiSupport: false,
+    milestones: [],
 };
