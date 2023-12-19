@@ -140,7 +140,7 @@ exports.filePaths = filePaths;
 const fileContents = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _j;
     const { projectId, filePath } = req.query;
-    const project = yield projectModel_1.default.findById(projectId).populate("Users");
+    const project = yield projectModel_1.default.findById(projectId).populate("users");
     if (!project)
         return next((0, app_error_1.error401)("No such project exists"));
     const user = project === null || project === void 0 ? void 0 : project.users[0];

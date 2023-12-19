@@ -133,7 +133,7 @@ export const filePaths = async (
 ) => {
   const { projectId } = req.query;
 
-  const project: any = await Project.findById(projectId).populate("Users");
+  const project: any = await Project.findById(projectId).populate("users");
   if (!project) return next(error401("No such project exists"));
 
   const user = project?.users[0];
