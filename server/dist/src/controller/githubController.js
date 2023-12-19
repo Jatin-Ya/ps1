@@ -99,12 +99,16 @@ const getCodeScannerAlerts = (req, res, next) =>
       .populate("users");
     const user =
       project === null || project === void 0 ? void 0 : project.users[0];
-    if (!user) return next((0, app_error_1.error401)("Unauthorized"));
     const ownerName =
-      (_c = user === null || user === void 0 ? void 0 : user.githubId) ===
-        null || _c === void 0
+      project === null || project === void 0
         ? void 0
-        : _c.userName;
+        : project.repoDetails.repoOwner;
+    if (!user) return next((0, app_error_1.error401)("Unauthorized"));
+    // const ownerName =
+    //   (_c = user === null || user === void 0 ? void 0 : user.githubId) ===
+    //     null || _c === void 0
+    //     ? void 0
+    //     : _c.userName;
     const repoName =
       project === null || project === void 0
         ? void 0
