@@ -47,16 +47,28 @@ const generateReview = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.generateReview = generateReview;
 const getRoadmap = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
     const { projectId } = req.query;
     const project = yield projectModel_1.default.findById(projectId);
+    if (!project)
+        return next((0, app_error_1.error400)("Project not found"));
+    if (!project.aiSupport)
+        return next((0, app_error_1.error400)("AI support not enabled for this project"));
     if (!project)
         return next((0, app_error_1.error400)("Project not found"));
     const guidlines = (project === null || project === void 0 ? void 0 : project.guidlines) || "";
     const description = (project === null || project === void 0 ? void 0 : project.description) || "";
     const title = (project === null || project === void 0 ? void 0 : project.title) || "";
     try {
-        const roadmap = yield gptService.generateRoadmap(guidlines, description, title);
-        res.json({ roadmap });
+        if (((_d = project.roadmap) === null || _d === void 0 ? void 0 : _d.length) === 0) {
+            const roadmap = yield gptService.generateRoadmap(guidlines, description, title);
+            project.roadmap = roadmap;
+            project.milestones = roadmap.map((_) => ({
+                status: "PENDING",
+            }));
+            yield project.save();
+        }
+        res.json({ roadmap: project.roadmap });
     }
     catch (err) {
         next(err);
@@ -64,21 +76,23 @@ const getRoadmap = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.getRoadmap = getRoadmap;
 const query = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d, _e, _f;
+    var _e, _f, _g;
     const { query, path, projectId } = req.body;
     try {
         const project = yield projectModel_1.default.findById(projectId).populate("users");
         const user = project === null || project === void 0 ? void 0 : project.users[0];
-        const token = (_d = user === null || user === void 0 ? void 0 : user.githubId) === null || _d === void 0 ? void 0 : _d.accessToken;
-        const ownerName = (_e = user === null || user === void 0 ? void 0 : user.githubId) === null || _e === void 0 ? void 0 : _e.name;
-        const repoName = (_f = project === null || project === void 0 ? void 0 : project.repoDetails) === null || _f === void 0 ? void 0 : _f.repoName;
+        const token = (_e = user === null || user === void 0 ? void 0 : user.githubId) === null || _e === void 0 ? void 0 : _e.accessToken;
+        const ownerName = (_f = user === null || user === void 0 ? void 0 : user.githubId) === null || _f === void 0 ? void 0 : _f.name;
+        const repoName = (_g = project === null || project === void 0 ? void 0 : project.repoDetails) === null || _g === void 0 ? void 0 : _g.repoName;
         if (!token)
             return next((0, app_error_1.error401)("Unauthorized"));
         if (!ownerName)
             return next((0, app_error_1.error401)("Unauthorized"));
         if (!repoName)
             return next((0, app_error_1.error401)("Unauthorized"));
-        const file = yield githubService.getFiles(token, ownerName, repoName, [path]);
+        const file = yield githubService.getFiles(token, ownerName, repoName, [
+            path,
+        ]);
         const response = yield gptService.query(query, file[path]);
         res.json({ response });
     }

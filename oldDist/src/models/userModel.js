@@ -24,6 +24,11 @@ const userSchema = new mongoose_1.default.Schema({
             ref: "Project",
         },
     ],
+    role: {
+        type: String,
+        required: true,
+        default: "User",
+    },
     githubId: {
         type: {
             userName: String,

@@ -1,7 +1,9 @@
 import {
     Box,
+    Checkbox,
     Divider,
     FormControl,
+    FormControlLabel,
     IconButton,
     InputLabel,
     LinearProgress,
@@ -98,11 +100,15 @@ const ProjectDashboardSection = () => {
         console.log({ connectRepo: repoToConnect });
     };
 
-    const menuItems = repos.map((repo) => (
-        <MenuItem key={repo.id} value={repo.id}>
-            {repo.name}
-        </MenuItem>
-    ));
+    const milestoneCheckboxes = projectData.milestones.map(
+        (milestone, index) => (
+            <FormControlLabel
+                key={index}
+                control={<Checkbox checked={milestone.status === "DONE"} />}
+                label={`Milestone ${index + 1}`}
+            />
+        )
+    );
 
     return (
         <Stack spacing={4} paddingX={2} width={"100%"}>
@@ -167,13 +173,16 @@ const ProjectDashboardSection = () => {
                 </Stack>
                 <Divider />
                 <Stack flex={1} minWidth={200} spacing={4}>
-                    <AssignUserComponent
-                        assignedUsers={assignedUserEmails}
-                        inputValue={assignUserInputText}
-                        onAddUser={assignUserHandler}
-                        onInputChange={assignUserInputChangeHandler}
-                        onRemoveUser={removeUserHandler}
-                    />
+                    <Box flex={1}>
+                        <AssignUserComponent
+                            assignedUsers={assignedUserEmails}
+                            inputValue={assignUserInputText}
+                            onAddUser={assignUserHandler}
+                            onInputChange={assignUserInputChangeHandler}
+                            onRemoveUser={removeUserHandler}
+                        />
+                    </Box>
+                    {milestoneCheckboxes}
                 </Stack>
             </Stack>
             <LinearProgressWithLabel value={projectData.progress} />

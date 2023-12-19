@@ -42,15 +42,17 @@ var __importDefault =
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const projectModel_1 = __importDefault(require("../models/projectModel"));
-const managerModel_1 = __importDefault(require("../models/managerModel"));
 const userModel_1 = __importDefault(require("../models/userModel"));
+const queriesModel_1 = __importDefault(require("../models/queriesModel"));
 const router = (0, express_1.Router)();
 router.get("/getById/:id", (req, res) =>
     __awaiter(void 0, void 0, void 0, function* () {
         const id = req.params.id;
+        console.log({ params: req.params });
         const project = yield projectModel_1.default
             .findById(id)
-            .populate("users");
+            .populate("users")
+            .populate("queries");
         return res.send(project);
     })
 );
@@ -67,22 +69,17 @@ router.get("/belongsTo", (req, res) =>
     __awaiter(void 0, void 0, void 0, function* () {
         try {
             const userid = req.query.userid;
-            const role = req.query.role;
             // return res.send([]);
-            console.log(userid, role);
-            if (role === "Manager") {
-                const projects = yield projectModel_1.default
-                    .find({ manager: userid })
-                    .populate("users");
-                return res.send(projects);
-            } else if (role === "User") {
-                const projects = yield projectModel_1.default
-                    .find({
-                        $or: [{ manager: userid }, { users: { $all: userid } }],
-                    })
-                    .populate("users");
-                return res.send(projects);
-            }
+            const user = yield userModel_1.default.findById(userid);
+            if (!user) return res.send([]);
+            console.log({ user });
+            const projectQueries = user.projects.map((project) => {
+                return projectModel_1.default.findById(project).exec();
+            });
+            console.log({ projectQueries });
+            const projects = yield Promise.all(projectQueries);
+            console.log({ projects });
+            return res.send(projects);
         } catch (err) {
             res.status(401).send("Invalid response");
         }
@@ -91,29 +88,44 @@ router.get("/belongsTo", (req, res) =>
 router.post("/", (req, res) =>
     __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const { title, description, guidlines, manager_email, users } =
-                req.body;
+            const {
+                title,
+                description,
+                guidlines,
+                manager_email,
+                users_email,
+                aiSupport,
+            } = req.body;
+            users_email.push(manager_email);
+            console.log({ body: req.body });
             const manager = yield userModel_1.default.findOne({
                 email: manager_email,
             });
+            if (!manager) return res.status(401).send("Manager not found");
             const project = yield projectModel_1.default.create({
                 title,
                 description,
                 guidlines,
-                manager,
+                manager: manager._id,
+                users: [],
+                aiSupport,
             });
-            manager.projects.push(project);
-            yield manager.save();
-            if (users) {
-                for (let i = 0; i < users.length; i++) {
-                    const user = users[i];
-                    yield userModel_1.default.findByIdAndUpdate(user, {
-                        $push: { projects: project },
-                    });
-                    project.users.push(user);
-                    yield project.save();
-                }
-            }
+            console.log({ project });
+            const usersQuery = users_email.map((email) =>
+                userModel_1.default.findOne({ email })
+            );
+
+            const queryResults = yield Promise.all(usersQuery);
+
+            const users = queryResults.filter((user) => user !== null);
+
+            console.log({ users });
+            project.users = users.map((user) => user._id);
+            project.save();
+            users.forEach((user) => {
+                user.projects.push(project._id);
+                user.save();
+            });
             return res.send(project);
         } catch (err) {
             console.log(err);
@@ -177,6 +189,52 @@ router.patch("/removeUser", (req, res) =>
             res.send(p);
         } catch (err) {
             console.log(err);
+        }
+    })
+);
+router.post("/query/escalate", (req, res) =>
+    __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            console.log(req.body);
+            const { projectId, query, solution } = req.body;
+            const createdQuery = yield queriesModel_1.default.create({
+                status: "escalated",
+                query,
+                solution,
+            });
+            const project = yield projectModel_1.default
+                .findByIdAndUpdate(
+                    projectId,
+                    {
+                        $push: { queries: createdQuery._id },
+                    },
+                    { new: true }
+                )
+                .populate("queries")
+                .populate("users");
+            return res.send(project);
+        } catch (err) {
+            console.log(err);
+            return res.status(401).send("Invalid response");
+        }
+    })
+);
+router.post("/query/resolve", (req, res) =>
+    __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { projectId, queryId, solution } = req.body;
+            console.log({ projectId, queryId, solution });
+            yield queriesModel_1.default.findByIdAndUpdate(queryId, {
+                status: "resolved",
+                solution,
+            });
+            const project = yield projectModel_1.default
+                .findById(projectId)
+                .populate("queries")
+                .populate("users");
+            return res.send(project);
+        } catch (err) {
+            return res.status(401).send("Invalid response");
         }
     })
 );

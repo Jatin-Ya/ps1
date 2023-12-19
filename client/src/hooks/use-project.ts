@@ -28,6 +28,7 @@ export const parseProject = (initialProjectState: any): ProjectData => ({
             solution: query.solution,
         })
     ),
+    milestones: initialProjectState.milestones,
     aiSupport: initialProjectState.aiSupport,
 });
 

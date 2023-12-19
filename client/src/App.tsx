@@ -19,69 +19,50 @@ import { useSelector } from "react-redux";
 import { StoreData } from "./store/store";
 
 function App() {
-    const role = useSelector<StoreData, string>((state) => state.user.role);
-    return (
-        <>
-            <Navbar>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={<Navigate to="login" />}
-                    />
-                    <Route path="login" element={<LoginPage />} />
-                    <Route path="signup" element={<SignupPage />} />
-                    <Route path="all-projects" element={<AllProjects />}>
-                        <Route path="" element={<AllProjectsSection />} />
-                        <Route
-                            path="new-project"
-                            element={<NewProjectSection />}
-                        />
-                    </Route>
-                    <Route
-                        path="project-support/:id"
-                        element={<ProjectSupportPage />}
-                    >
-                        <Route path="" element={<Navigate to="project-dashboard" />} />
-                        <Route path="ai-support" element={<AISupportSection />}>
-                            <Route
-                                path=""
-                                element={<Navigate to="roadmap" />}
-                            />
-                            <Route
-                                path="roadmap"
-                                element={<RoadmapSection />}
-                            />
-                            <Route
-                                path="quality-check"
-                                element={<QualityChackSection />}
-                            />
+  const role = useSelector<StoreData, string>((state) => state.user.role);
+  return (
+    <>
+      <Navbar>
+        <Routes>
+          <Route path="/" element={<Navigate to="login" />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="signup" element={<SignupPage />} />
+          <Route path="all-projects" element={<AllProjects />}>
+            <Route path="" element={<AllProjectsSection />} />
+            <Route path="new-project" element={<NewProjectSection />} />
+          </Route>
+          <Route path="project-support/:id" element={<ProjectSupportPage />}>
+            <Route path="" element={<Navigate to="project-dashboard" />} />
+            <Route path="ai-support" element={<AISupportSection />}>
+              <Route path="" element={<Navigate to="roadmap" />} />
+              <Route path="roadmap" element={<RoadmapSection />} />
+              <Route path="quality-check" element={<QualityChackSection />} />
 
-                            <Route
-                                path="quality-check/file-support"
-                                element={<FileSupport />}
-                            />
-                            <Route
-                                path="quality-check/vulnerability-support"
-                                element={<VulnerabilitySupport />}
-                            />
-                            <Route
-                                path="raise-query"
-                                element={<RaiseQuery />}
-                            />
-                        </Route>
-                        <Route
-                            path="project-dashboard"
-                            element={role=="User" ? <ProjectDashboardSection /> : <Dashboard /> }
-                        />
-                        {/* <Route
+              <Route
+                path="quality-check/file-support"
+                element={<FileSupport />}
+              />
+              <Route
+                path="quality-check/vulnerability-support"
+                element={<VulnerabilitySupport />}
+              />
+              <Route path="raise-query" element={<RaiseQuery />} />
+            </Route>
+            <Route
+              path="project-dashboard"
+              element={
+                role == "User" ? <ProjectDashboardSection /> : <Dashboard />
+              }
+            />
+            {/* <Route
                             path="client-dashboard"
                             element={<Dashboard />}
                         /> */}
-                    </Route>
-                </Routes>
-            </Navbar>
-        </>
-    );
+          </Route>
+        </Routes>
+      </Navbar>
+    </>
+  );
 }
 
 export default App;

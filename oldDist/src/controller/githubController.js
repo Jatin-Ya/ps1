@@ -96,9 +96,9 @@ const getCodeScannerAlerts = (req, res, next) =>
         // const token = headers?.split(" ")[1];
         const project = yield projectModel_1.default
             .findById(projectId)
-            .populate("users");
+            .populate("manager");
         const user =
-            project === null || project === void 0 ? void 0 : project.users[0];
+            project === null || project === void 0 ? void 0 : project.manager;
         if (!user) return next((0, app_error_1.error401)("Unauthorized"));
         const ownerName =
             (_c = user === null || user === void 0 ? void 0 : user.githubId) ===
@@ -124,6 +124,7 @@ const getCodeScannerAlerts = (req, res, next) =>
             );
             next((0, app_error_1.success200)(alerts));
         } catch (err) {
+            console.log(err);
             next(
                 (0, app_error_1.error400)("Could'nt fetch code scanner alerts")
             );
@@ -139,8 +140,6 @@ const getFiles = (req, res, next) =>
             .populate("users");
         const user =
             project === null || project === void 0 ? void 0 : project.users[0];
-        console.log({ user });
-        console.log({ project });
         if (!user) return next((0, app_error_1.error401)("Unauthorized"));
         const ownerName =
             (_e = user === null || user === void 0 ? void 0 : user.githubId) ===
@@ -148,15 +147,12 @@ const getFiles = (req, res, next) =>
                 ? void 0
                 : _e.userName;
         const repoName =
-            project === null || project === void 0
-                ? void 0
-                : project.repoDetails.repoName;
+            project === null || project === void 0 ? void 0 : project.repoDetails.repoName;
         const token =
             (_f = user === null || user === void 0 ? void 0 : user.githubId) ===
                 null || _f === void 0
                 ? void 0
                 : _f.accessToken;
-        console.log({ ownerName, repoName, token });
         if (!token) return next((0, app_error_1.error401)("Unauthorized"));
         try {
             const files = yield (0, GithubUtils_1.getFilesAndPaths)(
@@ -166,6 +162,7 @@ const getFiles = (req, res, next) =>
             );
             next((0, app_error_1.success200)(files));
         } catch (err) {
+            console.log(err);
             next((0, app_error_1.error401)("Unauthorized"));
         }
         // if (!token) return next(error401("Unauthorized"));
@@ -187,16 +184,14 @@ exports.getFiles = getFiles;
 const getRepos = (req, res, next) =>
     __awaiter(void 0, void 0, void 0, function* () {
         var _g;
-        console.log(req.query);
         const { email } = req.query;
-        // const user = yield userModel_1.default.findById(id);
-        const user = yield userModel_1.default.findOne({ email });
+        const user = yield userModel_1.default.findOne({ email: email });
         const token =
             (_g = user === null || user === void 0 ? void 0 : user.githubId) ===
                 null || _g === void 0
                 ? void 0
                 : _g.accessToken;
-        console.log({ token, email, user });
+        console.log({ email, token });
         if (!token) return next((0, app_error_1.error401)("Unauthorized"));
         try {
             const repos = yield githubService.getRepos(token);

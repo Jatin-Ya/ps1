@@ -29,6 +29,10 @@ export type ProjectData = {
         solution: string;
         status: string;
     }[];
+    milestones: {
+        status: string;
+    }[];
+
     aiSupport: boolean;
 };
 

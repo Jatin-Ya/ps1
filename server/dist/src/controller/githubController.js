@@ -68,13 +68,14 @@ exports.getCodeScannerAlerts = getCodeScannerAlerts;
 const getFiles = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f;
     const { projectId } = req.query;
-    const project = yield projectModel_1.default.findById(projectId).populate("Manager");
+    const project = yield projectModel_1.default.findById(projectId).populate("manager");
     if (!project)
         return next((0, app_error_1.error401)("No such project exists"));
     const user = project === null || project === void 0 ? void 0 : project.manager;
     if (!user)
         return next((0, app_error_1.error401)("Unauthorized"));
-    const ownerName = (_e = user === null || user === void 0 ? void 0 : user.githubId) === null || _e === void 0 ? void 0 : _e.userName;
+    // const ownerName = (_e = user === null || user === void 0 ? void 0 : projerepoDetails.githubId) === null || _e === void 0 ? void 0 : _e.userName;
+    const ownerName = project === null || project === void 0 ? void 0 : project.repoDetails.repoOwner;
     const repoName = project === null || project === void 0 ? void 0 : project.repoDetails.repoName;
     const token = (_f = user === null || user === void 0 ? void 0 : user.githubId) === null || _f === void 0 ? void 0 : _f.accessToken;
     if (!token)
@@ -122,7 +123,7 @@ exports.getRepos = getRepos;
 const filePaths = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _h;
     const { projectId } = req.query;
-    const project = yield projectModel_1.default.findById(projectId).populate("Users");
+    const project = yield projectModel_1.default.findById(projectId).populate("users");
     if (!project)
         return next((0, app_error_1.error401)("No such project exists"));
     const user = project === null || project === void 0 ? void 0 : project.users[0];
