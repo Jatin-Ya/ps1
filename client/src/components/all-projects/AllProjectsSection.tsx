@@ -1,11 +1,11 @@
 import {
-    Divider,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    Stack,
-    Typography,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Stack,
+  Typography,
 } from "@mui/material";
 // import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -33,36 +33,44 @@ import { UserData } from "../../store/user/types";
 // ];
 
 const AllProjectsSection = () => {
-    // const [projects, setProjects] = useState(DUMMY_PROJECTS);
-    const { id } = useSelector<StoreData, UserData>((state) => state.user);
-    const { allProjects: projects } = useAllProjects(id);
+  // const [projects, setProjects] = useState(DUMMY_PROJECTS);
+  const { id } = useSelector<StoreData, UserData>((state) => state.user);
+  const { allProjects: projects } = useAllProjects(id);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const projectClickHandler = (projectId: string) => {
-        navigate("/project-support/" + projectId);
-    };
+  const projectClickHandler = (projectId: string) => {
+    navigate("/project-support/" + projectId);
+  };
 
-    const projectListItems = projects.map((project) => (
-        <ListItem key={project.projectId} disablePadding>
-            <ListItemButton
-                onClick={projectClickHandler.bind(this, project.projectId)}
-            >
-                <ListItemText
-                    primary={project.projectName}
-                    secondary={project.projectDescription}
-                />
-            </ListItemButton>
-        </ListItem>
-    ));
-
+  const projectListItems = projects.map((project) => {
+    const remainingText =
+      project.projectDescription.slice(
+        0,
+        Math.min(100, project.projectDescription.length)
+      ) + "...";
     return (
-        <Stack paddingX={2} width={"100%"}>
-            <Typography variant="h4">All Projects</Typography>
-            <Divider />
-            <List>{projectListItems}</List>
-        </Stack>
+      <ListItem key={project.projectId} disablePadding>
+        <ListItemButton
+          onClick={projectClickHandler.bind(this, project.projectId)}
+        >
+          <ListItemText
+            primary={project.projectName}
+            secondary={remainingText}
+            sx={{ maxHeight: 100, overflow: "hidden" }}
+          />
+        </ListItemButton>
+      </ListItem>
     );
+  });
+
+  return (
+    <Stack paddingX={2} width={"100%"}>
+      <Typography variant="h4">All Projects</Typography>
+      <Divider />
+      <List>{projectListItems}</List>
+    </Stack>
+  );
 };
 
 export default AllProjectsSection;

@@ -134,7 +134,7 @@ const Dashboard = () => {
               PROJECT OVERVIEW
             </Typography>
             <Divider />
-            <FormControl fullWidth size="small" sx={{ marginY: 1 }}>
+            {/* <FormControl fullWidth size="small" sx={{ marginY: 1 }}>
               <InputLabel id="demo-simple-select-label">Repo</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -153,7 +153,7 @@ const Dashboard = () => {
               >
                 {menuItems}
               </Select>
-            </FormControl>
+            </FormControl> */}
             <Divider />
             <Typography
               sx={{
@@ -161,6 +161,9 @@ const Dashboard = () => {
                 lineHeight: "18px",
                 letterSpacing: "0em",
                 textAlign: "left",
+                maxHeight: "200px",
+                overflow: "scroll",
+                whiteSpace: "pre-line",
               }}
             >
               {project.description}
