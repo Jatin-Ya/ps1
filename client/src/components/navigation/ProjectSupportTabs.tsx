@@ -56,7 +56,7 @@ const ProjectSupportTabs: React.FC<ProjectSupportTabsProps> = ({
           )}
           <Tab
             value={ProjectSupportTabsEnum.TeamChat}
-            label="Team Chat"
+            label=""
             disabled
           />
         </Tabs>
