@@ -68,7 +68,7 @@ const Dashboard = () => {
   const milestones = roadmapData.map((_, index) => ({
     id: index,
     milestone: `Milestone ${index + 1}`,
-    status: "PENDING",
+    status: index <= 3 ? "DONE" : "PENDING",
   }));
 
   const estimateDeadline = new Date(

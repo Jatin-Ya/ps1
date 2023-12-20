@@ -8,7 +8,7 @@ const RoadmapComponent: React.FC<RoadmapComponentProps> = ({ content }) => {
     const roadmapUnits = content.map((unit, index) => {
         const direction = index % 2 === 0 ? "up" : "down";
         return (
-            <RoadmapUnit key={index} direction={direction}>
+            <RoadmapUnit key={index} direction={direction} index={index}>
                 {unit}
             </RoadmapUnit>
         );
